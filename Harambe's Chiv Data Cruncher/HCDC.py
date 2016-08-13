@@ -69,6 +69,7 @@ class Team(object):
         for player in self.playerList:
             x = Player(player)
             self.playerRoster[player] = x
+"""
 class ScoreBoard(object):
     '''
     ScoreBoard object which contains data specific to a 
@@ -94,6 +95,7 @@ class ScoreBoard(object):
         Fills the playerList with player objects
         '''
         pass
+"""
 class Half(object):
     '''
     Half object which contains data specific to the Half
@@ -182,6 +184,7 @@ class Tourney():
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchList = []
         self.matchRoster = {}
+        
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
@@ -236,3 +239,5 @@ class SpreadSheet(object):
         return self.worksheet.row_values(row)
 HCDC = Tourney()
 print(HCDC.teamRoster["Accolade"].playerRoster["Jangle"].killsTotal)  
+
+#Tourney.matchRoster[""].halfList[""].teamList[""].playerList[""].killsTotal
