@@ -306,6 +306,7 @@ class ChivData():
                 else:
                     self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
+        print(self.teamRooster[team].playerList)
     def teamUpate(self, match):
         '''
         Handles updating team object after match completion
