@@ -69,39 +69,12 @@ class Team(object):
         for player in self.playerList:
             x = Player(player)
             self.playerDir[player] = x
-"""
-class ScoreBoard(object):
-    '''
-    ScoreBoard object which contains data specific to a 
-    teams score at the end of a single game and methods 
-    to update and return scoreBoard specific values
-    '''
-    def __init__(self, teamName):
-        '''
-        Set Attributes
-        '''
-        set.identifier = None
-        self.teamList = {}
-        self.playerList = {}
-    def indentifierGenerator(self):
-        '''
-        Generates a specific identifier for each scoreBoard 
-        object so that scoreBoard can be stored in a dictionary
-        and easily called
-        '''
-        pass
-    def playerListFill(self):
-        '''
-        Fills the playerList with player objects
-        '''
-        pass
-"""
 class Half(object):
     '''
     Half object which contains data specific to the Half
     and methods to update and return half specific values
     '''
-    def __init__(self, teamName):
+    def __init__(self, teamName, PlayerList):
         '''
         Set Attributes
         '''
@@ -110,6 +83,7 @@ class Half(object):
         self.defending = None
         self.objective = None
         self.objectiveTime = None
+        self.playerList = PlayerList
         self.playerDir = {}
         self.teamDir = {}
         self.scoreBoardDir = {}
@@ -123,6 +97,16 @@ class Half(object):
     def scoreBoardGen(self):
         '''
         Generates a ScoreBoard Object
+        '''
+        pass
+    def team_Half(self):
+        '''
+        generates a team object specific to half
+        '''
+        pass
+    def player_Half(self):
+        '''
+        generates a player object specific to half
         '''
         pass
 class Match(object):
@@ -141,6 +125,8 @@ class Match(object):
         self.Winner = None
         self.Loser = None
         
+        #Directories
+        self.playerList = []
         self.playerDir = {}
         self.teamDir = {}
         self.halfDir = {}
@@ -152,14 +138,29 @@ class Match(object):
         and easily called
         '''
         pass
-    def HalfGen(self):
+    def half_Match(self):
         '''
-        Generates a Half Object
+        Generates a half object specific to match
         '''
         pass
-    def scoreBoardMatch(self):
+    def team_Match(self):
         '''
-        Generates a Scoreboard object for each team in the match
+        Generate a team object specific to match
+        '''
+        pass
+    def player_Match(self):
+        '''
+        Generate a player object specific to match
+        '''
+        pass
+    def objectGen(self, objectType, outputDir):
+        '''
+        Generate required object type specific to match
+        '''
+        pass
+    def playerListFill(self):
+        '''
+        Fill Player List with competing players
         '''
         pass
 class Tourney():
