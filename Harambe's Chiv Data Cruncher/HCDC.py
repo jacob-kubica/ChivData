@@ -7,7 +7,6 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import sys
 
-
 class Player(object):
     '''
     Player Object which contains info specific to the player
