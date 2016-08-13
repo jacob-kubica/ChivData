@@ -38,7 +38,7 @@ class Team(object):
     '''
     Team Object which contains info specific to the team
     and methods to update and calculate team specific values
-    also handles playerRooster a dictionary containing
+    also handles playerRoster a dictionary containing
     all player objects
     '''
     def __init__(self, teamName):
@@ -46,12 +46,12 @@ class Team(object):
         Set Attributes
         '''
         #Static Values
-        self.teamName = teamName
-        self.playerList = []
-        self.playerRooster = {}
+        self.teamName = teamName #Identifier
+        self.playerList = [] #List of player objects
+        self.playerRoster = {} #Player object container
         #Dynamic Values
-        self.teamWinsTotal = 0
-        self.teamLossTotal = 0
+        self.teamWinsTotal = None
+        self.teamLossTotal = None
     def teamWin(self):
         '''
         Handles Case were team wins
@@ -62,13 +62,13 @@ class Team(object):
         Handles Case were team loses
         '''
         self.teamLossTotal += 1
-    def playerRoosterCreation(self):
+    def playerRosterCreation(self):
         '''
-        Creates a playerRooster specific to the team
+        Creates a playerRoster specific to the team
         '''
         for player in self.playerList:
             x = Player(player)
-            self.playerRooster[player] = x
+            self.playerRoster[player] = x
 class ScoreBoard(object):
     '''
     ScoreBoard object which contains data specific to a 
@@ -80,11 +80,18 @@ class ScoreBoard(object):
         Set Attributes
         '''
         set.identifier = None
+        self.teamList = {}
+        self.playerList = {}
     def indentifierGenerator(self):
         '''
         Generates a specific identifier for each scoreBoard 
-        Object so that scoreBoard can be stored in a dictionary
+        object so that scoreBoard can be stored in a dictionary
         and easily called
+        '''
+        pass
+    def playerListFill(self):
+        '''
+        Fills the playerList with player objects
         '''
         pass
 class Half(object):
@@ -101,6 +108,9 @@ class Half(object):
         self.defending = None
         self.objective = None
         self.objectiveTime = None
+        self.playerList = {}
+        self.teamList = {}
+        self.scoreBoards = {}
     def indentifierGenerator(self):
         '''
         Generates a specific identifier for each Half 
@@ -108,10 +118,46 @@ class Half(object):
         and easily called
         '''
         pass
+    def scoreBoardGen(self):
+        '''
+        Generates a ScoreBoard Object
+        '''
+        pass
 class Match(object):
+    '''
+    Match object which contains data specific to the match
+    and methods to update and return half specific values
+    '''
     def __init__(self, teamName):
         '''
         Set Attributes
+        '''
+        self.matchNum = None
+        self.TeamOne = None
+        self.TeamTwo = None
+        self.Map = None
+        self.Winner = None
+        self.Loser = None
+        
+        self.playerList = {}
+        self.teamList = {}
+        self.halfList = {}
+        self.scoreBoardList = {}
+    def indentifierGenerator(self):
+        '''
+        Generates a specific identifier for each Match 
+        object so that the match can be stored in a dictionary
+        and easily called
+        '''
+        pass
+    def HalfGen(self):
+        '''
+        Generates a Half Object
+        '''
+        pass
+    def scoreBoardMatch(self):
+        '''
+        Generates a Scoreboard object for each team in the match
         '''
         pass
 class Tourney():
@@ -126,19 +172,16 @@ class Tourney():
         '''
         Constructor
         '''
-        #Values pertaining to Matches
-        self.matchNumber = 1
-        self.matchHalfNumber = 1
-        
-        self.matchRooster = {}
-        self.matchList = []
-        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
-        
         #Values pertaining to Teams 
-        self.teamRooster = {}
+        self.teamRoster = {}
         self.teamList = []
         self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
         self.inputTeamWrs()
+        
+        #Master Dictionary
+        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        self.matchList = []
+        self.matchRoster = {}
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
@@ -147,14 +190,14 @@ class Tourney():
         for x in range(1, len(col)):
             self.teamList.append(col[x])
         for (i, team) in enumerate(self.teamList):
-            self.teamRooster[team] = Team(team)
+            self.teamRoster[team] = Team(team)
             playerList = self.teamWrs.rowValues(i + 2)
             for x in range(1,len(playerList)):
                 if playerList[x] == '':
                     break
                 else:
-                    self.teamRooster[team].playerList.append(playerList[x])
-            self.teamRooster[team].playerRoosterCreation()
+                    self.teamRoster[team].playerList.append(playerList[x])
+            self.teamRoster[team].playerRosterCreation()
     def matchInput(self):
         '''
         Gather data for and create Match Rooster match by match
@@ -192,4 +235,4 @@ class SpreadSheet(object):
     def rowValues(self, row):
         return self.worksheet.row_values(row)
 HCDC = Tourney()
-print(HCDC.teamRooster["Accolade"].playerRooster["Jangle"].killsTotal)  
+print(HCDC.teamRoster["Accolade"].playerRoster["Jangle"].killsTotal)  
