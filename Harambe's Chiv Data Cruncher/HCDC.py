@@ -69,7 +69,52 @@ class Team(object):
         for player in self.playerList:
             x = Player(player)
             self.playerRooster[player] = x
-class ChivData():
+class ScoreBoard(object):
+    '''
+    ScoreBoard object which contains data specific to a 
+    teams score at the end of a single game and methods 
+    to update and return scoreBoard specific values
+    '''
+    def __init__(self, teamName):
+        '''
+        Set Attributes
+        '''
+        set.identifier = None
+    def indentifierGenerator(self):
+        '''
+        Generates a specific identifier for each scoreBoard 
+        Object so that scoreBoard can be stored in a dictionary
+        and easily called
+        '''
+        pass
+class Half(object):
+    '''
+    Half object which contains data specific to the Half
+    and methods to update and return half specific values
+    '''
+    def __init__(self, teamName):
+        '''
+        Set Attributes
+        '''
+        self.identifier = None
+        self.attacking  = None
+        self.defending = None
+        self.objective = None
+        self.objectiveTime = None
+    def indentifierGenerator(self):
+        '''
+        Generates a specific identifier for each Half 
+        Object so that the Half can be stored in a dictionary
+        and easily called
+        '''
+        pass
+class Match(object):
+    def __init__(self, teamName):
+        '''
+        Set Attributes
+        '''
+        pass
+class Tourney():
     '''
     Main program object most likely subject to further separation
     but currently will hold 
@@ -146,5 +191,5 @@ class SpreadSheet(object):
         return self.worksheet.col_values(column)
     def rowValues(self, row):
         return self.worksheet.row_values(row)
-DataChiv = ChivData()
-print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].killsTotal)  
+HCDC = Tourney()
+print(HCDC.teamRooster["Accolade"].playerRooster["Jangle"].killsTotal)  
