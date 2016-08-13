@@ -12,13 +12,13 @@ class Player(object):
     Player Object which contains info specific to the player
     and methods to update and calculate player specific values
     '''
-    def __init__(self, name, isArcher):
+    def __init__(self, name):
         '''
         Sets Attributes
         '''
         #Static Values
         self.playerName = name
-        self.isArcher = isArcher
+        #self.isArcher = isArcher
         
         #Dynamic Values
         #MultiMatchValues
@@ -113,6 +113,7 @@ class Team(object):
         '''
         for player in self.playerList:
             x = Player(player)
+            
             self.playerRooster[player] = x
 class Match():
     '''
@@ -186,6 +187,10 @@ class SpreadSheet(object):
         return self.worksheet.acell(cellValue).value
     def changeValue(self, label, newValue):
         self.worksheet.update_acell(label, newValue)
+    def columnValues(self, column):
+        return self.worksheet.col_values(column)
+    def rowValues(self, row):
+        return self.worksheet.row_values(row)
 class DataViz(object):
     '''
     Contains methods specific to data visualization
@@ -247,12 +252,15 @@ class ChivData():
         
         #Values pertaining to Teams 
         self.teamRooster = {}
-        self.teamList = ["Import"]
+        self.teamList = []
         self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
+
+        self.Main()
     def Main(self):
         '''
         Main sequence that while start everything else
         '''
+        self.teamListCreate()
         self.teamListFill()
     def matchCreate(self, matchNumber, matchHalf):
         '''
@@ -275,16 +283,31 @@ class ChivData():
         '''
         add a team to the team Rooster
         '''
-        team = Team()
+        team = Team(teamName)
         self.teamRooster[teamName] = team        
+    def teamListCreate(self):
+        #values_list = worksheet.col_values(1)
+        teamList = self.teamWrs.columnValues(1)
+        for x in range(1, len(teamList)):
+            self.teamList.append(teamList[x])
     def teamListFill(self):
         '''
         Handles Player Rooster Creation
         '''
+        counter = 1
         for team in self.teamList:
+            print(team)
             self.TeamCreate(team)
-            self.teamRooster[team].playerList = ["import from spreadsheet"]
+            counter += 1
+            playerList = self.teamWrs.rowValues(counter)
+            for x in range(1,len(playerList)):
+                if playerList[x] == '':
+                    print("yes")
+                    break
+                else:
+                    self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
+            print(playerList)
     def teamUpate(self, match):
         '''
         Handles updating team object after match completion
