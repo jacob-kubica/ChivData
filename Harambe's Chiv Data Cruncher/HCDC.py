@@ -66,12 +66,6 @@ class Player(object):
         '''
         self.kDRatioTotal = self.kills/self.deaths
         self.kDRatioMatch = self.kills/self.deaths
-    def returnValues(self):
-        '''
-        Returns all the player attributes
-        '''
-        valueReturnList = [self.playerName, self.killsTotal, self.deathsTotal, self.kDRatioTotal, self.kills, self.deaths, self.kDRatioMatch]
-        return valueReturnList
     def clearValues(self):
         '''
         Clears values that are match dependent
@@ -128,7 +122,7 @@ class Match():
         '''
         self.matchNumber = matchNumber
         self.matchHalf = matchHalf
-    def matchOutcomes(self, winner, loser, attacking, defending):
+    def matchParameters(self, attacking, defending):
         '''
         Create match specific variables
         '''
@@ -162,18 +156,6 @@ class Match():
         self.T2player5 = T2player5
         self.T2player6 = T2player6        
         self.TeamTwo = [self.T2player1, self.T2player2, self.T2player3, self.T2player4, self.T2player5, self.T2player6]
-class statisticalAnalysisMethods(object):
-    '''
-    contains statistical analysis methods
-    attempt to keep statistical analysis to 
-    this object for easier implementation into gui and for a clearer 
-    more easier to navigate code base
-    '''
-    def average(self):
-        '''
-        finds the average
-        '''
-        pass
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -193,48 +175,6 @@ class SpreadSheet(object):
         return self.worksheet.col_values(column)
     def rowValues(self, row):
         return self.worksheet.row_values(row)
-class DataViz(object):
-    '''
-    Contains methods specific to data visualization
-    I'll leave this to you i don't know jack shit about this
-    '''
-    def __init__(self):
-        self.dataVizType = ""
-class GUI(object):
-    '''
-    Holds Gui Elements
-    Look Up pyQt this is the GUI framework I have experience with
-    '''
-    def __init__(self, params):
-        '''
-        Constructor
-        '''
-        pass
-    def button(self):
-        '''
-        Handles New Button implements
-        '''
-        pass
-    def text(self):
-        '''
-        Handles text implements
-        '''
-        pass
-    def display(self):
-        '''
-        Handles Display implements
-        '''
-        pass
-    def dropdownMenu(self):
-        '''
-        Handles drop down menu implements:
-        '''
-        pass
-    def checkbox(self):
-        '''
-        Handles checkbox implements
-        '''
-        pass
 class ChivData():
     '''
     Main program object most likely subject to further separation
@@ -294,54 +234,5 @@ class ChivData():
                 else:
                     self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
-    def teamUpate(self, match):
-        '''
-        Handles updating team object after match completion
-        '''
-        self.match = self.matchRooster[match]
-        self.winner = self.match.winner
-        self.loser = self.match.loser
-        self.teamRooster[self.winner].teamWin()
-        self.teamRooster[self.loser].teamLoss()
-    def playerUpdate(self, match):
-        '''
-        Handles updating player objects after match completion
-        '''
-        teamOne = self.match.TeamOne
-        teamOneName = self.match.TeamOneName
-        teamTwo = self.match.TeamTwo
-        teamTwoName = self.match.TeamTwoName
-        for player in teamOne:
-            self.teamRooster[teamOneName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
-        for player in teamTwo:
-            self.teamRooster[teamTwoName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
-    def updateRosters(self, match):
-        '''
-        Calls any update methods after match completion
-        '''
-        self.teamUpate(match)
-        self.playerUpdate(match)
-    def matchCreate(self):
-        '''
-        Method to create a match object
-        '''
-        match = Match(self.matchNumber, self.matchHalfNumber)
-        self.matchIdentifier = "match" + str(self.matchNumber) + "." + str(self.matchHalfNumber)
-        self.matchRooster[dictionaryName] = match
-    def matchFill(self):
-        '''
-        Incomplete
-        '''
-        self.matchRooster[self.matchIdentifier]
-        rowModifier = 1 + (self.matchNumber - 1)*20 + (self.matchHalfNumber - 1)*10
-        
-        attackngPos = "B" + str(self.rowModifer(matchNumber, matchHalf) + 1)
-        Attacking = self.matchWrs.getCellValue(attackngPos)
-        self.matchRooster[self.matchIdentifier].matchOutcomes
-        
-        if self.MatchHalf == 2:
-            self.match.matchOutcomes("Winner", "Loser")
-        self.match.TeamOneCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
-        self.match.TeamTwoCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
 DataChiv = ChivData()
 print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].kills)  
