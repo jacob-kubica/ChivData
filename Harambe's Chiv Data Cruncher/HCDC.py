@@ -69,7 +69,7 @@ class Player(object):
         '''
         Returns all the player attributes
         '''
-        valueReturnList = [self.playerName, self.isArcher, self.killsTotal, self.deathsTotal, self.kDRatioTotal, self.kills, self.deaths, self.kDRatioMatch]
+        valueReturnList = [self.playerName, self.killsTotal, self.deathsTotal, self.kDRatioTotal, self.kills, self.deaths, self.kDRatioMatch]
         return valueReturnList
     def clearValues(self):
         '''
@@ -106,15 +106,15 @@ class Team(object):
         Handles Case were team loses
         '''
         self.teamLossTotal -= 1
-        
     def playerRoosterCreation(self):
         '''
         Creates a playerRooster specific to the team
         '''
+        
         for player in self.playerList:
             x = Player(player)
-            
             self.playerRooster[player] = x
+        print(self.playerRooster)
 class Match():
     '''
     Match Object which contains info specific to the match
@@ -296,7 +296,6 @@ class ChivData():
         '''
         counter = 1
         for team in self.teamList:
-            print(team)
             self.TeamCreate(team)
             counter += 1
             playerList = self.teamWrs.rowValues(counter)
@@ -306,7 +305,6 @@ class ChivData():
                 else:
                     self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
-        print(self.teamRooster[team].playerList)
     def teamUpate(self, match):
         '''
         Handles updating team object after match completion
@@ -334,4 +332,5 @@ class ChivData():
         '''
         self.teamUpate(match)
         self.playerUpdate(match)
-DataChiv = ChivData()  
+DataChiv = ChivData()
+print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].kills)  
