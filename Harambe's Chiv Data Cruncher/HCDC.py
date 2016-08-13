@@ -191,12 +191,6 @@ class Tourney():
         Also either contains or calls method to update player objects and team objects
         '''
         pass
-    def halfInput(self):
-        '''
-        Gather data for and create Match Rooster match by match
-        Also either contains or calls method to update player objects and team objects
-        '''
-        pass
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
