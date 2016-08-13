@@ -38,7 +38,7 @@ class Team(object):
     '''
     Team Object which contains info specific to the team
     and methods to update and calculate team specific values
-    also handles playerRoster a dictionary containing
+    also handles playerDir a dictionary containing
     all player objects
     '''
     def __init__(self, teamName):
@@ -47,8 +47,8 @@ class Team(object):
         '''
         #Static Values
         self.teamName = teamName #Identifier
-        self.playerList = [] #List of player objects
-        self.playerRoster = {} #Player object container
+        self.playerList = [] #List of player identifiers
+        self.playerDir = {} #Player object container
         #Dynamic Values
         self.teamWinsTotal = None
         self.teamLossTotal = None
@@ -62,13 +62,13 @@ class Team(object):
         Handles Case were team loses
         '''
         self.teamLossTotal += 1
-    def playerRosterCreation(self):
+    def playerDirCreation(self):
         '''
-        Creates a playerRoster specific to the team
+        Creates a playerList specific to the team
         '''
         for player in self.playerList:
             x = Player(player)
-            self.playerRoster[player] = x
+            self.playerDir[player] = x
 """
 class ScoreBoard(object):
     '''
@@ -110,9 +110,9 @@ class Half(object):
         self.defending = None
         self.objective = None
         self.objectiveTime = None
-        self.playerList = {}
-        self.teamList = {}
-        self.scoreBoards = {}
+        self.playerDir = {}
+        self.teamDir = {}
+        self.scoreBoardDir = {}
     def indentifierGenerator(self):
         '''
         Generates a specific identifier for each Half 
@@ -141,10 +141,10 @@ class Match(object):
         self.Winner = None
         self.Loser = None
         
-        self.playerList = {}
-        self.teamList = {}
-        self.halfList = {}
-        self.scoreBoardList = {}
+        self.playerDir = {}
+        self.teamDir = {}
+        self.halfDir = {}
+        self.scoreBoardDir = {}
     def indentifierGenerator(self):
         '''
         Generates a specific identifier for each Match 
@@ -184,7 +184,18 @@ class Tourney():
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchList = []
         self.matchRoster = {}
-        
+    def matchInput(self):
+        '''
+        Gather data for and create Match Rooster match by match
+        Also either contains or calls method to update player objects and team objects
+        '''
+        pass
+    def halfInput(self):
+        '''
+        Gather data for and create Match Rooster match by match
+        Also either contains or calls method to update player objects and team objects
+        '''
+        pass
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
@@ -200,24 +211,8 @@ class Tourney():
                     break
                 else:
                     self.teamRoster[team].playerList.append(playerList[x])
-            self.teamRoster[team].playerRosterCreation()
-    def matchInput(self):
-        '''
-        Gather data for and create Match Rooster match by match
-        Also either contains or calls method to update player objects and team objects
-        '''
-        pass
-    def halfInput(self):
-        '''
-        Gather data for and create Match Rooster match by match
-        Also either contains or calls method to update player objects and team objects
-        '''
-        pass
-    def deterInput(self):
-        '''
-        Determine and call Input Method
-        '''
-        pass
+            self.teamRoster[team].playerDirCreation()
+
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -238,6 +233,6 @@ class SpreadSheet(object):
     def rowValues(self, row):
         return self.worksheet.row_values(row)
 HCDC = Tourney()
-print(HCDC.teamRoster["Accolade"].playerRoster["Jangle"].killsTotal)  
+print(HCDC.teamRoster["Accolade"].playerDir["Jangle"].killsTotal)  
 
 #Tourney.matchRoster[""].halfList[""].teamList[""].playerList[""].killsTotal
