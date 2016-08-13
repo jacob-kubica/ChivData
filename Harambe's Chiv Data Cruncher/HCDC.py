@@ -4,6 +4,7 @@ Created on Aug 12, 2016
 @author: Jacob
 '''
 import csv
+
 class Player(object):
     '''
     Player Object which contains info specific to the player
@@ -255,8 +256,16 @@ class SpreadSheet(object):
     Contains main spreadsheet object and methods required
     for error handling and data processing
     '''
-    def __init__(self):
-        pass
+    def __init__(self, url):
+        scope = ['https://spreadsheets.google.com/feeds']
+        credentials = ServiceAccountCredentials.from_json_keyfile_name('tutorial-b786124aec22.json', scope)
+        gc = gspread.authorize(credentials)
+        self.wks = gc.open_by_url(url)
+        self.worksheet = self.wks.get_worksheet(0)
+    def getCellValue(self, cellValue):
+        self.worksheet.acell(cellValue)
+    def changeValue(self, label, newValue):
+        self.worksheet.update_acell(label, newValue)
 class DataViz(object):
     '''
     Contains methods specific to data visualization
