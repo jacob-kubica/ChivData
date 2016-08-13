@@ -19,60 +19,21 @@ class Player(object):
         '''
         #Static Values
         self.playerName = name
-        #self.isArcher = isArcher
-        
+
         #Dynamic Values
         #MultiMatchValues
         self.killsTotal = 0
         self.deathsTotal = 0
         self.assistsTotal = 0
         self.kDRatioTotal = 0
-        
-        #SingleMatchValues
-        self.kills = 0
-        self.deaths = 0
-        self.assists = 0 
-        self.kDRatioMatch = 0
     def updateValues(self, kills, deaths, assists):
         '''
         Updates values after match completion
         '''
-        self.updateKills(kills)
-        self.updateDeaths(deaths)
-        self.updateAssist(assists)
-        self.updateKDratio()
-    def updateKills(self, newValue):
-        '''
-        Updates pertaining to kills
-        '''
         self.killsTotal = self.killsTotal + newValue
-        self.kills = newValue
-    def updateDeaths(self, newValue):
-        '''
-        Updates pertaining to Deaths
-        '''
         self.deathsTotal = self.deathsTotal + newValue
-        self.deaths = newValue
-    def updateAssist(self, newValue):
-        '''
-        Updates pertaining to Assists
-        
-        '''
         self.assistsTotal = self.assistsTotal + newValue
-        self.assists = newValue
-    def updateKDratio(self):
-        '''
-        Updates pertaining to Kill/Death ratio
-        '''
         self.kDRatioTotal = self.kills/self.deaths
-        self.kDRatioMatch = self.kills/self.deaths
-    def clearValues(self):
-        '''
-        Clears values that are match dependent
-        '''
-        self.kills = 0
-        self.deaths = 0 
-        self.kDRatioMatch = 0
 class Team(object):
     '''
     Team Object which contains info specific to the team
@@ -100,62 +61,68 @@ class Team(object):
         '''
         Handles Case were team loses
         '''
-        self.teamLossTotal -= 1
+        self.teamLossTotal += 1
     def playerRoosterCreation(self):
         '''
         Creates a playerRooster specific to the team
         '''
-        
         for player in self.playerList:
             x = Player(player)
             self.playerRooster[player] = x
-        print(self.playerRooster)
-class Match():
+class ChivData():
     '''
-    Match Object which contains info specific to the match
-    and methods to update and calculate team specific values
-    going to treat each half as a a seperate match for the time being
+    Main program object most likely subject to further separation
+    but currently will hold 
+        importing from spreadsheet
+        the initialization of teams, players, matches
+        distributing the data from matches to required destinations
     '''
-    def __init__(self, matchNumber, matchHalf, teamOne, teamTwo):
+    def __init__(self):
         '''
-        Set Attributes
+        Constructor
         '''
-        self.matchNumber = matchNumber
-        self.matchHalf = matchHalf
-    def matchParameters(self, attacking, defending):
+        #Values pertaining to Matches
+        self.matchNumber = 1
+        self.matchHalfNumber = 1
+        
+        self.matchRooster = {}
+        self.matchList = []
+        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        
+        #Values pertaining to Teams 
+        self.teamRooster = {}
+        self.teamList = []
+        self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
+
+        self.Main()
+    def Main(self):
         '''
-        Create match specific variables
+        Main sequence that while start everything else
         '''
-        #Match Specific Data
-        self.winner = winner
-        self.loser = loser
-        self.attacking = attacking
-        self.defending = defending
-    def TeamOneCreate(self, TeamOneName, T1player1, T1player2, T1player3, T1player4, T1player5, T1player6):
+        self.inputTeamWrs()
+    def inputTeamWrs(self):
         '''
-        Creates Team One variables
+        Gather team names
         '''
-        self.TeamOneName = TeamOneName
-        self.T1player1 = T1player1
-        self.T1player2 = T1player2
-        self.T1player3 = T1player3
-        self.T1player4 = T1player4
-        self.T1player5 = T1player5
-        self.T1player6 = T1player6
-        self.TeamOne = [self.T1player1, self.T1player2, self.T1player3, self.T1player4, self.T1player5, self.T1player6]                
-    def TeamTwoCreate(self, TeamTwoName, T2player1, T2player2, T2player3, T2player4, T2player5, T2player6):
-        '''
-        Creates Team Two variables
-        '''
-        #Team Two
-        self.TeamTwoName = TeamTwoName
-        self.T2player1 = T2player1
-        self.T2player2 = T2player2
-        self.T2player3 = T2player3
-        self.T2player4 = T2player4
-        self.T2player5 = T2player5
-        self.T2player6 = T2player6        
-        self.TeamTwo = [self.T2player1, self.T2player2, self.T2player3, self.T2player4, self.T2player5, self.T2player6]
+        col = self.teamWrs.columnValues(1)
+        for x in range(1, len(col)):
+            self.teamList.append(col[x])
+        
+        counter = 1
+        for (i, team) in enumerate(self.teamList):
+            print(team)
+            counter += 1
+            print(counter)
+            print(i)
+            self.teamRooster[team] = Team(team)
+            playerList = self.teamWrs.rowValues(i + 2)
+            for x in range(1,len(playerList)):
+                if playerList[x] == '':
+                    break
+                else:
+                    self.teamRooster[team].playerList.append(playerList[x])
+            self.teamRooster[team].playerRoosterCreation()
+
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -175,64 +142,5 @@ class SpreadSheet(object):
         return self.worksheet.col_values(column)
     def rowValues(self, row):
         return self.worksheet.row_values(row)
-class ChivData():
-    '''
-    Main program object most likely subject to further separation
-    but currently will hold 
-        importing from spreadsheet
-        the initialization of teams, players, matches
-        distributing the data from matches to required destinations
-    '''
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        #Values pertaining to Matches
-        self.matchNumber = 1
-        self.matchHalfNumber = 1
-        self.matchRooster = {}
-        self.matchList = ["Import"]
-        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
-        
-        #Values pertaining to Teams 
-        self.teamRooster = {}
-        self.teamList = []
-        self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
-
-        self.Main()
-    def Main(self):
-        '''
-        Main sequence that while start everything else
-        '''
-        self.teamListCreate()
-        self.teamListFill()
-    def TeamCreate(self, teamName):
-        '''
-        add a team to the team Rooster
-        '''
-        team = Team(teamName)
-        self.teamRooster[teamName] = team        
-    def teamListCreate(self):
-        '''
-        Gather team names
-        '''
-        teamList = self.teamWrs.columnValues(1)
-        for x in range(1, len(teamList)):
-            self.teamList.append(teamList[x])
-    def teamListFill(self):
-        '''
-        Handles Player Rooster Creation
-        '''
-        counter = 1
-        for team in self.teamList:
-            self.TeamCreate(team)
-            counter += 1
-            playerList = self.teamWrs.rowValues(counter)
-            for x in range(1,len(playerList)):
-                if playerList[x] == '':
-                    break
-                else:
-                    self.teamRooster[team].playerList.append(playerList[x])
-            self.teamRooster[team].playerRoosterCreation()
 DataChiv = ChivData()
-print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].kills)  
+print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].killsTotal)  
