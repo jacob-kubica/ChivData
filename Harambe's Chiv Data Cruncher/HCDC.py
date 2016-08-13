@@ -93,27 +93,15 @@ class ChivData():
         self.teamRooster = {}
         self.teamList = []
         self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
-
-        self.Main()
-    def Main(self):
-        '''
-        Main sequence that while start everything else
-        '''
         self.inputTeamWrs()
     def inputTeamWrs(self):
         '''
-        Gather team names
+        Gather data for and creates teamRoster and PlayerRoster within team objects
         '''
         col = self.teamWrs.columnValues(1)
         for x in range(1, len(col)):
             self.teamList.append(col[x])
-        
-        counter = 1
         for (i, team) in enumerate(self.teamList):
-            print(team)
-            counter += 1
-            print(counter)
-            print(i)
             self.teamRooster[team] = Team(team)
             playerList = self.teamWrs.rowValues(i + 2)
             for x in range(1,len(playerList)):
@@ -122,7 +110,23 @@ class ChivData():
                 else:
                     self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
-
+    def matchInput(self):
+        '''
+        Gather data for and create Match Rooster match by match
+        Also either contains or calls method to update player objects and team objects
+        '''
+        pass
+    def halfInput(self):
+        '''
+        Gather data for and create Match Rooster match by match
+        Also either contains or calls method to update player objects and team objects
+        '''
+        pass
+    def deterInput(self):
+        '''
+        Determine and call Input Method
+        '''
+        pass
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
