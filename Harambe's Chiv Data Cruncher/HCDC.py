@@ -3,9 +3,10 @@ Created on Aug 12, 2016
 
 @author: Jacob
 '''
-import csv
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import sys
+
 
 class Player(object):
     '''
