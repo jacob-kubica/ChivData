@@ -6,6 +6,7 @@ Created on Aug 12, 2016
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import sys
+from _ast import Pass
 
 class Player(object):
     '''
@@ -127,14 +128,15 @@ class Match():
         '''
         self.matchNumber = matchNumber
         self.matchHalf = matchHalf
-        self.matchSetup()
-    def matchOutcomes(self, winner, loser):
+    def matchOutcomes(self, winner, loser, attacking, defending):
         '''
         Create match specific variables
         '''
         #Match Specific Data
         self.winner = winner
         self.loser = loser
+        self.attacking = attacking
+        self.defending = defending
     def TeamOneCreate(self, TeamOneName, T1player1, T1player2, T1player3, T1player4, T1player5, T1player6):
         '''
         Creates Team One variables
@@ -246,6 +248,8 @@ class ChivData():
         Constructor
         '''
         #Values pertaining to Matches
+        self.matchNumber = 1
+        self.matchHalfNumber = 1
         self.matchRooster = {}
         self.matchList = ["Import"]
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
@@ -262,23 +266,6 @@ class ChivData():
         '''
         self.teamListCreate()
         self.teamListFill()
-    def matchCreate(self, matchNumber, matchHalf):
-        '''
-        Method to create a match object
-        '''
-        match = Match(matchNumber, matchHalf)
-        dictionaryName = "match" + str(match.matchNumber) + "." + str(match.matchHalf)
-        self.matchRooster[dictionaryName] = match
-    def newMatch(self, matchNumber, matchHalf):
-        '''
-        Handles what happens after the completion of a a match
-        '''
-        self.matchCreate(matchNumber, matchHalf)
-        dictionaryName = "match" + str(matchNumber) + "." + str(matchHalf)
-        self.match = self.matchRooster[dictionaryName]
-        self.match.matchOutcomes("Winner", "Loser")
-        self.match.TeamOneCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
-        self.match.TeamTwoCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
     def TeamCreate(self, teamName):
         '''
         add a team to the team Rooster
@@ -286,7 +273,9 @@ class ChivData():
         team = Team(teamName)
         self.teamRooster[teamName] = team        
     def teamListCreate(self):
-        #values_list = worksheet.col_values(1)
+        '''
+        Gather team names
+        '''
         teamList = self.teamWrs.columnValues(1)
         for x in range(1, len(teamList)):
             self.teamList.append(teamList[x])
@@ -332,5 +321,27 @@ class ChivData():
         '''
         self.teamUpate(match)
         self.playerUpdate(match)
+    def matchCreate(self):
+        '''
+        Method to create a match object
+        '''
+        match = Match(self.matchNumber, self.matchHalfNumber)
+        self.matchIdentifier = "match" + str(self.matchNumber) + "." + str(self.matchHalfNumber)
+        self.matchRooster[dictionaryName] = match
+    def matchFill(self):
+        '''
+        Incomplete
+        '''
+        self.matchRooster[self.matchIdentifier]
+        rowModifier = 1 + (self.matchNumber - 1)*20 + (self.matchHalfNumber - 1)*10
+        
+        attackngPos = "B" + str(self.rowModifer(matchNumber, matchHalf) + 1)
+        Attacking = self.matchWrs.getCellValue(attackngPos)
+        self.matchRooster[self.matchIdentifier].matchOutcomes
+        
+        if self.MatchHalf == 2:
+            self.match.matchOutcomes("Winner", "Loser")
+        self.match.TeamOneCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
+        self.match.TeamTwoCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
 DataChiv = ChivData()
 print(DataChiv.teamRooster["Accolade"].playerRooster["Jangle"].kills)  
