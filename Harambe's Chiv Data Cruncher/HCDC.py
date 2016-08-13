@@ -74,56 +74,28 @@ class Half(object):
     Half object which contains data specific to the Half
     and methods to update and return half specific values
     '''
-    def __init__(self, teamName, PlayerList):
+    def __init__(self, halfIdentifer):
         '''
         Set Attributes
         '''
-        self.identifier = None
-        self.attacking  = None
-        self.defending = None
-        self.objective = None
-        self.objectiveTime = None
-        self.playerList = PlayerList
-        self.playerDir = {}
-        self.teamDir = {}
-        self.scoreBoardDir = {}
-    def indentifierGenerator(self):
-        '''
-        Generates a specific identifier for each Half 
-        Object so that the Half can be stored in a dictionary
-        and easily called
-        '''
-        pass
-    def scoreBoardGen(self):
-        '''
-        Generates a ScoreBoard Object
-        '''
-        pass
-    def team_Half(self):
-        '''
-        generates a team object specific to half
-        '''
-        pass
-    def player_Half(self):
-        '''
-        generates a player object specific to half
-        '''
-        pass
+        
 class Match(object):
     '''
     Match object which contains data specific to the match
     and methods to update and return half specific values
     '''
-    def __init__(self, teamName):
+    def __init__(self, matchNum, matchWrs):
         '''
         Set Attributes
         '''
-        self.matchNum = None
-        self.TeamOne = None
-        self.TeamTwo = None
-        self.Map = None
-        self.Winner = None
-        self.Loser = None
+        self.matchNum = matchNum
+        self.matchWrs = matchWrs
+        row = ((self.matchNum - 1)*15 + 1)
+        self.TeamOne = self.matchWrs.getCellValue("A" + str(row + 4))
+        self.TeamTwo = self.matchWrs.getCellValue("A" + str(row + 6))
+        self.Map = self.matchWrs.getCellValue("A" + str(row + 8))
+        self.Winner = self.matchWrs.getCellValue("A" + str(row + 10))
+        self.Loser = self.matchWrs.getCellValue("A" + str(row + 12))
         
         #Directories
         self.playerList = []
@@ -131,37 +103,8 @@ class Match(object):
         self.teamDir = {}
         self.halfDir = {}
         self.scoreBoardDir = {}
-    def indentifierGenerator(self):
-        '''
-        Generates a specific identifier for each Match 
-        object so that the match can be stored in a dictionary
-        and easily called
-        '''
-        pass
-    def half_Match(self):
-        '''
-        Generates a half object specific to match
-        '''
-        pass
-    def team_Match(self):
-        '''
-        Generate a team object specific to match
-        '''
-        pass
-    def player_Match(self):
-        '''
-        Generate a player object specific to match
-        '''
-        pass
-    def objectGen(self, objectType, outputDir):
-        '''
-        Generate required object type specific to match
-        '''
-        pass
-    def playerListFill(self):
-        '''
-        Fill Player List with competing players
-        '''
+
+    def halfCreate(self, Halfnumber):
         pass
 class Tourney():
     '''
@@ -175,6 +118,7 @@ class Tourney():
         '''
         Constructor
         '''
+        self.MatchNumber = 1
         #Values pertaining to Teams 
         self.teamRoster = {}
         self.teamList = []
@@ -184,13 +128,18 @@ class Tourney():
         #Master Dictionary
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchList = []
-        self.matchRoster = {}
-    def matchInput(self):
+        self.matchDir = {}
+        
+        self.matchCreate()
+    def matchCreate(self):
         '''
         Gather data for and create Match Rooster match by match
         Also either contains or calls method to update player objects and team objects
         '''
-        pass
+        matchIdentifier = "match_" + str(self.MatchNumber)
+        match = Match(self.MatchNumber, self.matchWrs)
+        self.matchDir[matchIdentifier] = match
+        
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
