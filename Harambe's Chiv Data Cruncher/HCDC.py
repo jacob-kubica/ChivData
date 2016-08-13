@@ -302,12 +302,10 @@ class ChivData():
             playerList = self.teamWrs.rowValues(counter)
             for x in range(1,len(playerList)):
                 if playerList[x] == '':
-                    print("yes")
                     break
                 else:
                     self.teamRooster[team].playerList.append(playerList[x])
             self.teamRooster[team].playerRoosterCreation()
-            print(playerList)
     def teamUpate(self, match):
         '''
         Handles updating team object after match completion
