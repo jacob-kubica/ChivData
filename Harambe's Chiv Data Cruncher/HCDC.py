@@ -183,7 +183,7 @@ class SpreadSheet(object):
         self.wks = gc.open_by_url(url)
         self.worksheet = self.wks.get_worksheet(0)
     def getCellValue(self, cellValue):
-        self.worksheet.acell(cellValue)
+        return self.worksheet.acell(cellValue).value
     def changeValue(self, label, newValue):
         self.worksheet.update_acell(label, newValue)
 class DataViz(object):
@@ -243,6 +243,7 @@ class ChivData():
         #Values pertaining to Matches
         self.matchRooster = {}
         self.matchList = ["Import"]
+        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         
         #Values pertaining to Teams 
         self.teamRooster = {}
