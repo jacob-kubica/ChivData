@@ -213,7 +213,6 @@ class Tourney():
                 else:
                     self.teamRoster[team].playerList.append(playerList[x])
             self.teamRoster[team].playerDirCreation()
-
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -237,3 +236,18 @@ HCDC = Tourney()
 print(HCDC.teamRoster["Accolade"].playerDir["Jangle"].killsTotal)  
 
 #Tourney.matchRoster[""].halfList[""].teamList[""].playerList[""].killsTotal
+
+'''
+Example how directory system works
+
+for player objs from a match
+Tourney.matchDir['Identifier'].playerDir['Identifier']]
+
+for team objs from a match
+tourney.matchDir['Identifier'].team['Identifier']
+
+for player objs from a specific half
+tourney.halfDir['Identifier'].playerDir['Identifier']]
+
+etc etc
+'''
