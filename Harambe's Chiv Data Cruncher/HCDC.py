@@ -4,6 +4,8 @@ Created on Aug 12, 2016
 @author: Jacob
 '''
 import csv
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 class Player(object):
     '''
@@ -157,88 +159,6 @@ class Match():
         self.T2player5 = T2player5
         self.T2player6 = T2player6        
         self.TeamTwo = [self.T2player1, self.T2player2, self.T2player3, self.T2player4, self.T2player5, self.T2player6]
-class ChivData():
-    '''
-    Main program object most likely subject to further separation
-    but currently will hold 
-        importing from spreadsheet
-        the initialization of teams, players, matches
-        distributing the data from matches to required destinations
-    '''
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        #Values pertaining to Matches
-        self.matchRooster = {}
-        self.matchList = ["Import"]
-        
-        #Values pertaining to Teams 
-        self.teamRooster = {}
-        self.teamList = ["Import"]
-    def Main(self):
-        '''
-        Main sequence that while start everything else
-        '''
-        self.teamListFill()
-    def matchCreate(self, matchNumber, matchHalf):
-        '''
-        Method to create a match object
-        '''
-        match = Match(matchNumber, matchHalf)
-        dictionaryName = "match" + str(match.matchNumber) + "." + str(match.matchHalf)
-        self.matchRooster[dictionaryName] = match
-    def newMatch(self, matchNumber, matchHalf):
-        '''
-        Handles what happens after the completion of a a match
-        '''
-        self.matchCreate(matchNumber, matchHalf)
-        dictionaryName = "match" + str(matchNumber) + "." + str(matchHalf)
-        self.match = self.matchRooster[dictionaryName]
-        self.match.matchOutcomes("Winner", "Loser")
-        self.match.TeamOneCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
-        self.match.TeamTwoCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
-    def TeamCreate(self, teamName):
-        '''
-        add a team to the team Rooster
-        '''
-        team = Team()
-        self.teamRooster[teamName] = team        
-    def teamListFill(self):
-        '''
-        Handles Player Rooster Creation
-        '''
-        for team in self.teamList:
-            self.TeamCreate(team)
-            self.teamRooster[team].playerList = ["import from spreadsheet"]
-            self.teamRooster[team].playerRoosterCreation()
-    def teamUpate(self, match):
-        '''
-        Handles updating team object after match completion
-        '''
-        self.match = self.matchRooster[match]
-        self.winner = self.match.winner
-        self.loser = self.match.loser
-        self.teamRooster[self.winner].teamWin()
-        self.teamRooster[self.loser].teamLoss()
-    def playerUpdate(self, match):
-        '''
-        Handles updating player objects after match completion
-        '''
-        teamOne = self.match.TeamOne
-        teamOneName = self.match.TeamOneName
-        teamTwo = self.match.TeamTwo
-        teamTwoName = self.match.TeamTwoName
-        for player in teamOne:
-            self.teamRooster[teamOneName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
-        for player in teamTwo:
-            self.teamRooster[teamTwoName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
-    def updateRosters(self, match):
-        '''
-        Calls any update methods after match completion
-        '''
-        self.teamUpate(match)
-        self.playerUpdate(match)
 class statisticalAnalysisMethods(object):
     '''
     contains statistical analysis methods
@@ -308,5 +228,87 @@ class GUI(object):
         Handles checkbox implements
         '''
         pass
+class ChivData():
+    '''
+    Main program object most likely subject to further separation
+    but currently will hold 
+        importing from spreadsheet
+        the initialization of teams, players, matches
+        distributing the data from matches to required destinations
+    '''
+    def __init__(self):
+        '''
+        Constructor
+        '''
+        #Values pertaining to Matches
+        self.matchRooster = {}
+        self.matchList = ["Import"]
+        
+        #Values pertaining to Teams 
+        self.teamRooster = {}
+        self.teamList = ["Import"]
+        self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
+    def Main(self):
+        '''
+        Main sequence that while start everything else
+        '''
+        self.teamListFill()
+    def matchCreate(self, matchNumber, matchHalf):
+        '''
+        Method to create a match object
+        '''
+        match = Match(matchNumber, matchHalf)
+        dictionaryName = "match" + str(match.matchNumber) + "." + str(match.matchHalf)
+        self.matchRooster[dictionaryName] = match
+    def newMatch(self, matchNumber, matchHalf):
+        '''
+        Handles what happens after the completion of a a match
+        '''
+        self.matchCreate(matchNumber, matchHalf)
+        dictionaryName = "match" + str(matchNumber) + "." + str(matchHalf)
+        self.match = self.matchRooster[dictionaryName]
+        self.match.matchOutcomes("Winner", "Loser")
+        self.match.TeamOneCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
+        self.match.TeamTwoCreate("TeamName", "Player1", "player2", "player3", "player4", "player5", "player6")
+    def TeamCreate(self, teamName):
+        '''
+        add a team to the team Rooster
+        '''
+        team = Team()
+        self.teamRooster[teamName] = team        
+    def teamListFill(self):
+        '''
+        Handles Player Rooster Creation
+        '''
+        for team in self.teamList:
+            self.TeamCreate(team)
+            self.teamRooster[team].playerList = ["import from spreadsheet"]
+            self.teamRooster[team].playerRoosterCreation()
+    def teamUpate(self, match):
+        '''
+        Handles updating team object after match completion
+        '''
+        self.match = self.matchRooster[match]
+        self.winner = self.match.winner
+        self.loser = self.match.loser
+        self.teamRooster[self.winner].teamWin()
+        self.teamRooster[self.loser].teamLoss()
+    def playerUpdate(self, match):
+        '''
+        Handles updating player objects after match completion
+        '''
+        teamOne = self.match.TeamOne
+        teamOneName = self.match.TeamOneName
+        teamTwo = self.match.TeamTwo
+        teamTwoName = self.match.TeamTwoName
+        for player in teamOne:
+            self.teamRooster[teamOneName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
+        for player in teamTwo:
+            self.teamRooster[teamTwoName].playerRooster[player].updateValues("Kills", "Deaths", "Assists")
+    def updateRosters(self, match):
+        '''
+        Calls any update methods after match completion
+        '''
+        self.teamUpate(match)
+        self.playerUpdate(match)
 DataChiv = ChivData()  
-pritn("test 1")
