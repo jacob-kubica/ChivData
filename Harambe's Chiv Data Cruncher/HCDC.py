@@ -103,8 +103,26 @@ class Match(object):
         self.teamDir = {}
         self.halfDir = {}
         self.scoreBoardDir = {}
-
+        
+        print(self.TeamOne, self.TeamTwo, self.Map, self.Winner, self.Loser)
     def halfCreate(self, Halfnumber):
+        '''
+        Gather data for and create Match Rooster match by match
+        Also either contains or calls method to update player objects and team objects
+        '''
+        halfIdentifier = "match_" + str(self.matchNum) + "_" + str(Halfnumber)
+        half = Half()
+        self.halfDir[halfIdentifier] = half
+        pass
+    def teamCreate(self):
+        '''
+        
+        '''
+        pass
+    def playerCreate(self):
+        '''
+        
+        '''
         pass
 class Tourney():
     '''
