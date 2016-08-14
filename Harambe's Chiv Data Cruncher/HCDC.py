@@ -6,6 +6,8 @@ Created on Aug 12, 2016
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import sys
+import time
+start_time = time.time()
 
 class Player(object):
     '''
@@ -13,6 +15,7 @@ class Player(object):
     and methods to update and calculate player specific values
     '''
     def __init__(self, name):
+        
         '''
         Sets Attributes
         '''
@@ -177,14 +180,13 @@ class Match(object):
     Match object which contains data specific to the match
     and methods to update and return half specific values
     '''
-    def __init__(self, matchNum, matchWrs, matchIdentifier):
+    def __init__(self, matchNum, matchWrs):
         '''
         Set Attributes
         '''
         #Match Create Variables
         self.matchNum = matchNum
         self.matchWrs = matchWrs
-        self.matchIdentifier = matchIdentifier
         
         #Determines Base Row
         self.row = ((self.matchNum - 1)*16 + 1)
@@ -255,6 +257,9 @@ class Tourney():
         '''
         Constructor
         '''
+        self.playerList = []
+        self.playerDir = {}
+        
         self.MatchNumber = 1
         #Values pertaining to Teams 
         self.teamRoster = {}
@@ -267,16 +272,18 @@ class Tourney():
         self.matchList = []
         self.matchDir = {}
         
-        self.matchCreate()
-    def matchCreate(self):
+        self.playerCreate()
+        self.matchCreate(1)
+        
+        
+    def matchCreate(self, matchNumber):
         '''
         Gather data for and create Match Rooster match by match
         Also either contains or calls method to update player objects and team objects
         '''
-        matchIdentifier = "match_" + str(self.MatchNumber)
-        match = Match(self.MatchNumber, self.matchWrs, matchIdentifier)
-        self.matchDir[matchIdentifier] = match
-        
+        match = Match(matchNumber, self.matchWrs)
+        self.matchDir[matchNumber] = match
+        self.ValueUpdater(matchNumber)
     def inputTeamWrs(self):
         '''
         Gather data for and creates teamRoster and PlayerRoster within team objects
@@ -292,7 +299,27 @@ class Tourney():
                     break
                 else:
                     self.teamRoster[team].playerList.append(playerList[x])
+                    self.playerList.append(playerList[x])
             self.teamRoster[team].ObjectCreator()
+    def playerCreate(self):
+        for player in self.playerList:
+            playerObj = Player(player)
+            self.playerDir[player] = playerObj
+                    
+    def ValueUpdater(self, matchNumber):
+        print(self.playerDir)
+        playerList = self.matchDir[matchNumber].playerList
+        for player in playerList:
+            kills = self.matchDir[matchNumber].playerDir[player].killsTotal
+            deaths = self.matchDir[matchNumber].playerDir[player].deathsTotal
+            assists = self.matchDir[matchNumber].playerDir[player].assistsTotal
+            self.playerDir[player].updateValues(kills, deaths, assists)
+            for team in self.matchDir[matchNumber].teamList:
+                try:
+                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists)
+                except:
+                    pass
+            
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -315,20 +342,32 @@ class SpreadSheet(object):
 
 HCDC = Tourney()
 
+print(HCDC.playerDir["Sherlock Holmes"].killsTotal)
+print(HCDC.playerDir["Sherlock Holmes"].deathsTotal)
+print(HCDC.playerDir["Sherlock Holmes"].assistsTotal)
+print(HCDC.playerDir["Sherlock Holmes"].kDRatioTotal)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 '''
-Testing
-print(HCDC.matchDir['match_1'].playerList)
-print(HCDC.matchDir['match_1'].teamDir)
-print(HCDC.matchDir['match_1'].halfDir)
-print(HCDC.matchDir['match_1'].teamDir["Accolade"].playerDir)
-print(HCDC.matchDir['match_1'].teamDir["The Void"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_1"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_2"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["Accolade"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["The Void"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir["Accolade"].playerDir)
-print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir["The Void"].playerDir)
+print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir[1].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir[1].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir[1].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir[1].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir[1].playerList)
+print(HCDC.matchDir[1].teamDir)
+print(HCDC.matchDir[1].halfDir)
+print(HCDC.matchDir[1].teamDir["Accolade"].playerDir)
+print(HCDC.matchDir[1].teamDir["The Void"].playerDir)
 '''
