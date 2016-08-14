@@ -103,13 +103,23 @@ class Half(object):
         
     def objectCreator(self):
         if self.half == 1:
-            for team in self.teamList:
-                teamObj = Team(team)
-                self.teamDir[team] = teamObj
+            teamOneObj = Team(self.teamList[0])
+            teamOneObj.playerList = self.playerListTeamOne
+            teamOneObj.ObjectCreator()
+            self.teamDir[self.teamList[0]] = teamOneObj
+            teamTwoObj = Team(self.teamList[1])
+            teamTwoObj.playerList = self.playerListTeamTwo
+            teamTwoObj.ObjectCreator()
+            self.teamDir[self.teamList[1]] = teamTwoObj
         else:
-            for team in self.teamList:
-                teamObj = Team(team)
-                self.teamDir[team] = teamObj
+            teamOneObj = Team(self.teamList[0])
+            teamOneObj.playerList = self.playerListTeamTwo
+            teamOneObj.ObjectCreator()
+            self.teamDir[self.teamList[0]] = teamOneObj
+            teamTwoObj = Team(self.teamList[1])
+            teamTwoObj.playerList = self.playerListTeamOne
+            teamTwoObj.ObjectCreator()
+            self.teamDir[self.teamList[1]] = teamTwoObj
         for player in self.playerList:
             playerObj = Player(player)
             self.playerDir[player] = playerObj
@@ -119,7 +129,7 @@ class Half(object):
         Creates team object specific to half and places them into the teamDir
         '''
         team = Team(teamName)
-
+        
         team.playerList = playerList
         team.playerDirCreation()
         self.teamDir[teamName] = team
@@ -199,6 +209,8 @@ class Match(object):
             self.halfDir[halfIdentifier] = halfObj
         for team in self.teamList:
             teamObj = Team(team)
+            teamObj.playerList = self.halfDir[self.matchIdentifier + "_" + str(1)].teamDir[team].playerList
+            teamObj.ObjectCreator()
             self.teamDir[team] = teamObj
         for player in self.playerList:
             playerObj = Player(player)
@@ -275,17 +287,18 @@ class SpreadSheet(object):
         return self.worksheet.row_values(row)
 
 HCDC = Tourney()
+
 '''
-Example how directory system works
-
-for player objs from a match
-Tourney.matchDir['Identifier'].playerDir['Identifier']]
-
-for team objs from a match
-tourney.matchDir['Identifier'].team['Identifier']
-
-for player objs from a specific half
-
-
-etc etc
+Testing
+print(HCDC.matchDir['match_1'].playerList)
+print(HCDC.matchDir['match_1'].teamDir)
+print(HCDC.matchDir['match_1'].halfDir)
+print(HCDC.matchDir['match_1'].teamDir["Accolade"].playerDir)
+print(HCDC.matchDir['match_1'].teamDir["The Void"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["Accolade"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["The Void"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir["Accolade"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_2"].teamDir["The Void"].playerDir)
 '''
