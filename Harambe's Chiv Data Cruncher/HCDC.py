@@ -74,10 +74,25 @@ class Half(object):
     Half object which contains data specific to the Half
     and methods to update and return half specific values
     '''
-    def __init__(self, halfIdentifer):
+    def __init__(self, halfIdentifer, Halfnumber, matchWrs, row):
         '''
         Set Attributes
         '''
+        self.halfIdentifer = halfIdentifer
+        self.matchWrs = matchWrs
+        self.row = row + (Halfnumber - 1)*8
+        self.attacking = self.matchWrs.getCellValue("C" + str(self.row))
+        self.defending = self.matchWrs.getCellValue("E" + str(self.row))
+        self.objectiveReached = self.matchWrs.getCellValue("G" + str(self.row))
+        self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))
+    def teamCreate(self):
+        '''
+        '''
+        pass
+    def playerCreate(self):
+        '''
+        '''
+        pass    
         
 class Match(object):
     '''
@@ -90,12 +105,12 @@ class Match(object):
         '''
         self.matchNum = matchNum
         self.matchWrs = matchWrs
-        row = ((self.matchNum - 1)*15 + 1)
-        self.TeamOne = self.matchWrs.getCellValue("A" + str(row + 4))
-        self.TeamTwo = self.matchWrs.getCellValue("A" + str(row + 6))
-        self.Map = self.matchWrs.getCellValue("A" + str(row + 8))
-        self.Winner = self.matchWrs.getCellValue("A" + str(row + 10))
-        self.Loser = self.matchWrs.getCellValue("A" + str(row + 12))
+        self.row = ((self.matchNum - 1)*15 + 1)
+        self.TeamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
+        self.TeamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
+        self.Map = self.matchWrs.getCellValue("A" + str(self.row + 8))
+        self.Winner = self.matchWrs.getCellValue("A" + str(self.row + 10))
+        self.Loser = self.matchWrs.getCellValue("A" + str(self.row + 12))
         
         #Directories
         self.playerList = []
@@ -105,13 +120,15 @@ class Match(object):
         self.scoreBoardDir = {}
         
         print(self.TeamOne, self.TeamTwo, self.Map, self.Winner, self.Loser)
+        self.halfCreate(1)
+        self.halfCreate(2)
     def halfCreate(self, Halfnumber):
         '''
         Gather data for and create Match Rooster match by match
         Also either contains or calls method to update player objects and team objects
         '''
         halfIdentifier = "match_" + str(self.matchNum) + "_" + str(Halfnumber)
-        half = Half()
+        half = Half(halfIdentifier, Halfnumber, self.matchWrs, self.row)
         self.halfDir[halfIdentifier] = half
         pass
     def teamCreate(self):
