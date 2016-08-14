@@ -85,10 +85,34 @@ class Half(object):
         self.defending = self.matchWrs.getCellValue("E" + str(self.row))
         self.objectiveReached = self.matchWrs.getCellValue("G" + str(self.row))
         self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))
-    def teamCreate(self):
+        
+        self.teamDir = {}
+        self.playerListAttacking = self.playerListFill("B", False)
+        self.PlayerListDefending = self.playerListFill("G", False)
+        self.PlayerList = self.playerListFill("B", True)
+        
+        self.playerDir = {}
+        
+        
+        print(self.attacking, self.defending, self.objectiveReached, self.objectiveTime)
+        
+        self.teamCreate(self.attacking, self.playerListAttacking)
+        self.teamCreate(self.defending, self.PlayerListDefending)
+    
+    def playerListFill(self, position, total):
+        playerList = []
+        for x in range(3, 8):
+            playerList.append(self.matchWrs.getCellValue(position + str(self.row + 1 + x)))
+        if total == True:
+            for x in range(3, 8):
+                playerList.append(self.matchWrs.getCellValue("G" + str(self.row + 1 + x)))
+    def teamCreate(self, teamName, playerList):
         '''
         '''
-        pass
+        team = Team(teamName)
+        team.playerList = playerList
+        #team.playerDirCreation()
+        self.teamDir[teamName] = team
     def playerCreate(self):
         '''
         '''
