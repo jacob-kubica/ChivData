@@ -61,7 +61,7 @@ class Team(object):
         Handles Case were team loses
         '''
         self.teamLossTotal += 1
-    def playerDirCreation(self):
+    def ObjectCreator(self):
         '''
         Creates a playerList specific to the team
         '''
@@ -80,38 +80,46 @@ class Half(object):
         #Input Variables
         self.halfIdentifer = halfIdentifer
         self.row = row + (half - 1)*8
+        self.half = half
         self.matchWrs = matchWrs
         
         #Lists
         self.teamList = teamList
         self.playerListTeamOne = playerListTeamOne
         self.playerListTeamTwo = playerListTeamTwo
+        self.playerList = self.playerListTeamOne + self.playerListTeamTwo
         
         #Directories
         self.teamDir = {}
         self.playerDir = {}
         
         self.gatherData()
+        self.objectCreator()
     def gatherData(self):
         self.attacking = self.matchWrs.getCellValue("C" + str(self.row))
         self.defending = self.matchWrs.getCellValue("E" + str(self.row))
         self.objectiveReached = self.matchWrs.getCellValue("G" + str(self.row))
         self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))    
         
-    def playerListFill(self, position, total):
-        playerList = []
-        for x in range(2, 8):
-            playerList.append(self.matchWrs.getCellValue(position + str(self.row + x)))
-        if total == True:
-            for x in range(3, 8):
-                playerList.append(self.matchWrs.getCellValue("G" + str(self.row + x)))
-        return playerList
+    def objectCreator(self):
+        if self.half == 1:
+            for team in self.teamList:
+                teamObj = Team(team)
+                self.teamDir[team] = teamObj
+        else:
+            for team in self.teamList:
+                teamObj = Team(team)
+                self.teamDir[team] = teamObj
+        for player in self.playerList:
+            playerObj = Player(player)
+            self.playerDir[player] = playerObj
+            
     def teamCreate(self, teamName, playerList):
         '''
         Creates team object specific to half and places them into the teamDir
         '''
         team = Team(teamName)
-        self.teamList.append(teamName)
+
         team.playerList = playerList
         team.playerDirCreation()
         self.teamDir[teamName] = team
@@ -245,7 +253,7 @@ class Tourney():
                     break
                 else:
                     self.teamRoster[team].playerList.append(playerList[x])
-            self.teamRoster[team].playerDirCreation()
+            self.teamRoster[team].ObjectCreator()
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
