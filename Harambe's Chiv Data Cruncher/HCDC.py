@@ -273,7 +273,12 @@ class Tourney():
         self.matchDir = {}
         
         self.playerCreate()
+        x = round((time.time() - start_time),2)
         self.matchCreate(1)
+        print("--- %s seconds ---" % round((time.time() - start_time - x),2) )
+        x = round((time.time() - start_time),2)
+        self.matchCreate(2)
+        print("--- %s seconds ---" % round((time.time() - start_time - x),2) )
         
         
     def matchCreate(self, matchNumber):
@@ -307,7 +312,6 @@ class Tourney():
             self.playerDir[player] = playerObj
                     
     def ValueUpdater(self, matchNumber):
-        print(self.playerDir)
         playerList = self.matchDir[matchNumber].playerList
         for player in playerList:
             kills = self.matchDir[matchNumber].playerDir[player].killsTotal
@@ -341,11 +345,6 @@ class SpreadSheet(object):
         return self.worksheet.row_values(row)
 
 HCDC = Tourney()
-
-print(HCDC.playerDir["Sherlock Holmes"].killsTotal)
-print(HCDC.playerDir["Sherlock Holmes"].deathsTotal)
-print(HCDC.playerDir["Sherlock Holmes"].assistsTotal)
-print(HCDC.playerDir["Sherlock Holmes"].kDRatioTotal)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 '''
@@ -371,3 +370,4 @@ print(HCDC.matchDir[1].halfDir)
 print(HCDC.matchDir[1].teamDir["Accolade"].playerDir)
 print(HCDC.matchDir[1].teamDir["The Void"].playerDir)
 '''
+
