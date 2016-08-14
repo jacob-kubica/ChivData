@@ -66,35 +66,38 @@ class Team(object):
         Creates a playerList specific to the team
         '''
         for player in self.playerList:
-            x = Player(player)
-            self.playerDir[player] = x
+            playerObj = Player(player)
+            self.playerDir[player] = playerObj
 class Half(object):
     '''
     Half object which contains data specific to the Half
     and methods to update and return half specific values
     '''
-    def __init__(self, halfIdentifer, Halfnumber, matchWrs, row):
+    def __init__(self, halfIdentifer, row, half, matchWrs, teamList, playerListTeamOne, playerListTeamTwo):
         '''
         Set Attributes
         '''
+        #Input Variables
         self.halfIdentifer = halfIdentifer
+        self.row = row + (half - 1)*8
         self.matchWrs = matchWrs
-        self.row = row + (Halfnumber - 1)*8
+        
+        #Lists
+        self.teamList = teamList
+        self.playerListTeamOne = playerListTeamOne
+        self.playerListTeamTwo = playerListTeamTwo
+        
+        #Directories
+        self.teamDir = {}
+        self.playerDir = {}
+        
+        self.gatherData()
+    def gatherData(self):
         self.attacking = self.matchWrs.getCellValue("C" + str(self.row))
         self.defending = self.matchWrs.getCellValue("E" + str(self.row))
         self.objectiveReached = self.matchWrs.getCellValue("G" + str(self.row))
-        self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))
+        self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))    
         
-        self.teamDir = {}
-        self.teamList = []
-        self.playerListAttacking = self.playerListFill("B", False)
-        self.PlayerListDefending = self.playerListFill("G", False)
-        self.PlayerList = self.playerListFill("B", True)
-        
-        self.playerDir = {}
-        self.teamCreate(self.attacking, self.playerListAttacking)
-        self.teamCreate(self.defending, self.PlayerListDefending)
-        self.playerCreate()
     def playerListFill(self, position, total):
         playerList = []
         for x in range(2, 8):
@@ -112,11 +115,13 @@ class Half(object):
         team.playerList = playerList
         team.playerDirCreation()
         self.teamDir[teamName] = team
-    def playerCreate(self):
+    def ZobjectCreator(self):
         '''
         Creates player object specific to half and places them into the playerDir 
         also fills out info for teams playerDir
         '''
+        for team in self.TeamList:
+            pass
         for (i, player) in enumerate(self.PlayerList):
             playerObj = Player(player)
             if i < 6:
@@ -142,48 +147,55 @@ class Match(object):
         '''
         Set Attributes
         '''
+        #Match Create Variables
         self.matchNum = matchNum
         self.matchWrs = matchWrs
         self.matchIdentifier = matchIdentifier
+        
+        #Determines Base Row
         self.row = ((self.matchNum - 1)*16 + 1)
+        
+        #GatherData
+        self.gatherData()
+        
+        #Directories
+        self.halfDir = {}
+        self.teamDir = {}
+        self.playerDir = {}
+        
+        #Lists
+        self.halfList = [1, 2]
+        self.teamList = [self.TeamOne, self.TeamTwo]
+        
+        self.objectCreator()
+    def gatherData(self):
         self.TeamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
         self.TeamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
         self.Map = self.matchWrs.getCellValue("A" + str(self.row + 8))
         self.Winner = self.matchWrs.getCellValue("A" + str(self.row + 10))
         self.Loser = self.matchWrs.getCellValue("A" + str(self.row + 12))
-        
-        #Directories
+        self.gatherplayerList()
+    def gatherplayerList(self):
         self.playerList = []
-        self.playerDir = {}
-        self.teamDir = {}
-        self.halfDir = {}
-        self.scoreBoardDir = {}
-        
-        #print(self.TeamOne, self.TeamTwo, self.Map, self.Winner, self.Loser) 
-        self.halfCreate(1)
-        self.halfCreate(2)
-    def halfCreate(self, Halfnumber):
-        '''
-        Gather data for and create Match Rooster match by match
-        Also either contains or calls method to update player objects and team objects
-        '''
-        halfIdentifier = "match_" + str(self.matchNum) + "_" + str(Halfnumber)
-        half = Half(halfIdentifier, Halfnumber, self.matchWrs, self.row)
-        self.halfDir[halfIdentifier] = half
-        pass
-    def teamCreate(self):
-        '''
-        
-        '''
-        PlayerObjList = []
-        for team in self.halfDir[self.matchIdentifier + str(1)]:
+        self.playerListTeamOne = []
+        self.playerListTeamTwo = []
+        for x in range(1, 7):
+            row = str(self.row + 1 + x)
+            self.playerListTeamOne.append(self.matchWrs.getCellValue("B" + row))
+            self.playerListTeamTwo.append(self.matchWrs.getCellValue("G" + row))
+        self.playerList = self.playerListTeamOne + self.playerListTeamTwo
+    def objectCreator(self):
+        for half in self.halfList:
+            halfIdentifier = "match_" + str(self.matchNum) + "_" + str(half)
+            halfObj = Half(halfIdentifier, self.row, half, self.matchWrs, self.teamList, self.playerListTeamOne, self.playerListTeamTwo)
+            self.halfDir[halfIdentifier] = halfObj
+        for team in self.teamList:
             teamObj = Team(team)
-            for player in self.
-    def playerCreate(self):
-        '''
-        
-        '''
-        pass
+            self.teamDir[team] = teamObj
+        for player in self.playerList:
+            playerObj = Player(player)
+            self.playerDir[player] = playerObj                
+
 class Tourney():
     '''
     Main program object most likely subject to further separation
@@ -253,15 +265,8 @@ class SpreadSheet(object):
         return self.worksheet.col_values(column)
     def rowValues(self, row):
         return self.worksheet.row_values(row)
+
 HCDC = Tourney()
-print(HCDC.teamRoster["Accolade"].playerDir["Jangle"].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir['match_1_1'].playerDir['Nacho'].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir['match_1_2'].playerDir['Nacho'].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir['match_1_2'].teamDir['Accolade'].teamWinsTotal)
-
-
-#Tourney.matchRoster[""].halfList[""].teamList[""].playerList[""].killsTotal
-
 '''
 Example how directory system works
 
