@@ -108,17 +108,19 @@ class Half(object):
             teamOneObj.playerList = self.playerListTeamOne
             teamOneObj.ObjectCreator()
             self.teamDir[self.teamList[0]] = teamOneObj
+            
             teamTwoObj = Team(self.teamList[1])
             teamTwoObj.playerList = self.playerListTeamTwo
             teamTwoObj.ObjectCreator()
             self.teamDir[self.teamList[1]] = teamTwoObj
         else:
             teamOneObj = Team(self.teamList[0])
-            teamOneObj.playerList = self.playerListTeamTwo
+            teamOneObj.playerList = self.playerListTeamOne
             teamOneObj.ObjectCreator()
             self.teamDir[self.teamList[0]] = teamOneObj
+            
             teamTwoObj = Team(self.teamList[1])
-            teamTwoObj.playerList = self.playerListTeamOne
+            teamTwoObj.playerList = self.playerListTeamTwo
             teamTwoObj.ObjectCreator()
             self.teamDir[self.teamList[1]] = teamTwoObj
         for player in self.playerList:
@@ -154,7 +156,7 @@ class Half(object):
                     kills = self.matchWrs.getCellValue("H" + row)
                     deaths = self.matchWrs.getCellValue("I" + row)
                     assists = self.matchWrs.getCellValue("J" + row)
-                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)       
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)
                 self.playerDir[player].updateValues(kills, deaths, assists)
             else:
                 if i < 6:
@@ -162,13 +164,13 @@ class Half(object):
                     kills = self.matchWrs.getCellValue("H" + row)
                     deaths = self.matchWrs.getCellValue("I" + row)
                     assists = self.matchWrs.getCellValue("J" + row)
-                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)       
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)
                 else:
                     row = str(self.row + (i-5) + 1)
                     kills = self.matchWrs.getCellValue("C" + row)
                     deaths = self.matchWrs.getCellValue("D" + row)
                     assists = self.matchWrs.getCellValue("E" + row)
-                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists) 
+                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists) 
                 self.playerDir[player].updateValues(kills, deaths, assists)
 class Match(object):
     '''
@@ -312,6 +314,8 @@ class SpreadSheet(object):
         return self.worksheet.row_values(row)
 
 HCDC = Tourney()
+
+
 print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].killsTotal)
 print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].deathsTotal)
 print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].assistsTotal)
