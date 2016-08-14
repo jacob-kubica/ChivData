@@ -6,7 +6,6 @@ Created on Aug 12, 2016
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import sys
-from _ast import Pass
 
 class Player(object):
     '''
@@ -30,10 +29,10 @@ class Player(object):
         '''
         Updates values after match completion
         '''
-        self.killsTotal = self.killsTotal + newValue
-        self.deathsTotal = self.deathsTotal + newValue
-        self.assistsTotal = self.assistsTotal + newValue
-        self.kDRatioTotal = self.kills/self.deaths
+        self.killsTotal = self.killsTotal + int(kills)
+        self.deathsTotal = self.deathsTotal + int(deaths)
+        self.assistsTotal = self.assistsTotal + int(assists)
+        self.kDRatioTotal = self.killsTotal/self.deathsTotal
 class Team(object):
     '''
     Team Object which contains info specific to the team
@@ -87,49 +86,66 @@ class Half(object):
         self.objectiveTime = self.matchWrs.getCellValue("I" + str(self.row))
         
         self.teamDir = {}
+        self.teamList = []
         self.playerListAttacking = self.playerListFill("B", False)
         self.PlayerListDefending = self.playerListFill("G", False)
         self.PlayerList = self.playerListFill("B", True)
         
         self.playerDir = {}
-        
-        
-        print(self.attacking, self.defending, self.objectiveReached, self.objectiveTime)
-        
         self.teamCreate(self.attacking, self.playerListAttacking)
         self.teamCreate(self.defending, self.PlayerListDefending)
-    
+        self.playerCreate()
     def playerListFill(self, position, total):
         playerList = []
-        for x in range(3, 8):
-            playerList.append(self.matchWrs.getCellValue(position + str(self.row + 1 + x)))
+        for x in range(2, 8):
+            playerList.append(self.matchWrs.getCellValue(position + str(self.row + x)))
         if total == True:
             for x in range(3, 8):
-                playerList.append(self.matchWrs.getCellValue("G" + str(self.row + 1 + x)))
+                playerList.append(self.matchWrs.getCellValue("G" + str(self.row + x)))
+        return playerList
     def teamCreate(self, teamName, playerList):
         '''
+        Creates team object specific to half and places them into the teamDir
         '''
         team = Team(teamName)
+        self.teamList.append(teamName)
         team.playerList = playerList
-        #team.playerDirCreation()
+        team.playerDirCreation()
         self.teamDir[teamName] = team
     def playerCreate(self):
         '''
+        Creates player object specific to half and places them into the playerDir 
+        also fills out info for teams playerDir
         '''
-        pass    
-        
+        for (i, player) in enumerate(self.PlayerList):
+            playerObj = Player(player)
+            if i < 6:
+                row = str(self.row + i + 2)
+                kills = self.matchWrs.getCellValue("C" + row)
+                deaths = self.matchWrs.getCellValue("D" + row)
+                assists = self.matchWrs.getCellValue("E" + row)
+                self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)
+            else:
+                row = str(self.row + (i-5) + 2)
+                kills = self.matchWrs.getCellValue("H" + row)
+                deaths = self.matchWrs.getCellValue("I" + row)
+                assists = self.matchWrs.getCellValue("J" + row)
+                self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)       
+            playerObj.updateValues(kills, deaths, assists)
+            self.playerDir[player] =  playerObj          
 class Match(object):
     '''
     Match object which contains data specific to the match
     and methods to update and return half specific values
     '''
-    def __init__(self, matchNum, matchWrs):
+    def __init__(self, matchNum, matchWrs, matchIdentifier):
         '''
         Set Attributes
         '''
         self.matchNum = matchNum
         self.matchWrs = matchWrs
-        self.row = ((self.matchNum - 1)*15 + 1)
+        self.matchIdentifier = matchIdentifier
+        self.row = ((self.matchNum - 1)*16 + 1)
         self.TeamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
         self.TeamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
         self.Map = self.matchWrs.getCellValue("A" + str(self.row + 8))
@@ -143,7 +159,7 @@ class Match(object):
         self.halfDir = {}
         self.scoreBoardDir = {}
         
-        print(self.TeamOne, self.TeamTwo, self.Map, self.Winner, self.Loser)
+        #print(self.TeamOne, self.TeamTwo, self.Map, self.Winner, self.Loser) 
         self.halfCreate(1)
         self.halfCreate(2)
     def halfCreate(self, Halfnumber):
@@ -159,7 +175,10 @@ class Match(object):
         '''
         
         '''
-        pass
+        PlayerObjList = []
+        for team in self.halfDir[self.matchIdentifier + str(1)]:
+            teamObj = Team(team)
+            for player in self.
     def playerCreate(self):
         '''
         
@@ -196,7 +215,7 @@ class Tourney():
         Also either contains or calls method to update player objects and team objects
         '''
         matchIdentifier = "match_" + str(self.MatchNumber)
-        match = Match(self.MatchNumber, self.matchWrs)
+        match = Match(self.MatchNumber, self.matchWrs, matchIdentifier)
         self.matchDir[matchIdentifier] = match
         
     def inputTeamWrs(self):
@@ -235,7 +254,11 @@ class SpreadSheet(object):
     def rowValues(self, row):
         return self.worksheet.row_values(row)
 HCDC = Tourney()
-print(HCDC.teamRoster["Accolade"].playerDir["Jangle"].killsTotal)  
+print(HCDC.teamRoster["Accolade"].playerDir["Jangle"].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir['match_1_1'].playerDir['Nacho'].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir['match_1_2'].playerDir['Nacho'].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir['match_1_2'].teamDir['Accolade'].teamWinsTotal)
+
 
 #Tourney.matchRoster[""].halfList[""].teamList[""].playerList[""].killsTotal
 
@@ -249,7 +272,7 @@ for team objs from a match
 tourney.matchDir['Identifier'].team['Identifier']
 
 for player objs from a specific half
-tourney.halfDir['Identifier'].playerDir['Identifier']]
+
 
 etc etc
 '''
