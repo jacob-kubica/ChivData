@@ -1,7 +1,5 @@
 '''
 Created on Aug 12, 2016
-
-@author: Jacob
 '''
 #Import libs
 import gspread #Handles google sheet pulls
