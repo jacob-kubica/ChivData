@@ -27,7 +27,7 @@ class Player(object):
         self.kDRatio = 0
     def updateValues(self, kills, deaths, assists):
         '''
-        Updates values after match completion
+        Updates dynamic values
         '''
         self.kills = self.kills + int(kills)
         self.deaths = self.deaths + int(deaths)
