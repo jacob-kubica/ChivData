@@ -316,24 +316,6 @@ class SpreadSheet(object):
 HCDC = Tourney()
 
 
-print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].deathsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].assistsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].kDRatioTotal)
-print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
-print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
-print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
-print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
-print(HCDC.matchDir['match_1'].playerDir["Crimson King"].killsTotal)
-print(HCDC.matchDir['match_1'].playerDir["Crimson King"].deathsTotal)
-print(HCDC.matchDir['match_1'].playerDir["Crimson King"].assistsTotal)
-print(HCDC.matchDir['match_1'].playerDir["Crimson King"].kDRatioTotal)
-
-
 '''
 Testing
 print(HCDC.matchDir['match_1'].playerList)
