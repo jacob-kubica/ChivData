@@ -95,6 +95,7 @@ class Half(object):
         
         self.gatherData()
         self.objectCreator()
+        self.ValueUpdater()
     def gatherData(self):
         self.attacking = self.matchWrs.getCellValue("C" + str(self.row))
         self.defending = self.matchWrs.getCellValue("E" + str(self.row))
@@ -133,29 +134,42 @@ class Half(object):
         team.playerList = playerList
         team.playerDirCreation()
         self.teamDir[teamName] = team
-    def ZobjectCreator(self):
+    def ValueUpdater(self):
         '''
         Creates player object specific to half and places them into the playerDir 
         also fills out info for teams playerDir
         '''
-        for team in self.TeamList:
-            pass
-        for (i, player) in enumerate(self.PlayerList):
-            playerObj = Player(player)
-            if i < 6:
-                row = str(self.row + i + 2)
-                kills = self.matchWrs.getCellValue("C" + row)
-                deaths = self.matchWrs.getCellValue("D" + row)
-                assists = self.matchWrs.getCellValue("E" + row)
-                self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)
+        
+        #Use Cases?
+        for (i, player) in enumerate(self.playerList):
+            if self.half == 1:
+                if i < 6:
+                    row = str(self.row + i + 2)
+                    kills = self.matchWrs.getCellValue("C" + row)
+                    deaths = self.matchWrs.getCellValue("D" + row)
+                    assists = self.matchWrs.getCellValue("E" + row)
+                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)
+                else:
+                    row = str(self.row + (i-5) + 1)
+                    kills = self.matchWrs.getCellValue("H" + row)
+                    deaths = self.matchWrs.getCellValue("I" + row)
+                    assists = self.matchWrs.getCellValue("J" + row)
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)       
+                self.playerDir[player].updateValues(kills, deaths, assists)
             else:
-                row = str(self.row + (i-5) + 2)
-                kills = self.matchWrs.getCellValue("H" + row)
-                deaths = self.matchWrs.getCellValue("I" + row)
-                assists = self.matchWrs.getCellValue("J" + row)
-                self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)       
-            playerObj.updateValues(kills, deaths, assists)
-            self.playerDir[player] =  playerObj          
+                if i < 6:
+                    row = str(self.row + i + 2)
+                    kills = self.matchWrs.getCellValue("H" + row)
+                    deaths = self.matchWrs.getCellValue("I" + row)
+                    assists = self.matchWrs.getCellValue("J" + row)
+                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)       
+                else:
+                    row = str(self.row + (i-5) + 1)
+                    kills = self.matchWrs.getCellValue("C" + row)
+                    deaths = self.matchWrs.getCellValue("D" + row)
+                    assists = self.matchWrs.getCellValue("E" + row)
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists) 
+                self.playerDir[player].updateValues(kills, deaths, assists)
 class Match(object):
     '''
     Match object which contains data specific to the match
@@ -186,6 +200,7 @@ class Match(object):
         self.teamList = [self.TeamOne, self.TeamTwo]
         
         self.objectCreator()
+        self.ValueUpdater()
     def gatherData(self):
         self.TeamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
         self.TeamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
@@ -206,16 +221,26 @@ class Match(object):
         for half in self.halfList:
             halfIdentifier = "match_" + str(self.matchNum) + "_" + str(half)
             halfObj = Half(halfIdentifier, self.row, half, self.matchWrs, self.teamList, self.playerListTeamOne, self.playerListTeamTwo)
-            self.halfDir[halfIdentifier] = halfObj
+            self.halfDir[half] = halfObj
         for team in self.teamList:
             teamObj = Team(team)
-            teamObj.playerList = self.halfDir[self.matchIdentifier + "_" + str(1)].teamDir[team].playerList
+            teamObj.playerList = self.halfDir[1].teamDir[team].playerList
             teamObj.ObjectCreator()
             self.teamDir[team] = teamObj
         for player in self.playerList:
             playerObj = Player(player)
             self.playerDir[player] = playerObj                
-
+    def ValueUpdater(self):
+        for player in self.playerList:
+            kills = self.halfDir[1].playerDir[player].killsTotal + self.halfDir[2].playerDir[player].killsTotal
+            deaths = self.halfDir[1].playerDir[player].deathsTotal + self.halfDir[2].playerDir[player].deathsTotal
+            assists = self.halfDir[1].playerDir[player].assistsTotal + self.halfDir[2].playerDir[player].assistsTotal
+            for team in self.teamList:
+                try:
+                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists)
+                except:
+                    pass
+            self.playerDir[player].updateValues(kills, deaths, assists)
 class Tourney():
     '''
     Main program object most likely subject to further separation
@@ -287,6 +312,23 @@ class SpreadSheet(object):
         return self.worksheet.row_values(row)
 
 HCDC = Tourney()
+print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir['match_1'].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir['match_1'].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].kDRatioTotal)
+print(HCDC.matchDir['match_1'].playerDir["Crimson King"].killsTotal)
+print(HCDC.matchDir['match_1'].playerDir["Crimson King"].deathsTotal)
+print(HCDC.matchDir['match_1'].playerDir["Crimson King"].assistsTotal)
+print(HCDC.matchDir['match_1'].playerDir["Crimson King"].kDRatioTotal)
+
 
 '''
 Testing
@@ -295,6 +337,8 @@ print(HCDC.matchDir['match_1'].teamDir)
 print(HCDC.matchDir['match_1'].halfDir)
 print(HCDC.matchDir['match_1'].teamDir["Accolade"].playerDir)
 print(HCDC.matchDir['match_1'].teamDir["The Void"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_1"].playerDir)
+print(HCDC.matchDir['match_1'].halfDir["match_1_2"].playerDir)
 print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir)
 print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["Accolade"].playerDir)
 print(HCDC.matchDir['match_1'].halfDir["match_1_1"].teamDir["The Void"].playerDir)
