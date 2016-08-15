@@ -19,7 +19,7 @@ class GUI(QtGui.QMainWindow):
         super(GUI, self).__init__()
         self.setGeometry(50, 100, 800, 500)
         self.setWindowTitle("Harambe's Chivalry Data Cruncher")
-        self.setWindowIcon(QtGui.QIcon('chivalrymedievalwarfare.png'))
+        self.setWindowIcon(QtGui.QIcon('Other Files\chivalrymedievalwarfare.png'))
         
     def Home(self):
         '''
