@@ -7,12 +7,6 @@ Created on Aug 15, 2016
 import gspread #Handles google sheet pulls
 from oauth2client.service_account import ServiceAccountCredentials #handles google api credentials 
 import time #for use in program timing
-import csv
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
-
-
 
 start_time = time.time()
 class Player(object):
@@ -272,7 +266,7 @@ class SpreadSheet(object):
     Contains main spreadsheet object and methods required
     for error handling and data processing
     '''
-    def __init__(self, url):
+    def __init__(self, url, ):
         '''
         '''
         scope = ['https://spreadsheets.google.com/feeds']
@@ -296,7 +290,7 @@ class SpreadSheet(object):
         gets all values from row
         '''
         return self.worksheet.row_values(row)
-    def worksheetDirBuild(self):
+    def worksheetDirBuild(self, orientation):
         '''
         Builds a directory out of worksheet
         '''
@@ -318,8 +312,10 @@ class SpreadSheet(object):
         allvalues = self.worksheet.get_all_values()
         for (y, row) in enumerate(allvalues):
             for (x, column) in enumerate(row):
-                self.worksheetDir[alphanumassignment[str(x)] + str(y + 1)] = column
-        print("time it took to gather data from spreadsheat and total:{}".format(str((time.time() - start_time) - x)))
+                if orientation == 0:
+                    self.worksheetDir[alphanumassignment[str(y)] + str(x + 1)] = column
+                if orientation == 1:
+                    self.worksheetDir[alphanumassignment[str(x)] + str(y + 1)] = column
 class Directory():
     '''
     Main program object
@@ -338,14 +334,15 @@ class Directory():
         self.teamList = []
         #Spreadsheets
         self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
+        self.teamWrs.worksheetDirBuild(0)
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        self.matchWrs.worksheetDirBuild(1)
         x = time.time() - start_time
-        self.matchWrs.worksheetDirBuild()
-        print("time it took to do gather data from spreadsheat :{}".format(str((time.time() - start_time) - x)))
+        
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
-        #self.matchCreate()
+        self.matchCreate()
     def matchCreate(self):
         '''
         Create match object and add to match directory
@@ -444,4 +441,12 @@ class Directory():
             else:
                 pass
 HCDC = Directory()
-print("time it took to gather data from spreadsheats and total:{}".format(str((time.time() - start_time))))
+
+"""
+print("time it:{}".format(str((time.time() - start_time))))
+testing
+print(HCDC.matchDir)
+print(HCDC.playerDir)
+print(HCDC.teamDir)
+print(HCDC.dirPull("Crimson King").kills)
+"""
