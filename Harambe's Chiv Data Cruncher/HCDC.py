@@ -5,6 +5,7 @@ Created on Aug 12, 2016
 import gspread #Handles google sheet pulls
 from oauth2client.service_account import ServiceAccountCredentials #handles google api credentials 
 import time #for use in program timing
+from gui import GUI
 start_time = time.time()
 
 '''
@@ -260,7 +261,7 @@ class Match(object):
         #Updates team win/lose
         self.teamDir[self.winner].Win()
         self.teamDir[self.loser].Loss()
-class Tourney():
+class Directory():
     '''
     Main program object
     '''
@@ -282,8 +283,8 @@ class Tourney():
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
-        self.matchCreate(1)
-        self.matchCreate(2)
+        #self.matchCreate(1)
+        #self.matchCreate(2)
     def matchCreate(self, matchNumber):
         '''
         Create match object and add to match directory
@@ -381,7 +382,9 @@ class SpreadSheet(object):
         gets all values from row
         '''
         return self.worksheet.row_values(row)
-HCDC = Tourney()
+
+HCDC = Directory()
+gui = GUI()
 #print time till completion avg 20s
 print("--- %s seconds ---" % (time.time() - start_time))
 
