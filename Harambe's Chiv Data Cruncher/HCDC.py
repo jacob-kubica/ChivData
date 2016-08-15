@@ -128,6 +128,7 @@ class Half(object):
         #=======================================================================
         # this block of code needs to be fixed for redundancy
         #=======================================================================
+        x = time.time() - start_time
         for (i, player) in enumerate(self.playerList): #iterates over player list and creates a counter
             if self.half == 1: #if first half
                 if i < 6: #column #1
@@ -171,6 +172,7 @@ class Half(object):
                     self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 #Update player Values in player directory
                 self.playerDir[player].updateValues(kills, deaths, assists, isArcher)
+        print("time it took to do get data from half :{}".format(str((time.time() - start_time) - x)))
 class Match(object):
     '''
     Match object which contains data specific to the match
@@ -199,6 +201,7 @@ class Match(object):
         '''
         Gather match specific data
         '''
+        x = time.time() - start_time
         #Variables
         self.teamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
         self.teamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
@@ -217,6 +220,7 @@ class Match(object):
             self.playerListTeamTwo.append(self.matchWrs.getCellValue("G" + row))
         #gets a match specific list of players
         self.playerList = self.playerListTeamOne + self.playerListTeamTwo
+        print("time it took to gather data from match :{}".format(str((time.time() - start_time) - x)))
     def objectCreator(self):
         '''
         Creates half, team, player objects and adds
@@ -260,93 +264,6 @@ class Match(object):
         #Updates team win/lose
         self.teamDir[self.winner].Win()
         self.teamDir[self.loser].Loss()
-class Directory():
-    '''
-    Main program object
-    '''
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        #Directories
-        self.playerDir = {}
-        self.teamDir = {}
-        self.matchDir = {}
-        self.matchNumber = 1
-        #Lists
-        self.playerList = []
-        self.teamList = []
-        self.matchList = []
-        #Spreadsheets
-        self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
-        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
-        #Main Sequence of program
-        self.inputTeamWrs()
-        self.playerCreate()
-    def matchCreate(self):
-        '''
-        Create match object and add to match directory
-        '''
-        match = Match(self.matchNumber, self.matchWrs)
-        self.matchDir[self.matchNumber] = match
-        #Updates tournament wide values
-        self.ValueUpdater(self.matchNumber)
-        self.matchNumber += 1
-    def playerCreate(self):
-        '''
-        Create player object and add to player directory
-        '''
-        for player in self.playerList:
-            playerObj = Player(player)
-            self.playerDir[player] = playerObj
-    def inputTeamWrs(self):
-        '''
-        Gather data for and creates teamDir
-        '''
-        col = self.teamWrs.columnValues(1)
-        #Gathers all the team names
-        for x in range(1, len(col)):
-            self.teamList.append(col[x])
-        #Creates team objects for each
-        for (i, team) in enumerate(self.teamList):
-            self.teamDir[team] = Team(team)
-            #finds all the players on a specific team
-            playerList = self.teamWrs.rowValues(i + 2)
-            for x in range(1,len(playerList)):
-                #ensures blank cells are ignored
-                if playerList[x] == '':
-                    break
-                else:
-                    #updates team object player list 
-                    self.teamDir[team].playerList.append(playerList[x])
-                    #updates tournament object player list 
-                    self.playerList.append(playerList[x])
-            #creates player objects for each team
-            self.teamDir[team].ObjectCreator()
-    def ValueUpdater(self, matchNumber):
-        '''
-        Updates tournament wide values
-        '''
-        #Updates Player Values
-        playerList = self.matchDir[matchNumber].playerList
-        for player in playerList:
-            #Gets player values from certain match
-            kills = self.matchDir[matchNumber].playerDir[player].kills
-            deaths = self.matchDir[matchNumber].playerDir[player].deaths
-            assists = self.matchDir[matchNumber].playerDir[player].assists
-            #Updates player object
-            self.playerDir[player].updateValues(kills, deaths, assists, None)
-            #Updates team object's player objects
-            for team in self.matchDir[matchNumber].teamList:
-                try:
-                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists, None)
-                except:
-                    pass
-        #Updates Team Values
-        self.teamDir[self.matchDir[matchNumber].winner].Win()
-        self.teamDir[self.matchDir[matchNumber].loser].Loss()
-    def __exit__(self, *err):
-        self.close()
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
@@ -370,9 +287,6 @@ class SpreadSheet(object):
         changes cell value based on alphanumerical cell position
         '''
         self.worksheet.update_acell(label, newValue)
-    #===========================================================================
-    # these are probably pointless
-    #===========================================================================
     def columnValues(self, column):
         '''
         gets all values from column
@@ -383,10 +297,130 @@ class SpreadSheet(object):
         gets all values from row
         '''
         return self.worksheet.row_values(row)
-
-'''
-#===============================================================================
-# Directory pull tests
-#===============================================================================
-'''
+class Directory():
+    '''
+    Main program object
+    '''
+    def __init__(self):
+        '''
+        Constructor
+        '''
+        #Directories
+        self.playerDir = {}
+        self.teamDir = {}
+        self.matchDir = {}
+        self.matchNumber = 1
+        #Lists
+        self.playerList = []
+        self.teamList = []
+        self.matchList = []
+        #Spreadsheets
+        self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
+        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        #Main Sequence of program
+        self.inputTeamWrs()
+        self.playerCreate()
+        self.matchCreate()
+    def matchCreate(self):
+        '''
+        Create match object and add to match directory
+        '''
+        match = Match(self.matchNumber, self.matchWrs)
+        self.matchDir[self.matchNumber] = match
+        #Updates tournament wide values
+        self.ValueUpdater(self.matchNumber)
+        self.matchNumber += 1
+    def playerCreate(self):
+        '''
+        Create player object and add to player directory
+        '''
+        for player in self.playerList:
+            playerObj = Player(player)
+            self.playerDir[player] = playerObj
+    def inputTeamWrs(self):
+        '''
+        Gather data for and creates teamDir
+        '''
+        x = time.time() - start_time
+        col = self.teamWrs.columnValues(1)
+        #Gathers all the team names
+        for x in range(1, len(col)):
+            self.teamList.append(col[x])
+        #Creates team objects for each
+        for (i, team) in enumerate(self.teamList):
+            self.teamDir[team] = Team(team)
+            #finds all the players on a specific team
+            playerList = self.teamWrs.rowValues(i + 2)
+            for x in range(1,len(playerList)):
+                #ensures blank cells are ignored
+                if playerList[x] == '':
+                    break
+                else:
+                    #updates team object player list 
+                    self.teamDir[team].playerList.append(playerList[x])
+                    #updates tournament object player list 
+                    self.playerList.append(playerList[x])
+            #creates player objects for each team
+            self.teamDir[team].ObjectCreator()
+        print("time it took to do gather data from Team spreadsheat :{}".format(str((time.time() - start_time) - x)))
+    def ValueUpdater(self, matchNumber):
+        '''
+        Updates tournament wide values
+        '''
+        #Updates Player Values
+        playerList = self.matchDir[matchNumber].playerList
+        for player in playerList:
+            #Gets player values from certain match
+            kills = self.matchDir[matchNumber].playerDir[player].kills
+            deaths = self.matchDir[matchNumber].playerDir[player].deaths
+            assists = self.matchDir[matchNumber].playerDir[player].assists
+            #Updates player object
+            self.playerDir[player].updateValues(kills, deaths, assists, None)
+            #Updates team object's player objects
+            for team in self.matchDir[matchNumber].teamList:
+                try:
+                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists, None)
+                except:
+                    pass
+        #Updates Team Values
+        self.teamDir[self.matchDir[matchNumber].winner].Win()
+        self.teamDir[self.matchDir[matchNumber].loser].Loss()
+    def dirPull(self, *arg):
+        '''
+        method to pull data from directory
+        ensure args are placed in order of largest to smallest object
+        '''
+        argNum = len(arg)
+        print(time.time() - start_time)
+        if any(x in self.playerList for x in arg):
+            if any(x in self.teamList for x in arg):
+                if argNum == 4:
+                    return self.matchDir[arg[0]].halfDir[arg[1]].teamDir[arg[2]].playerDir[arg[3]]
+                elif argNum == 3:
+                    return self.matchDir[arg[0]].teamDir[arg[1]].playerDir[arg[2]]
+                else:
+                    return self.matchDir[arg[0]].teamDir[arg[1]].playerDir[arg[2]]
+            else:
+                if argNum == 3:
+                    return self.matchDir[arg[0]].halfDir[arg[1]].playerDir[arg[2]]
+                if argNum == 2:
+                    return self.matchDir[arg[0]].playerDir[arg[1]]
+                if argNum == 1:
+                    return self.playerDir[arg[0]]
+        elif any(x in self.teamList for x in arg):
+            if argNum == 3:
+                return self.matchDir[arg[0]].halfDir[arg[1]].teamDir[arg[2]]
+            if argNum == 2:
+                return self.matchDir[arg[0]].teamDir[arg[1]]
+            if argNum == 1:
+                return self.teamDir[arg[1]]
+        else:
+            if argNum == 2:
+                return self.matchDir[arg[0]].halfDir[arg[1]]
+            elif argNum == 1:
+                return self.matchDir[arg[0]]
+            else:
+                pass
+HCDC = Directory()
+print(HCDC.dirPull("Crimson King").kills)
 
