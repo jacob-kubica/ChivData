@@ -5,9 +5,6 @@ Created on Aug 15, 2016
 '''
 import sys
 from PyQt4 import QtGui, QtCore
-from HCDC import Directory
-
-HCDC = Directory()
 
 class Window(QtGui.QMainWindow):
 
@@ -21,18 +18,25 @@ class Window(QtGui.QMainWindow):
 
     def home(self):
         btn = QtGui.QPushButton("Create Match", self)
-        btn.clicked.connect(self.close_application)
+        btn.clicked.connect(self.matchCreate)
         btn.resize(btn.minimumSizeHint())
         btn.move(0,0)
         self.show()
+    def closeEvent(self, event):
+        quit_msg = "Are you sure you want to exit the program?"
+        reply = QtGui.QMessageBox.question(self, 'Message', 
+            quit_msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
 
-    def close_application(self):
+        if reply == QtGui.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    def matchCreate(self):
         self.Directory.matchCreate()
     
-def run():
-    app = QtGui.QApplication(sys.argv)
-    GUI = Window(HCDC)
-    sys.exit(app.exec_())
+def run(Directory):
+    app = QtGui.QApplication([])
+    GUI = Window(Directory)
+    app.exec_()
 
-
-run()
+    

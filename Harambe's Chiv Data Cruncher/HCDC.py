@@ -287,7 +287,6 @@ class Directory():
         '''
         Create match object and add to match directory
         '''
-        print("yes")
         match = Match(self.matchNumber, self.matchWrs)
         self.matchDir[self.matchNumber] = match
         #Updates tournament wide values
@@ -346,6 +345,8 @@ class Directory():
         #Updates Team Values
         self.teamDir[self.matchDir[matchNumber].winner].Win()
         self.teamDir[self.matchDir[matchNumber].loser].Loss()
+    def __exit__(self, *err):
+        self.close()
 class SpreadSheet(object):
     '''
     Contains main spreadsheet object and methods required
