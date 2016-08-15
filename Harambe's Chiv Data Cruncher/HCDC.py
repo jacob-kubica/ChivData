@@ -1,5 +1,26 @@
 '''
 Created on Aug 12, 2016
+
+This modules handles importing from spreadsheet and
+creating objects for each player, team, half, match.
+This module also updates all objects upon match 
+creation. Method createMatch must be called.To pull 
+from directory call dirPull method with the pertaining
+arguments match, half, team, player. When using dirpull
+method ensure arugments are in this order match, half, 
+team, player. Any number of arguments (1-4) can be input into 
+dirpull to call the object pertaining to that event.
+That object should contain any information specific to that event 
+or thing inputted into the match spreadsheet
+
+    Future Updates
+    - Error Handling for empty cells when that cell information is needed
+    - Typos by referees 
+    - Redundancy removal
+    - handle updates after calling matchcreate
+    - handle reloading to a point other than match 1
+    - Error Handling for niche cases
+
 '''
 #Import libs
 import gspread #Handles google sheet pulls
@@ -278,21 +299,25 @@ class SpreadSheet(object):
         get cell value based on alphanumerical cell position
         '''
         return self.worksheetDir[cellValue]
+    
     def columnValues(self, column):
         '''
         gets all values from column
+        this should be changed to pull from worksheetDir not google drive
         '''
         return self.worksheet.col_values(column)
     def rowValues(self, row):
         '''
         gets all values from row
+        this should be changed to pull from worksheetDir not google drive
         '''
         return self.worksheet.row_values(row)
     def worksheetDirBuild(self, orientation):
         '''
-        Builds a directory out of worksheet
+        Builds a worksheet directory
         '''
         x = time.time() - start_time
+        #used to create cell keys
         alphanumassignment = {
                               "0":"A",
                               "1":"B",
@@ -306,10 +331,13 @@ class SpreadSheet(object):
                               "9":"J",
                               "10":"K"
                             }
+        #generates or clears the worksheetDir
         self.worksheetDir = {}
+        #List of lists of all cell values
         allvalues = self.worksheet.get_all_values()
         for (y, row) in enumerate(allvalues):
             for (x, column) in enumerate(row):
+                #realigns spreadsheet so that primary iterator is numbers not letters
                 if orientation == 0:
                     self.worksheetDir[alphanumassignment[str(y)] + str(x + 1)] = column
                 if orientation == 1:
@@ -338,8 +366,6 @@ class Directory():
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
-        #self.matchCreate()
-        #self.matchCreate()
     def matchCreate(self):
         '''
         Create match object and add to match directory
@@ -409,6 +435,9 @@ class Directory():
         method to pull data from directory
         ensure args are placed in order of largest to smallest object
         '''
+        #=======================================================================
+        # Don't mess with this
+        #=======================================================================
         argNum = len(args)
         if any(x in self.playerList for x in args):
             if any(x in self.teamList for x in args):
@@ -439,13 +468,12 @@ class Directory():
                 return self.matchDir[args[0]]
             else:
                 pass
+            
 HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
-"""
-testing
+
 print(HCDC.matchDir)
 print(HCDC.playerDir)
 print(HCDC.teamDir)
 print(HCDC.dirPull("Crimson King").kills)
-"""
