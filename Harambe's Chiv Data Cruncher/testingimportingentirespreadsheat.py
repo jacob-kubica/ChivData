@@ -1,15 +1,20 @@
 '''
-Created on Aug 12, 2016
+Created on Aug 15, 2016
+
+@author: Jacob
 '''
 #Import libs
 import gspread #Handles google sheet pulls
 from oauth2client.service_account import ServiceAccountCredentials #handles google api credentials 
 import time #for use in program timing
-start_time = time.time()
+import csv
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
-'''
-any changes
-'''
+
+
+
+start_time = time.time()
 class Player(object):
     '''
     Player Object which contains info specific to the player
@@ -128,12 +133,12 @@ class Half(object):
         #=======================================================================
         # this block of code needs to be fixed for redundancy
         #=======================================================================
-        x = time.time() - start_time
         for (i, player) in enumerate(self.playerList): #iterates over player list and creates a counter
             if self.half == 1: #if first half
                 if i < 6: #column #1
                     row = str(self.row + i + 2) #determines the row the player data is on
                     #Gather data from spreadsheet
+                    x = time.time() - start_time
                     kills = self.matchWrs.getCellValue("C" + row) 
                     deaths = self.matchWrs.getCellValue("D" + row)
                     assists = self.matchWrs.getCellValue("E" + row)
@@ -172,7 +177,6 @@ class Half(object):
                     self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 #Update player Values in player directory
                 self.playerDir[player].updateValues(kills, deaths, assists, isArcher)
-        print("time it took to do get data from half :{}".format(str((time.time() - start_time) - x)))
 class Match(object):
     '''
     Match object which contains data specific to the match
@@ -201,13 +205,13 @@ class Match(object):
         '''
         Gather match specific data
         '''
-        x = time.time() - start_time
         #Variables
         self.teamOne = self.matchWrs.getCellValue("A" + str(self.row + 4))
         self.teamTwo = self.matchWrs.getCellValue("A" + str(self.row + 6))
         self.map = self.matchWrs.getCellValue("A" + str(self.row + 8))
         self.winner = self.matchWrs.getCellValue("A" + str(self.row + 10))
         self.loser = self.matchWrs.getCellValue("A" + str(self.row + 12))
+        
         #Lists
         self.teamList = [self.teamOne, self.teamTwo]
         self.playerListTeamOne = []
@@ -220,7 +224,6 @@ class Match(object):
             self.playerListTeamTwo.append(self.matchWrs.getCellValue("G" + row))
         #gets a match specific list of players
         self.playerList = self.playerListTeamOne + self.playerListTeamTwo
-        print("time it took to gather data from match :{}".format(str((time.time() - start_time) - x)))
     def objectCreator(self):
         '''
         Creates half, team, player objects and adds
@@ -277,16 +280,12 @@ class SpreadSheet(object):
         gc = gspread.authorize(credentials)
         self.wks = gc.open_by_url(url)
         self.worksheet = self.wks.get_worksheet(0)
+         
     def getCellValue(self, cellValue):
         '''
         get cell value based on alphanumerical cell position
         '''
-        return self.worksheet.acell(cellValue).value
-    def changeValue(self, label, newValue):
-        '''
-        changes cell value based on alphanumerical cell position
-        '''
-        self.worksheet.update_acell(label, newValue)
+        return self.worksheetDir[cellValue]
     def columnValues(self, column):
         '''
         gets all values from column
@@ -297,6 +296,30 @@ class SpreadSheet(object):
         gets all values from row
         '''
         return self.worksheet.row_values(row)
+    def worksheetDirBuild(self):
+        '''
+        Builds a directory out of worksheet
+        '''
+        x = time.time() - start_time
+        alphanumassignment = {
+                              "0":"A",
+                              "1":"B",
+                              "2":"C",
+                              "3":"D",
+                              "4":"E",
+                              "5":"F",
+                              "6":"G",
+                              "7":"H",
+                              "8":"I",
+                              "9":"J",
+                              "10":"K"
+                            }
+        self.worksheetDir = {}
+        allvalues = self.worksheet.get_all_values()
+        for (y, row) in enumerate(allvalues):
+            for (x, column) in enumerate(row):
+                self.worksheetDir[alphanumassignment[str(x)] + str(y + 1)] = column
+        print("time it took to gather data from spreadsheat and total:{}".format(str((time.time() - start_time) - x)))
 class Directory():
     '''
     Main program object
@@ -313,14 +336,16 @@ class Directory():
         #Lists
         self.playerList = []
         self.teamList = []
-        self.matchList = []
         #Spreadsheets
         self.teamWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1T6KWtWPa4UMvquZ_yuiaRN0PJBytHle7F8a4u3pzKtk/edit#gid=0")
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        x = time.time() - start_time
+        self.matchWrs.worksheetDirBuild()
+        print("time it took to do gather data from spreadsheat :{}".format(str((time.time() - start_time) - x)))
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
-        self.matchCreate()
+        #self.matchCreate()
     def matchCreate(self):
         '''
         Create match object and add to match directory
@@ -341,7 +366,6 @@ class Directory():
         '''
         Gather data for and creates teamDir
         '''
-        x = time.time() - start_time
         col = self.teamWrs.columnValues(1)
         #Gathers all the team names
         for x in range(1, len(col)):
@@ -362,7 +386,6 @@ class Directory():
                     self.playerList.append(playerList[x])
             #creates player objects for each team
             self.teamDir[team].ObjectCreator()
-        print("time it took to do gather data from Team spreadsheat :{}".format(str((time.time() - start_time) - x)))
     def ValueUpdater(self, matchNumber):
         '''
         Updates tournament wide values
@@ -421,5 +444,4 @@ class Directory():
             else:
                 pass
 HCDC = Directory()
-
-
+print("time it took to gather data from spreadsheats and total:{}".format(str((time.time() - start_time))))
