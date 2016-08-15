@@ -25,14 +25,17 @@ class Player(object):
         self.kills = 0
         self.deaths = 0
         self.assists = 0
+        self.isArcher = False
         self.kDRatio = 0
-    def updateValues(self, kills, deaths, assists):
+    def updateValues(self, kills, deaths, assists, isArcher):
         '''
         Updates dynamic values
         '''
         self.kills = self.kills + int(kills)
         self.deaths = self.deaths + int(deaths)
         self.assists = self.assists + int(assists)
+        if isArcher == "TRUE":
+            self.isArcher = True
         self.kDRatio = self.kills/self.deaths
 class Team(object):
     '''
@@ -133,18 +136,20 @@ class Half(object):
                     kills = self.matchWrs.getCellValue("C" + row) 
                     deaths = self.matchWrs.getCellValue("D" + row)
                     assists = self.matchWrs.getCellValue("E" + row)
+                    isArcher = self.matchWrs.getCellValue("F" + row)
                     #Update player Values in team directory
-                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 else: #column #2
                     row = str(self.row + (i-5) + 1) #determines the row the player data is on
                     #Gather data from spreadsheet
                     kills = self.matchWrs.getCellValue("H" + row)
                     deaths = self.matchWrs.getCellValue("I" + row)
                     assists = self.matchWrs.getCellValue("J" + row)
+                    isArcher = self.matchWrs.getCellValue("K" + row)
                     #Update player Values in team directory
-                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 #Update player Values in player directory
-                self.playerDir[player].updateValues(kills, deaths, assists)
+                self.playerDir[player].updateValues(kills, deaths, assists, isArcher)
             else: #if second half
                 if i < 6: #column #1
                     row = str(self.row + i + 2) #determines the row the player data is on
@@ -152,18 +157,20 @@ class Half(object):
                     kills = self.matchWrs.getCellValue("H" + row)
                     deaths = self.matchWrs.getCellValue("I" + row)
                     assists = self.matchWrs.getCellValue("J" + row)
+                    isArcher = self.matchWrs.getCellValue("K" + row)
                     #Update player Values in team directory
-                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[self.defending].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 else: #column #2
                     row = str(self.row + (i-5) + 1) #determines the row the player data is on
                     #Gather data from spreadsheet
                     kills = self.matchWrs.getCellValue("C" + row)
                     deaths = self.matchWrs.getCellValue("D" + row)
                     assists = self.matchWrs.getCellValue("E" + row)
+                    isArcher = self.matchWrs.getCellValue("F" + row)
                     #Update player Values in team directory
-                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 #Update player Values in player directory
-                self.playerDir[player].updateValues(kills, deaths, assists)
+                self.playerDir[player].updateValues(kills, deaths, assists, isArcher)
 class Match(object):
     '''
     Match object which contains data specific to the match
@@ -245,11 +252,11 @@ class Match(object):
             #Updates team directory
             for team in self.teamList:
                 try: #easier way to find player within team directory
-                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists, None)
                     break
                 except:
                     pass
-            self.playerDir[player].updateValues(kills, deaths, assists)
+            self.playerDir[player].updateValues(kills, deaths, assists, None)
         #Updates team win/lose
         self.teamDir[self.winner].Win()
         self.teamDir[self.loser].Loss()
@@ -328,11 +335,11 @@ class Tourney():
             deaths = self.matchDir[matchNumber].playerDir[player].deaths
             assists = self.matchDir[matchNumber].playerDir[player].assists
             #Updates player object
-            self.playerDir[player].updateValues(kills, deaths, assists)
+            self.playerDir[player].updateValues(kills, deaths, assists, None)
             #Updates team object's player objects
             for team in self.matchDir[matchNumber].teamList:
                 try:
-                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists)
+                    self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists, None)
                 except:
                     pass
         #Updates Team Values
@@ -378,30 +385,10 @@ HCDC = Tourney()
 #print time till completion avg 20s
 print("--- %s seconds ---" % (time.time() - start_time))
 
+
 '''
 #===============================================================================
 # Directory pull tests
 #===============================================================================
-print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].kills)
-print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].deaths)
-print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].assists)
-print(HCDC.matchDir[1].halfDir[2].playerDir["Crimson King"].kDRatio)
-print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].kills)
-print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].deaths)
-print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].assists)
-print(HCDC.matchDir[1].halfDir[1].teamDir["Accolade"].playerDir["Crimson King"].kDRatio)
-print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].kills)
-print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].deaths)
-print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].assists)
-print(HCDC.matchDir[1].halfDir[2].teamDir["Accolade"].playerDir["Crimson King"].kDRatio)
-print(HCDC.matchDir[1].playerDir["Crimson King"].kills)
-print(HCDC.matchDir[1].playerDir["Crimson King"].deaths)
-print(HCDC.matchDir[1].playerDir["Crimson King"].assists)
-print(HCDC.matchDir[1].playerDir["Crimson King"].kDRatio)
-print(HCDC.matchDir[1].playerList)
-print(HCDC.matchDir[1].teamDir)
-print(HCDC.matchDir[1].halfDir)
-print(HCDC.matchDir[1].teamDir["Accolade"].playerDir)
-print(HCDC.matchDir[1].teamDir["The Void"].playerDir)
 '''
 
