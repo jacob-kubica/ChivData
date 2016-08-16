@@ -11,5 +11,6 @@ from gui import run
 from HCDC import Directory
 if __name__ == '__main__':
     print "hello world"
+    print "hello"
     HCDC = Directory()
     run(HCDC)
