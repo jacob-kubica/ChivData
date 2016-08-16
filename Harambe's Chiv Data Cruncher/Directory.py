@@ -150,8 +150,9 @@ class Directory():
     def loadSpreadSheet(self):
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchWrs.worksheetDirBuild(1) 
-HCDC = Directory()
+        
+'''HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
 print(HCDC.dirPull("Crimson King").kills)
-print(HCDC.dirPull("Accolade").WLRatio())
+print(HCDC.dirPull("Accolade").WLRatio())'''
