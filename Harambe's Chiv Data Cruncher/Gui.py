@@ -46,7 +46,6 @@ class Ui_MainWindow(object):
         self.tabsRight.addTab(self.teamTabRight, _fromUtf8(""))
         self.tabsRight.addTab(self.playerTabRight, _fromUtf8(""))
         #Match Input Group Box
-        font = QtGui.QFont()
         self.MatchInputsGroupBox = QtGui.QGroupBox(self.centralwidget)
         self.MatchInputsGroupBox.setFont(self.font(12, True, 75))
         #Match Number Label Object
@@ -311,9 +310,7 @@ class Ui_MainWindow(object):
         
         self.dataVizPlayerRight_4 = QtGui.QPushButton(self.PlayerGroupBoxRight)
         self.dataVizPlayerRight_4.setFont(self.font(10, False, 50))
-        #=======================================================================
-        # 
-        #=======================================================================
+        
         self.horizontalLayout = QtGui.QHBoxLayout(self.DataVisualizationGroupBox)
         self.horizontalLayout.addWidget(self.graphicsViewLeft)
         self.horizontalLayout.addWidget(self.graphicsViewRight)
