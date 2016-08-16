@@ -22,7 +22,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         #Main Window Object
         font = QtGui.QFont()
-        font.setFamily("Tahoma")
+        print(QtGui.QFont())
+        font.setFamily("Palatino Linotype")
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1084, 813)
         MainWindow.setFont(font)
