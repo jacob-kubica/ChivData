@@ -39,13 +39,12 @@ class Directory():
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
+        self.loadSpreadSheet()
         self.matchCreate()
     def matchCreate(self):
         '''
         Create match object and add to match directory
         '''
-        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
-        self.matchWrs.worksheetDirBuild(1)
         match = Match(self.matchNumber, self.matchWrs)
         self.matchDir[self.matchNumber] = match
         #Updates tournament wide values
@@ -143,6 +142,14 @@ class Directory():
                 return self.matchDir[args[0]]
             else:
                 pass
+    def reloadMatches(self):
+        numMatches = self.matchNumber
+        self.matchNumber = 1
+        for x in range (1, numMatches):
+            matchCreate()
+    def loadSpreadSheet(self):
+        self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
+        self.matchWrs.worksheetDirBuild(1) 
 HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
