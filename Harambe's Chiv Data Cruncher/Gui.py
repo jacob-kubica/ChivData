@@ -436,7 +436,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "Harambe\'s Chivalry Data Cruncher", None))
         self.MatchInputsGroupBox.setTitle(_translate("MainWindow", "Match Inputs", None))
-        self.MatchNumberLabel.setText(_translate("MainWindow", "Match Number", None))
+        self.MatchNumberLabel.setText(_translate("MainWindow", "Match Count", None))
         self.CreateMatchPushBtn.setText(_translate("MainWindow", "Create Match", None))
         self.ReloadDataPushBtn.setText(_translate("MainWindow", "Reload Data", None))
         self.DataVisualizationGroupBox.setTitle(_translate("MainWindow", "Data Visualization", None))
