@@ -10,5 +10,5 @@ Created on Aug 15, 2016
 from Gui import run
 from Directory import Directory
 if __name__ == '__main__':
-    HCDC = Directory()
-    run(HCDC)
+    #HCDC = Directory()
+    run()
