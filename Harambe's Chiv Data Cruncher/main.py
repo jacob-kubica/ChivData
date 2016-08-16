@@ -14,5 +14,6 @@ if __name__ == '__main__':
     print "hello"
     print "hey"
     print "test123"
+    print "please work ffs"
     HCDC = Directory()
     run(HCDC)
