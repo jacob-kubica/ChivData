@@ -7,9 +7,10 @@ import sys
 from PyQt4 import QtGui, QtCore
 
 class Window(QtGui.QMainWindow):
-
+    '''
+    Windows object
+    '''
     def __init__(self, Directory):
-        super(Window, self).__init__()
         self.Directory = Directory
         self.setGeometry(50, 100, 500, 300)
         self.setWindowTitle("Harambe's Chiv Data Cruncher")

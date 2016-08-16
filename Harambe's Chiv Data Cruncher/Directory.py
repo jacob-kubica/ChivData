@@ -11,9 +11,13 @@ from Player import Player
 
 import time #for use in program timing
 start_time = time.time()
+
 class Directory():
     '''
-    Main program object
+    Directory object which handles creation of
+    player, team, half, match objects. Pulls data
+    from google spreadsheet. Update values for
+    pertaining objects.
     '''
     def __init__(self):
         '''
@@ -139,7 +143,6 @@ class Directory():
                 return self.matchDir[args[0]]
             else:
                 pass
-
 HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
