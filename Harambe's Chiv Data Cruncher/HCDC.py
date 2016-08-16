@@ -296,7 +296,7 @@ class SpreadSheet(object):
          
     def getCellValue(self, cellValue):
         '''
-        get cell value based on alphanumerical cell position
+        get cell value based on alpha numerical cell position
         '''
         return self.worksheetDir[cellValue]
     
@@ -311,7 +311,8 @@ class SpreadSheet(object):
         gets all values from row
         this should be changed to pull from worksheetDir not google drive
         '''
-        return self.worksheet.row_values(row)
+        return self.allvalues[row]
+
     def worksheetDirBuild(self, orientation):
         '''
         Builds a worksheet directory
@@ -334,8 +335,8 @@ class SpreadSheet(object):
         #generates or clears the worksheetDir
         self.worksheetDir = {}
         #List of lists of all cell values
-        allvalues = self.worksheet.get_all_values()
-        for (y, row) in enumerate(allvalues):
+        self.allvalues = self.worksheet.get_all_values()
+        for (y, row) in enumerate(self.allvalues):
             for (x, column) in enumerate(row):
                 #realigns spreadsheet so that primary iterator is numbers not letters
                 if orientation == 0:
@@ -366,6 +367,7 @@ class Directory():
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
+        self.matchCreate()
     def matchCreate(self):
         '''
         Create match object and add to match directory
@@ -391,12 +393,15 @@ class Directory():
         col = self.teamWrs.columnValues(1)
         #Gathers all the team names
         for x in range(1, len(col)):
-            self.teamList.append(col[x])
+            if col[x] != "":
+                self.teamList.append(col[x])
+            else:
+                break
         #Creates team objects for each
         for (i, team) in enumerate(self.teamList):
             self.teamDir[team] = Team(team)
             #finds all the players on a specific team
-            playerList = self.teamWrs.rowValues(i + 2)
+            playerList = self.teamWrs.rowValues(i + 1)
             for x in range(1,len(playerList)):
                 #ensures blank cells are ignored
                 if playerList[x] == '':
@@ -443,8 +448,6 @@ class Directory():
             if any(x in self.teamList for x in args):
                 if argNum == 4:
                     return self.matchDir[args[0]].halfDir[args[1]].teamDir[args[2]].playerDir[args[3]]
-                elif argNum == 3:
-                    return self.matchDir[args[0]].teamDir[args[1]].playerDir[args[2]]
                 else:
                     return self.matchDir[args[0]].teamDir[args[1]].playerDir[args[2]]
             else:
@@ -460,7 +463,7 @@ class Directory():
             if argNum == 2:
                 return self.matchDir[args[0]].teamDir[args[1]]
             if argNum == 1:
-                return self.teamDir[args[1]]
+                return self.teamDir[args[0]]
         else:
             if argNum == 2:
                 return self.matchDir[args[0]].halfDir[args[1]]
@@ -472,8 +475,5 @@ class Directory():
 HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
-
-print(HCDC.matchDir)
-print(HCDC.playerDir)
-print(HCDC.teamDir)
 print(HCDC.dirPull("Crimson King").kills)
+print(HCDC.dirPull("Accolade").teamLoss)
