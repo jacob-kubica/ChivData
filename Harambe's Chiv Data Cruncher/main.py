@@ -10,5 +10,6 @@ Created on Aug 15, 2016
 from gui import run
 from HCDC import Directory
 if __name__ == '__main__':
+    print "hello world"
     HCDC = Directory()
     run(HCDC)
