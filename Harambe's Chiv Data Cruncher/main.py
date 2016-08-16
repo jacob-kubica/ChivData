@@ -12,5 +12,6 @@ from HCDC import Directory
 if __name__ == '__main__':
     print "hello world"
     print "hello"
+    print "hey"
     HCDC = Directory()
     run(HCDC)
