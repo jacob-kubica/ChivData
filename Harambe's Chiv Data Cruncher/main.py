@@ -10,11 +10,6 @@ Created on Aug 15, 2016
 from gui import run
 from HCDC import Directory
 if __name__ == '__main__':
-    print "hello world"
-    print "hello"
-    print "hey"
-    print "test123"
-    print "please work ffs"
     print("No")
     HCDC = Directory()
     run(HCDC)
