@@ -22,7 +22,6 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         #Main Window Object
         font = QtGui.QFont()
-        print(QtGui.QFont())
         font.setFamily("Arial")
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(1084, 813)
