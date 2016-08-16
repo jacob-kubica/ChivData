@@ -43,3 +43,8 @@ class Team(object):
         Handles Case were team loses
         '''
         self.teamLoss += 1
+    def WLRatio(self):
+        '''
+        Returns Win loss ratio
+        '''
+        return self.teamWins/self.teamLoss

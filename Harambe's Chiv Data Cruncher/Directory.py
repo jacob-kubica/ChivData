@@ -147,4 +147,4 @@ HCDC = Directory()
 
 print("time it:{}".format(str((time.time() - start_time))))
 print(HCDC.dirPull("Crimson King").kills)
-print(HCDC.dirPull("Accolade").teamLoss)
+print(HCDC.dirPull("Accolade").WLRatio())
