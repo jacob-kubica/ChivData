@@ -23,6 +23,7 @@ class Player(object):
         self.assists = 0
         self.isArcher = False
         self.kDRatio = 0
+        self.combatPoints = 0
     def updateValues(self, kills, deaths, assists, isArcher):
         '''
         Updates dynamic values
@@ -30,6 +31,7 @@ class Player(object):
         self.kills = self.kills + int(kills)
         self.deaths = self.deaths + int(deaths)
         self.assists = self.assists + int(assists)
+        self.combatPoints = self.combatPoints + (10*kills + 5*assists)
         if isArcher == "TRUE":
             self.isArcher = True
         self.kDRatio = self.kills/self.deaths
