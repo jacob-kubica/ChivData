@@ -33,3 +33,8 @@ class Player(object):
         if isArcher == "TRUE":
             self.isArcher = True
         self.kDRatio = self.kills/self.deaths
+    def clearValues(self):
+        self.kills = 0 
+        self.deaths = 0
+        self.assists = 0 
+        self.kDRatio = 0

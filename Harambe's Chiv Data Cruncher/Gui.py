@@ -5,10 +5,11 @@ Created on Aug 15, 2016
 '''
 from PyQt4 import QtCore, QtGui
 from GuiMethods import GuiMethods
-class Ui_MainWindow():
+class Ui_MainWindow(GuiMethods):
     def __init__(self, Directory):
+        self.Directory = Directory
         self.methods = GuiMethods(Directory)
-        self.methods.printShit()
+        #self.methods.printShit()
     def setupUi(self, MainWindow):
         '''
         Set up gui window
@@ -51,10 +52,12 @@ class Ui_MainWindow():
         self.matchNumberSpinBox.setFont(self.font(10, False, 50))
         #Create Match Push Button
         self.CreateMatchPushBtn = QtGui.QPushButton(self.MatchInputsGroupBox)
+        self.CreateMatchPushBtn.clicked.connect(self.matchCreate)
         self.CreateMatchPushBtn.setFont(self.font(10, False, 50))
         self.CreateMatchPushBtn.setText("Create Match")
         #Reload Push Button
         self.ReloadDataPushBtn = QtGui.QPushButton(self.MatchInputsGroupBox)
+        self.ReloadDataPushBtn.clicked.connect(self.matchReload)
         self.ReloadDataPushBtn.setFont(self.font(10, False, 50))
         self.ReloadDataPushBtn.setText("Reload Data")
         #Progress Bar
@@ -65,7 +68,7 @@ class Ui_MainWindow():
         #Error Line Text Line
         self.ErrorTextLine = QtGui.QLineEdit(self.MatchInputsGroupBox)
         self.ErrorTextLine.setFont(self.font(10, False, 50))
-        self.ErrorTextLine.setText("Error 1.242342")
+        self.ErrorTextLine.setText("")
         #Layout
         self.horizontalLayoutTop = QtGui.QHBoxLayout(self.MatchInputsGroupBox)
         self.horizontalLayoutTop.addWidget(self.MatchNumberLabel)
@@ -616,6 +619,17 @@ class Ui_MainWindow():
         font.setBold(Bold)
         font.setWeight(Weight)
         return font
+    def matchCreate(self):
+        matchCount = self.matchNumberSpinBox.value()
+        if int(matchCount) not in self.Directory.matchDir:
+            self.Directory.loadSpreadSheet()
+            self.Directory.matchCreate(matchCount)
+        else:
+            print("This already exist fool")
+    def matchReload(self):
+        self.Directory.matchNumber = self.matchNumberSpinBox.value()
+        self.Directory.loadSpreadSheet()
+        self.Directory.reloadMatches(self.Directory.matchNumber)
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)

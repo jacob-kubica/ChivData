@@ -40,16 +40,21 @@ class Directory():
         self.inputTeamWrs()
         self.playerCreate()
         self.loadSpreadSheet()
-        self.matchCreate()
-    def matchCreate(self):
+        self.matchCreate(self.matchNumber)
+    def matchCreate(self, matchNumber):
         '''
         Create match object and add to match directory
         '''
-        match = Match(self.matchNumber, self.matchWrs)
-        self.matchDir[self.matchNumber] = match
+        try:
+            self.setMatchNumber(matchNumber)
+            match = Match(self.matchNumber, self.matchWrs)
+            self.matchDir[self.matchNumber] = match
+            self.ValueUpdater(self.matchNumber)
+        except:
+            print("Out of Range")
         #Updates tournament wide values
-        self.ValueUpdater(self.matchNumber)
-        self.matchNumber += 1
+        print(self.matchDir)
+        print(self.playerDir["Crimson King"].kills)
     def playerCreate(self):
         '''
         Create player object and add to player directory
@@ -142,17 +147,26 @@ class Directory():
                 return self.matchDir[args[0]]
             else:
                 pass
-    def reloadMatches(self):
+    def reloadMatches(self, matchNumber):
+        self.clearTopDirectory()
+        self.setMatchNumber(matchNumber)
         numMatches = self.matchNumber
-        self.matchNumber = 1
-        for x in range (1, numMatches):
-            matchCreate()
+        for x in range (0, numMatches):
+            try:
+                self.matchCreate(x + 1)
+            except:
+                break
     def loadSpreadSheet(self):
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchWrs.worksheetDirBuild(1) 
-        
-'''HCDC = Directory()
-
-print("time it:{}".format(str((time.time() - start_time))))
-print(HCDC.dirPull("Crimson King").kills)
-print(HCDC.dirPull("Accolade").WLRatio())'''
+    def setMatchNumber(self, newValue):
+        if newValue != 0:
+            self.matchNumber = newValue
+    def clearTopDirectory(self):
+        for team in self.teamList:
+            self.teamDir[team].clearValues()
+            for player in self.teamDir[team].playerList:
+                self.teamDir[team].playerDir[player]
+        for player in self.playerList:
+            self.playerDir[player].clearValues()
+            print(self.playerDir[player].kills)

@@ -48,3 +48,7 @@ class Team(object):
         Returns Win loss ratio
         '''
         return self.teamWins/self.teamLoss
+    def clearValues(self):
+        self.teamWins = 0
+        self.teamLoss = 0 
+        
