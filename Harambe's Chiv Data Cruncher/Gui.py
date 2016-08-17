@@ -31,20 +31,27 @@ class Ui_MainWindow(object):
         self.dataTabLeft = QtGui.QWidget()        
         self.teamTabLeft = QtGui.QWidget()
         self.playerTabLeft = QtGui.QWidget()
+        self.tournamentLeft = QtGui.QWidget()
+        
         self.dataTabRight = QtGui.QWidget()
         self.teamTabRight = QtGui.QWidget()
         self.playerTabRight = QtGui.QWidget()
+        self.tournamentRight = QtGui.QWidget()
         
         self.ContainerBottom = QtGui.QWidget(self.centralwidget)
         self.tabsLeft = QtGui.QTabWidget(self.ContainerBottom)
+        self.tabsLeft.addTab(self.tournamentLeft, _fromUtf8(""))
         self.tabsLeft.addTab(self.dataTabLeft, _fromUtf8(""))
         self.tabsLeft.addTab(self.teamTabLeft, _fromUtf8(""))
         self.tabsLeft.addTab(self.playerTabLeft, _fromUtf8(""))
+
         
-        self.tabsRight = QtGui.QTabWidget(self.ContainerBottom)        
+        self.tabsRight = QtGui.QTabWidget(self.ContainerBottom) 
+        self.tabsRight.addTab(self.tournamentRight, _fromUtf8(""))       
         self.tabsRight.addTab(self.dataTabRight, _fromUtf8(""))
         self.tabsRight.addTab(self.teamTabRight, _fromUtf8(""))
         self.tabsRight.addTab(self.playerTabRight, _fromUtf8(""))
+
         #Match Input Group Box
         self.MatchInputsGroupBox = QtGui.QGroupBox(self.centralwidget)
         self.MatchInputsGroupBox.setFont(self.font(12, True, 75))
@@ -159,6 +166,12 @@ class Ui_MainWindow(object):
         self.PlayerGroupBoxLeft = QtGui.QGroupBox(self.playerTabLeft)
         self.PlayerGroupBoxLeft.setFont(self.font(12, True, 75))
         
+        self.TournamentGroupBoxLeft = QtGui.QGroupBox(self.tournamentLeft)
+        self.TournamentGroupBoxLeft.setFont(self.font(12, True, 75))        
+
+        self.TournamentGroupBoxRight = QtGui.QGroupBox(self.tournamentRight)
+        self.TournamentGroupBoxRight.setFont(self.font(12, True, 75))        
+
         self.playerNameLabelLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
         self.playerNameLabelLeft.setFont(self.font(14, False, 50))
 
@@ -311,6 +324,28 @@ class Ui_MainWindow(object):
         self.dataVizPlayerRight_4 = QtGui.QPushButton(self.PlayerGroupBoxRight)
         self.dataVizPlayerRight_4.setFont(self.font(10, False, 50))
         
+        self.tournamentBtnLeft_1 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
+        self.tournamentBtnLeft_1.setFont(self.font(10, False, 50))        
+        self.tournamentBtnLeft_2 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
+        self.tournamentBtnLeft_2.setFont(self.font(10, False, 50))    
+        self.tournamentBtnLeft_3 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
+        self.tournamentBtnLeft_3.setFont(self.font(10, False, 50))    
+        self.tournamentBtnLeft_4 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
+        self.tournamentBtnLeft_4.setFont(self.font(10, False, 50))    
+        self.tournamentBtnLeft_5 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
+        self.tournamentBtnLeft_5.setFont(self.font(10, False, 50))        
+        
+        self.tournamentBtnRight_1 = QtGui.QPushButton(self.TournamentGroupBoxRight)
+        self.tournamentBtnRight_1.setFont(self.font(10, False, 50))       
+        self.tournamentBtnRight_2 = QtGui.QPushButton(self.TournamentGroupBoxRight)
+        self.tournamentBtnRight_2.setFont(self.font(10, False, 50))            
+        self.tournamentBtnRight_3 = QtGui.QPushButton(self.TournamentGroupBoxRight)
+        self.tournamentBtnRight_3.setFont(self.font(10, False, 50))   
+        self.tournamentBtnRight_4 = QtGui.QPushButton(self.TournamentGroupBoxRight)
+        self.tournamentBtnRight_4.setFont(self.font(10, False, 50))   
+        self.tournamentBtnRight_5 = QtGui.QPushButton(self.TournamentGroupBoxRight)
+        self.tournamentBtnRight_5.setFont(self.font(10, False, 50))           
+           
         self.horizontalLayout = QtGui.QHBoxLayout(self.DataVisualizationGroupBox)
         self.horizontalLayout.addWidget(self.graphicsViewLeft)
         self.horizontalLayout.addWidget(self.graphicsViewRight)
@@ -397,7 +432,25 @@ class Ui_MainWindow(object):
         
         self.gridLayout_13 = QtGui.QGridLayout(self.playerTabRight)
         self.gridLayout_13.addWidget(self.PlayerGroupBoxRight, 0, 0, 1, 1)
-                
+        
+        self.gridLayout_14 = QtGui.QGridLayout(self.tournamentLeft)
+        self.gridLayout_14.addWidget(self.TournamentGroupBoxLeft, 0, 0, 1, 1)      
+        self.gridLayout_15 = QtGui.QGridLayout(self.tournamentRight)
+        self.gridLayout_15.addWidget(self.TournamentGroupBoxRight, 0, 0, 1, 1) 
+        
+        self.gridLayout_16 = QtGui.QGridLayout(self.TournamentGroupBoxLeft)
+        self.gridLayout_16.addWidget(self.tournamentBtnLeft_1, 0, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.tournamentBtnLeft_2, 1, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.tournamentBtnLeft_3, 2, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.tournamentBtnLeft_4, 3, 0, 1, 1)
+        self.gridLayout_16.addWidget(self.tournamentBtnLeft_5, 4, 0, 1, 1)        
+        self.gridLayout_17 = QtGui.QGridLayout(self.TournamentGroupBoxRight)
+        self.gridLayout_17.addWidget(self.tournamentBtnRight_1, 0, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.tournamentBtnRight_2, 1, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.tournamentBtnRight_3, 2, 0, 1, 1)
+        self.gridLayout_17.addWidget(self.tournamentBtnRight_4, 3, 0, 1, 1)        
+        self.gridLayout_17.addWidget(self.tournamentBtnRight_5, 4, 0, 1, 1)            
+        
         self.verticalLayout = QtGui.QVBoxLayout(self.PlayerGroupBoxLeft)
         self.verticalLayout.addWidget(self.playerNameLabelLeft)
         self.verticalLayout.addWidget(self.lineLeft_2)
@@ -466,6 +519,8 @@ class Ui_MainWindow(object):
         self.dataVizTeamLeft_4.setText(_translate("MainWindow", "Data Viz ", None))
         self.tabsLeft.setTabText(self.tabsLeft.indexOf(self.teamTabLeft), _translate("MainWindow", "Team", None))
         self.PlayerGroupBoxLeft.setTitle(_translate("MainWindow", "Player", None))
+        self.TournamentGroupBoxLeft.setTitle(_translate("MainWindow", "Tournament", None))
+        self.TournamentGroupBoxRight.setTitle(_translate("MainWindow", "Tournament", None))        
         self.playerNameLabelLeft.setText(_translate("MainWindow", "Crimson King", None))
         self.killsLeft.setText(_translate("MainWindow", "Kills:", None))
         self.deathsLeft.setText(_translate("MainWindow", "Deaths:", None))
@@ -513,7 +568,20 @@ class Ui_MainWindow(object):
         self.dataVizPlayerRight_2.setText(_translate("MainWindow", "Data Viz ", None))
         self.dataVizPlayerRight_3.setText(_translate("MainWindow", "Data Viz ", None))
         self.dataVizPlayerRight_4.setText(_translate("MainWindow", "Data Viz ", None))
+        
+        self.tournamentBtnLeft_1.setText(_translate("MainWindow", "tournamnetBtn1", None))
+        self.tournamentBtnLeft_2.setText(_translate("MainWindow", "tournamnetBtn2", None))        
+        self.tournamentBtnLeft_3.setText(_translate("MainWindow", "tournamnetBtn3", None))
+        self.tournamentBtnLeft_4.setText(_translate("MainWindow", "tournamnetBtn4", None))     
+        self.tournamentBtnLeft_5.setText(_translate("MainWindow", "tournamnetBtn5", None))       
+        self.tournamentBtnRight_1.setText(_translate("MainWindow", "tournamnetBtn1", None))
+        self.tournamentBtnRight_2.setText(_translate("MainWindow", "tournamnetBtn2", None))        
+        self.tournamentBtnRight_3.setText(_translate("MainWindow", "tournamnetBtn3", None))
+        self.tournamentBtnRight_4.setText(_translate("MainWindow", "tournamnetBtn4", None))   
+        self.tournamentBtnRight_5.setText(_translate("MainWindow", "tournamnetBtn5", None))                 
         self.tabsRight.setTabText(self.tabsRight.indexOf(self.playerTabRight), _translate("MainWindow", "Player", None))
+        self.tabsRight.setTabText(self.tabsRight.indexOf(self.tournamentRight), _translate("MainWindow", "Tournament", None))
+        self.tabsLeft.setTabText(self.tabsLeft.indexOf(self.tournamentLeft), _translate("MainWindow", "Tournament", None))
     def font(self, fontSize, Bold, Weight):
         font = QtGui.QFont()
         font.setPointSize(fontSize)
