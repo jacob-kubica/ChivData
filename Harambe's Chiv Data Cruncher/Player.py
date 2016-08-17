@@ -42,3 +42,5 @@ class Player(object):
         self.deaths = 0
         self.assists = 0 
         self.kDRatio = 0
+        self.combatScore = 0
+        self.combatScoreRatio = 0
