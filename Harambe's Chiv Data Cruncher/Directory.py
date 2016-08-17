@@ -51,10 +51,8 @@ class Directory():
             self.matchDir[self.matchNumber] = match
             self.ValueUpdater(self.matchNumber)
         except:
-            print("Out of Range")
+            pass
         #Updates tournament wide values
-        print(self.matchDir)
-        print(self.playerDir["Crimson King"].kills)
     def playerCreate(self):
         '''
         Create player object and add to player directory
@@ -148,6 +146,9 @@ class Directory():
             else:
                 pass
     def reloadMatches(self, matchNumber):
+        '''
+        Reloads entire directory overwriting existing objects
+        '''
         self.clearTopDirectory()
         self.setMatchNumber(matchNumber)
         numMatches = self.matchNumber
@@ -163,6 +164,9 @@ class Directory():
         if newValue != 0:
             self.matchNumber = newValue
     def clearTopDirectory(self):
+        '''
+        Clears tournament wide directories
+        '''
         for team in self.teamList:
             self.teamDir[team].clearValues()
             for player in self.teamDir[team].playerList:
