@@ -625,7 +625,7 @@ class Ui_MainWindow(GuiMethods):
             self.Directory.loadSpreadSheet()
             self.Directory.matchCreate(matchCount)
         else:
-            print("This already exist fool")
+            self.ErrorTextLine.setText("This match already exists use reload data to change it")
     def matchReload(self):
         self.Directory.matchNumber = self.matchNumberSpinBox.value()
         self.Directory.loadSpreadSheet()
