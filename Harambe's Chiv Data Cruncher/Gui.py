@@ -316,23 +316,23 @@ class Ui_MainWindow(GuiMethods):
                     #Tournament Button
                     self.tournamentBtnLeft_1 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_1.setFont(self.font(10, False, 50)) 
-                    self.tournamentBtnLeft_1.setText("tournamnetBtn1")      
+                    self.tournamentBtnLeft_1.setText("Top Teams K/D")      
                     #Tournament Button 
                     self.tournamentBtnLeft_2 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_2.setFont(self.font(10, False, 50)) 
-                    self.tournamentBtnLeft_2.setText("tournamnetBtn2")  
+                    self.tournamentBtnLeft_2.setText("Top Archers CP/D")  
                     #Tournament Button   
                     self.tournamentBtnLeft_3 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_3.setFont(self.font(10, False, 50))   
-                    self.tournamentBtnLeft_3.setText("tournamnetBtn3") 
+                    self.tournamentBtnLeft_3.setText("Top Players CP/D") 
                     #Tournament Button
                     self.tournamentBtnLeft_4 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_4.setFont(self.font(10, False, 50)) 
-                    self.tournamentBtnLeft_4.setText("tournamnetBtn4")   
+                    self.tournamentBtnLeft_4.setText("Top Players CP/D rel")   
                     #Tournament Button   
                     self.tournamentBtnLeft_5 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_5.setFont(self.font(10, False, 50))
-                    self.tournamentBtnLeft_5.setText("tournamnetBtn5")  
+                    self.tournamentBtnLeft_5.setText("Top players total kills")  
                     #Layout
                     self.TournamentGroupBoxLeftGrid = QtGui.QGridLayout(self.TournamentGroupBoxLeft)
                     self.TournamentGroupBoxLeftGrid.addWidget(self.tournamentBtnLeft_1, 0, 0, 1, 1)
@@ -574,23 +574,23 @@ class Ui_MainWindow(GuiMethods):
                     #Tournament Button            
                     self.tournamentBtnRight_1 = QtGui.QPushButton(self.TournamentGroupBoxRight)
                     self.tournamentBtnRight_1.setFont(self.font(10, False, 50))
-                    self.tournamentBtnRight_1.setText("tournamnetBtn1")
+                    self.tournamentBtnRight_1.setText("Top Teams K/D")
                     #Tournament Button        
                     self.tournamentBtnRight_2 = QtGui.QPushButton(self.TournamentGroupBoxRight)
                     self.tournamentBtnRight_2.setFont(self.font(10, False, 50))
-                    self.tournamentBtnRight_2.setText("tournamnetBtn2")                 
+                    self.tournamentBtnRight_2.setText("Top Archers CP/D")                 
                     #Tournament Button 
                     self.tournamentBtnRight_3 = QtGui.QPushButton(self.TournamentGroupBoxRight)
                     self.tournamentBtnRight_3.setFont(self.font(10, False, 50))
-                    self.tournamentBtnRight_3.setText("tournamnetBtn3")   
+                    self.tournamentBtnRight_3.setText("Top Players CP/D")   
                     #Tournament Button 
                     self.tournamentBtnRight_4 = QtGui.QPushButton(self.TournamentGroupBoxRight)
                     self.tournamentBtnRight_4.setFont(self.font(10, False, 50))  
-                    self.tournamentBtnRight_4.setText("tournamnetBtn4")  
+                    self.tournamentBtnRight_4.setText("Top Players CP/D rel")  
                     #Tournament Button 
                     self.tournamentBtnRight_5 = QtGui.QPushButton(self.TournamentGroupBoxRight)
                     self.tournamentBtnRight_5.setFont(self.font(10, False, 50))   
-                    self.tournamentBtnRight_5.setText("tournamnetBtn5") 
+                    self.tournamentBtnRight_5.setText("Top players total kills") 
                     #Layout   
                     self.TournamentGroupBoxRightGrid = QtGui.QGridLayout(self.TournamentGroupBoxRight)
                     self.TournamentGroupBoxRightGrid.addWidget(self.tournamentBtnRight_1, 0, 0, 1, 1)
