@@ -169,4 +169,3 @@ class Directory():
                 self.teamDir[team].playerDir[player]
         for player in self.playerList:
             self.playerDir[player].clearValues()
-            print(self.playerDir[player].kills)
