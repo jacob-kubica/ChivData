@@ -106,10 +106,22 @@ class Ui_MainWindow(GuiMethods):
         self.horizontalLayout.addWidget(self.graphicsViewLeft)
         self.horizontalLayout.addWidget(self.graphicsViewRight)
     def Tabs(self):
+        '''
+        Container for tab methods
+        '''
         self.ContainerBottom = QtGui.QWidget(self.centralwidget)
         def TabsLeft():
+            '''
+            Contains Left Tabs
+            '''
             def dataTabLeft():
+                '''
+                Contains objects in the data selection group box
+                '''
                 def DataSelectionGroupBoxLeft():
+                    '''
+                    Container Function
+                    '''
                     #Data Selection Group Box
                     self.DataSelectionGroupBoxLeft = QtGui.QGroupBox(self.dataTabLeft)
                     self.DataSelectionGroupBoxLeft.setFont(self.font(12, True, 75))
