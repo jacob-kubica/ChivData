@@ -5,6 +5,7 @@ Created on Aug 15, 2016
 '''
 from PyQt4 import QtCore, QtGui
 from GuiMethods import GuiMethods
+from test.test_iterlen import NoneLengthHint
 class Ui_MainWindow(GuiMethods):
     def __init__(self, Directory):
         self.Directory = Directory
@@ -155,6 +156,7 @@ class Ui_MainWindow(GuiMethods):
                     self.findBtnLeft = QtGui.QPushButton(self.DataSelectionGroupBoxLeft)
                     self.findBtnLeft.setFont(self.font(10, False, 50))
                     self.findBtnLeft.setText("Find")
+                    self.findBtnLeft.clicked.connect(self.findLeft)
                     #Clear Button
                     self.clearBtnLeft = QtGui.QPushButton(self.DataSelectionGroupBoxLeft)
                     self.clearBtnLeft.setFont(self.font(10, False, 50))
@@ -407,6 +409,7 @@ class Ui_MainWindow(GuiMethods):
                     self.findBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
                     self.findBtnRight.setFont(self.font(10, False, 50))
                     self.findBtnRight.setText("Find")
+                    self.findBtnRight.clicked.connect(self.findRight)
                     #Layout
                     self.DataSelectionGroupBoxRightGrid = QtGui.QGridLayout(self.DataSelectionGroupBoxRight)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.matchLabelRight, 0, 0, 1, 1)
@@ -433,7 +436,7 @@ class Ui_MainWindow(GuiMethods):
                     #Team Label
                     self.teamNameRight = QtGui.QLabel(self.teamGroupBoxRight)
                     self.teamNameRight.setFont(self.font(14, False, 50))
-                    self.teamNameRight.setText("Accolade")
+                    self.teamNameRight.setText("")
                     #Line
                     self.lineRight = QtGui.QFrame(self.teamGroupBoxRight)
                     self.lineRight.setFrameShape(QtGui.QFrame.HLine)
@@ -497,7 +500,7 @@ class Ui_MainWindow(GuiMethods):
                     #Player Label
                     self.playerNameLabelRight = QtGui.QLabel(self.PlayerGroupBoxRight)
                     self.playerNameLabelRight.setFont(self.font(14, False, 50))
-                    self.playerNameLabelRight.setText("Crimson King")
+                    self.playerNameLabelRight.setText("")
                     #Line 
                     self.lineRight_2 = QtGui.QFrame(self.PlayerGroupBoxRight)
                     self.lineRight_2.setFrameShape(QtGui.QFrame.HLine)
@@ -749,7 +752,138 @@ class Ui_MainWindow(GuiMethods):
         self.comboEmpty(comboBox)
         for x in range (0, self.Directory.matchNumber):
            comboBox.addItem(str(x + 1))
-
+    def findRight(self):
+        self.playerobjectRight = None
+        self.teamObjectRight = None
+        if self.matchRight != None:
+            if self.halfRight != None:
+                if self.teamRight != None:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.matchDir[int(self.matchRight)].halfDir[int(self.halfRight)].teamDir[self.teamRight].playerDir[self.playerRight]
+                        self.teamObjectRight = self.Directory.matchDir[int(self.matchRight)].halfDir[int(self.halfRight)].teamDir[self.teamRight]
+                    else:
+                        self.teamObjectRight = self.Directory.matchDir[int(self.matchRight)].halfDir[int(self.halfRight)].teamDir[self.teamRight]
+                else:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.matchDir[int(self.matchRight)].halfDir[int(self.halfRight)].playerDir[self.playerRight]
+                    else:
+                        pass
+            else:
+                if self.teamRight != None:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.matchDir[int(self.matchRight)].teamDir[self.teamRight].playerDir[self.playerRight]
+                        self.teamObjectRight = self.Directory.matchDir[int(self.matchRight)].teamDir[self.teamRight]
+                    else:
+                        self.teamObjectRight = self.Directory.matchDir[int(self.matchRight)].teamDir[self.teamRight]
+                else:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.playerDir[self.playerRight]
+                    else:
+                        pass
+        else:
+            if self.halfRight != None:
+                if self.teamRight != None:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.teamDir[self.teamRight].playerDir[self.playerRight]
+                        self.teamObjectRight = self.Directory.teamDir[self.teamRight].playerDir[self.playerRight]
+                    else:
+                        self.teamObjectRight = self.Directory.teamDir[self.teamRight]
+                else:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.playerDir[self.playerRight]
+                    else:
+                        pass
+            else:
+                if self.teamRight != None:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.teamDir[self.teamRight].playerDir[self.playerRight]
+                        self.teamObjectRight = self.Directory.teamDir[self.teamRight]
+                    else:
+                        self.teamObjectRight = self.Directory.teamDir[self.teamRight]
+                else:
+                    if self.playerRight != None:
+                        self.playerobjectRight = self.Directory.playerDir[self.playerRight]
+                    else:
+                        pass
+        if self.teamObjectRight != None:
+            self.teamNameRight.setText("{}".format(self.teamObjectRight.teamName))
+            self.winsRight.setText("Wins: {}".format(self.teamObjectRight.teamWins))
+            self.lossesRight.setText("Losses: {}".format(self.teamObjectRight.teamLoss))
+            self.wLRatioRight.setText("Win Loss Ratio: {}".format(self.teamObjectRight.wLRatio))
+            self.otherRight.setText("Other:")
+        if self.playerobjectRight != None:
+            self.playerNameLabelRight.setText("{}".format(self.playerobjectRight.playerName))
+            self.killsRight.setText("Kills: {}".format(self.playerobjectRight.kills))
+            self.deathsRight.setText("Deaths: {}".format(self.playerobjectRight.deaths))
+            self.assistsRight.setText("Assists: {}".format(self.playerobjectRight.assists))
+            self.kDRatioRight.setText("K/D Ratio: {}".format(self.playerobjectRight.kDRatio))
+            self.isArcherRight.setText("Is Archer: {}".format(self.playerobjectRight.isArcher))
+    def findLeft(self):
+        self.playerobjectLeft = None
+        self.teamObjectLeft = None
+        if self.matchLeft != None:
+            if self.halfLeft != None:
+                if self.teamLeft != None:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.matchDir[int(self.matchLeft)].halfDir[int(self.halfLeft)].teamDir[self.teamLeft].playerDir[self.playerLeft]
+                        self.teamObjectLeft = self.Directory.matchDir[int(self.matchLeft)].halfDir[int(self.halfLeft)].teamDir[self.teamLeft]
+                    else:
+                        self.teamObjectLeft = self.Directory.matchDir[int(self.matchLeft)].halfDir[int(self.halfLeft)].teamDir[self.teamLeft]
+                else:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.matchDir[int(self.matchLeft)].halfDir[int(self.halfLeft)].playerDir[self.playerLeft]
+                    else:
+                        pass
+            else:
+                if self.teamLeft != None:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.matchDir[int(self.matchLeft)].teamDir[self.teamLeft].playerDir[self.playerLeft]
+                        self.teamObjectLeft = self.Directory.matchDir[int(self.matchLeft)].teamDir[self.teamLeft]
+                    else:
+                        self.teamObjectLeft = self.Directory.matchDir[int(self.matchLeft)].teamDir[self.teamLeft]
+                else:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.playerDir[self.playerLeft]
+                    else:
+                        pass
+        else:
+            if self.halfLeft != None:
+                if self.teamLeft != None:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.teamDir[self.teamLeft].playerDir[self.playerLeft]
+                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft].playerDir[self.playerLeft]
+                    else:
+                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft]
+                else:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.playerDir[self.playerLeft]
+                    else:
+                        pass
+            else:
+                if self.teamLeft != None:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.teamDir[self.teamLeft].playerDir[self.playerLeft]
+                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft]
+                    else:
+                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft]
+                else:
+                    if self.playerLeft != None:
+                        self.playerobjectLeft = self.Directory.playerDir[self.playerLeft]
+                    else:
+                        pass
+        if self.teamObjectLeft != None:
+            self.teamNameLeft.setText("{}".format(self.teamObjectLeft.teamName))
+            self.winsLeft.setText("Wins: {}".format(self.teamObjectLeft.teamWins))
+            self.lossesLeft.setText("Losses: {}".format(self.teamObjectLeft.teamLoss))
+            self.wLRatioLeft.setText("Win Loss Ratio: {}".format(self.teamObjectLeft.wLRatio))
+            self.otherLeft.setText("Other:")
+        if self.playerobjectLeft != None:
+            self.playerNameLabelLeft.setText("{}".format(self.playerobjectLeft.playerName))
+            self.killsLeft.setText("Kills: {}".format(self.playerobjectLeft.kills))
+            self.deathsLeft.setText("Deaths: {}".format(self.playerobjectLeft.deaths))
+            self.assistsLeft.setText("Assists: {}".format(self.playerobjectLeft.assists))
+            self.kDRatioLeft.setText("K/D Ratio: {}".format(self.playerobjectLeft.kDRatio))
+            self.isArcherLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)

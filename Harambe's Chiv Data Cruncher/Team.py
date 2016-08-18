@@ -26,6 +26,7 @@ class Team(object):
         #Dynamic Values
         self.teamWins = 0
         self.teamLoss = 0
+        self.wLRatio = 0
     def ObjectCreator(self):
         '''
         Fills player directory with player objects
