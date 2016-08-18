@@ -10,6 +10,15 @@ class Ui_MainWindow(GuiMethods):
         self.Directory = Directory
         self.methods = GuiMethods(Directory)
         #self.methods.printShit()
+        self.matchRight = None
+        self.halfRight = None
+        self.teamRight =  None
+        self.playerRight = None
+        
+        self.matchLeft = None
+        self.halfLeft = None
+        self.teamLeft =  None
+        self.playerLeft = None
     def setupUi(self, MainWindow):
         '''
         Set up gui window
@@ -31,6 +40,8 @@ class Ui_MainWindow(GuiMethods):
         self.MatchInputs()
         self.DataVisualization()
         self.Tabs()
+        self.teamComboBoxRightfill()
+        self.teamComboBoxLeftfill()
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)        
         self.gridLayout.addWidget(self.DataVisualizationGroupBox, 1, 0, 1, 1)        
         self.gridLayout.addWidget(self.ContainerBottom, 2, 0, 1, 1, QtCore.Qt.AlignBottom)        
@@ -109,12 +120,8 @@ class Ui_MainWindow(GuiMethods):
                     #Match Combo Box
                     self.matchComboBoxLeft = QtGui.QComboBox(self.DataSelectionGroupBoxLeft)
                     self.matchComboBoxLeft.setFont(self.font(10, False, 50))
-                    self.matchComboBoxLeft.addItem("")
-                    self.matchComboBoxLeft.setItemText(0, "")
-                    self.matchComboBoxLeft.addItem("")
-                    self.matchComboBoxLeft.addItem("")
-                    self.matchComboBoxLeft.setItemText(1, "Number One")
-                    self.matchComboBoxLeft.setItemText(2, "Number Two")                    
+                    self.matchComboBoxLeft.addItem("-")
+                    self.matchComboBoxLeft.activated[str].connect(self.matchSelectLeft)               
                     #Label "Half"
                     self.halfLabelLeft = QtGui.QLabel(self.DataSelectionGroupBoxLeft)
                     self.halfLabelLeft.setFont(self.font(10, False, 50))
@@ -122,23 +129,10 @@ class Ui_MainWindow(GuiMethods):
                     #Half Combo Box
                     self.halfComboBoxLeft = QtGui.QComboBox(self.DataSelectionGroupBoxLeft)
                     self.halfComboBoxLeft.setFont(self.font(10, False, 50))
-                    self.halfComboBoxLeft.addItem("")
-                    self.halfComboBoxLeft.setItemText(0, "")
-                    self.halfComboBoxLeft.addItem("")
-                    self.halfComboBoxLeft.addItem("")
-                    self.halfComboBoxLeft.setItemText(1, "Number One")
-                    self.halfComboBoxLeft.setItemText(2, "Number Two")                    
-                    #Label "Player"
-                    self.playerLabelLeft = QtGui.QLabel(self.DataSelectionGroupBoxLeft)
-                    self.playerLabelLeft.setFont(self.font(10, False, 50))
-                    self.playerLabelLeft.setText("Player")
-                    #Player Combo Box
-                    self.playerComboBoxLeft = QtGui.QComboBox(self.DataSelectionGroupBoxLeft)
-                    self.playerComboBoxLeft.setFont(self.font(10, False, 50))
-                    self.playerComboBoxLeft.addItem("")
-                    self.playerComboBoxLeft.setItemText(0, "")
-                    self.playerComboBoxLeft.addItem("")
-                    self.playerComboBoxLeft.setItemText(1,"Crimson King")
+                    self.halfComboBoxLeft.addItem("-")
+                    self.halfComboBoxLeft.addItem("Number One")
+                    self.halfComboBoxLeft.addItem("Number Two")
+                    self.halfComboBoxLeft.activated[str].connect(self.halfSelectLeft)               
                     #Label "Team"
                     self.teamLabelLeft = QtGui.QLabel(self.DataSelectionGroupBoxLeft)
                     self.teamLabelLeft.setFont(self.font(10, False, 50))
@@ -146,10 +140,17 @@ class Ui_MainWindow(GuiMethods):
                     #Team Combo Box
                     self.teamComboBoxLeft = QtGui.QComboBox(self.DataSelectionGroupBoxLeft)
                     self.teamComboBoxLeft.setFont(self.font(10, False, 50))
-                    self.teamComboBoxLeft.addItem("")
-                    self.teamComboBoxLeft.setItemText(0, "")
-                    self.teamComboBoxLeft.addItem("")
-                    self.teamComboBoxLeft.setItemText(1,"Harambe")
+                    self.teamComboBoxLeft.addItem("-")
+                    self.teamComboBoxLeft.activated[str].connect(self.teamSelectLeft)
+                    #Label "Player"
+                    self.playerLabelLeft = QtGui.QLabel(self.DataSelectionGroupBoxLeft)
+                    self.playerLabelLeft.setFont(self.font(10, False, 50))
+                    self.playerLabelLeft.setText("Player")
+                    #Player Combo Box
+                    self.playerComboBoxLeft = QtGui.QComboBox(self.DataSelectionGroupBoxLeft)
+                    self.playerComboBoxLeft.setFont(self.font(10, False, 50))
+                    self.playerComboBoxLeft.addItem("-")
+                    self.playerComboBoxLeft.activated[str].connect(self.playerSelectLeft)
                     #Find Button
                     self.findBtnLeft = QtGui.QPushButton(self.DataSelectionGroupBoxLeft)
                     self.findBtnLeft.setFont(self.font(10, False, 50))
@@ -360,19 +361,6 @@ class Ui_MainWindow(GuiMethods):
                     self.DataSelectionGroupBoxRight = QtGui.QGroupBox(self.dataTabRight)
                     self.DataSelectionGroupBoxRight.setFont(self.font(12, True, 75))
                     self.DataSelectionGroupBoxRight.setTitle("Data Selection")
-                    #Player Label
-                    self.playerLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
-                    self.playerLabelRight.setFont(self.font(10, False, 50))
-                    self.playerLabelRight.setText("Player")
-                    #Half Combo Box
-                    self.halfComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
-                    self.halfComboBoxRight.setFont(self.font(10, False, 50))
-                    self.halfComboBoxRight.addItem("")
-                    self.halfComboBoxRight.setItemText(0, "")
-                    self.halfComboBoxRight.addItem("")
-                    self.halfComboBoxRight.addItem("")
-                    self.halfComboBoxRight.setItemText(1, "Number One")
-                    self.halfComboBoxRight.setItemText(2, "Number Two")
                     #Match Label
                     self.matchLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
                     self.matchLabelRight.setFont(self.font(10, False, 50))
@@ -380,12 +368,37 @@ class Ui_MainWindow(GuiMethods):
                     #Match Combo Box
                     self.matchComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
                     self.matchComboBoxRight.setFont(self.font(10, False, 50))
-                    self.matchComboBoxRight.addItem("")
-                    self.matchComboBoxRight.setItemText(0, "")
-                    self.matchComboBoxRight.addItem("")
-                    self.matchComboBoxRight.addItem("")
-                    self.matchComboBoxRight.setItemText(1, "Number One")
-                    self.matchComboBoxRight.setItemText(2, "Number Two")
+                    self.matchComboBoxRight.addItem("-")
+                    self.matchComboBoxRight.activated[str].connect(self.matchSelectRight)
+                    #Half Label
+                    self.halfLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
+                    self.halfLabelRight.setFont(self.font(10, False, 50))
+                    self.halfLabelRight.setText("Half")
+                    #Half Combo Box
+                    self.halfComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
+                    self.halfComboBoxRight.setFont(self.font(10, False, 50))
+                    self.halfComboBoxRight.addItem("-")
+                    self.halfComboBoxRight.addItem("Number One")
+                    self.halfComboBoxRight.addItem("Number Two")
+                    self.halfComboBoxRight.activated[str].connect(self.halfSelectRight)
+                    #Team Label
+                    self.teamLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
+                    self.teamLabelRight.setFont(self.font(10, False, 50))
+                    self.teamLabelRight.setText("Team")
+                    #Team Combo Box
+                    self.teamComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
+                    self.teamComboBoxRight.setFont(self.font(10, False, 50))
+                    self.teamComboBoxRight.addItem("-")
+                    self.teamComboBoxRight.activated[str].connect(self.teamSelectRight)
+                    #Player Label
+                    self.playerLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
+                    self.playerLabelRight.setFont(self.font(10, False, 50))
+                    self.playerLabelRight.setText("Player")
+                    #Player Combo Box
+                    self.playerComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
+                    self.playerComboBoxRight.setFont(self.font(10, False, 50))
+                    self.playerComboBoxRight.addItem("-")
+                    self.playerComboBoxRight.activated[str].connect(self.playerSelectRight)
                     #Clear Button
                     self.clearBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
                     self.clearBtnRight.setFont(self.font(10, False, 50))
@@ -394,40 +407,18 @@ class Ui_MainWindow(GuiMethods):
                     self.findBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
                     self.findBtnRight.setFont(self.font(10, False, 50))
                     self.findBtnRight.setText("Find")
-                    #Half Label
-                    self.halfLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
-                    self.halfLabelRight.setFont(self.font(10, False, 50))
-                    self.halfLabelRight.setText("Half")
-                    #Player Combo Box
-                    self.playerComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
-                    self.playerComboBoxRight.setFont(self.font(10, False, 50))
-                    self.playerComboBoxRight.addItem("")
-                    self.playerComboBoxRight.setItemText(0, "")
-                    self.playerComboBoxRight.addItem("")
-                    self.playerComboBoxRight.setItemText(1, "Crimson King")
-                    #Team Label
-                    self.teamLabelRight = QtGui.QLabel(self.DataSelectionGroupBoxRight)
-                    self.teamLabelRight.setFont(self.font(10, False, 50))
-                    self.teamLabelRight.setText("Team")
-                    #Team Combo Box
-                    self.teamComboBoxRight = QtGui.QComboBox(self.DataSelectionGroupBoxRight)
-                    self.teamComboBoxRight.setFont(self.font(10, False, 50))
-                    self.teamComboBoxRight.addItem("")
-                    self.teamComboBoxRight.setItemText(0, "")
-                    self.teamComboBoxRight.addItem("") 
-                    self.teamComboBoxRight.setItemText(1, "Harambe")
                     #Layout
                     self.DataSelectionGroupBoxRightGrid = QtGui.QGridLayout(self.DataSelectionGroupBoxRight)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.playerLabelRight, 7, 0, 1, 1, QtCore.Qt.AlignBottom)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.halfComboBoxRight, 3, 0, 1, 1, QtCore.Qt.AlignBottom)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.matchLabelRight, 0, 0, 1, 1)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.matchComboBoxRight, 1, 0, 1, 1, QtCore.Qt.AlignBottom)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.clearBtnRight, 10, 0, 1, 1, QtCore.Qt.AlignBottom)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.findBtnRight, 9, 0, 1, 1, QtCore.Qt.AlignBottom)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.halfLabelRight, 2, 0, 1, 1, QtCore.Qt.AlignBottom)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.playerComboBoxRight, 8, 0, 1, 1, QtCore.Qt.AlignBottom)
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.halfComboBoxRight, 3, 0, 1, 1, QtCore.Qt.AlignBottom)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.teamLabelRight, 4, 0, 1, 1, QtCore.Qt.AlignBottom)
-                    self.DataSelectionGroupBoxRightGrid.addWidget(self.teamComboBoxRight, 5, 0, 1, 1)          
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.teamComboBoxRight, 5, 0, 1, 1)
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.playerLabelRight, 7, 0, 1, 1, QtCore.Qt.AlignBottom)
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.playerComboBoxRight, 8, 0, 1, 1, QtCore.Qt.AlignBottom)
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.findBtnRight, 9, 0, 1, 1, QtCore.Qt.AlignBottom)
+                    self.DataSelectionGroupBoxRightGrid.addWidget(self.clearBtnRight, 10, 0, 1, 1, QtCore.Qt.AlignBottom)
                 self.dataTabRight = QtGui.QWidget()
                 self.dataTabRightGrid = QtGui.QGridLayout(self.dataTabRight)
                 DataSelectionGroupBoxRight()
@@ -622,14 +613,143 @@ class Ui_MainWindow(GuiMethods):
     def matchCreate(self):
         matchCount = self.matchNumberSpinBox.value()
         if int(matchCount) not in self.Directory.matchDir:
-            self.Directory.loadSpreadSheet()
-            self.Directory.matchCreate(matchCount)
+            if int(matchCount) - 1 in self.Directory.matchDir or int(matchCount) == 1:
+                self.Directory.loadSpreadSheet()
+                self.Directory.matchCreate(matchCount)
+            else:
+                self.ErrorTextLine.setText("Missing match #{}: last known match is match #{}".format(str(matchCount - 1), len(self.Directory.matchDir)))
         else:
             self.ErrorTextLine.setText("This match already exists use reload data to change it")
+        self.matchComboBoxFill(self.matchComboBoxLeft)
+        self.matchComboBoxFill(self.matchComboBoxRight)
     def matchReload(self):
         self.Directory.matchNumber = self.matchNumberSpinBox.value()
         self.Directory.loadSpreadSheet()
         self.Directory.reloadMatches(self.Directory.matchNumber)
+        self.matchComboBoxFill(self.matchComboBoxLeft)
+        self.matchComboBoxFill(self.matchComboBoxRight)
+    def matchComboBoxFill(self, comboBox):
+        self.comboEmpty(comboBox)
+        for x in range (0, self.Directory.matchNumber):
+           comboBox.addItem(str(x + 1))
+    def comboEmpty(self, comboBox):
+        for x in range(1, comboBox.count()):
+            comboBox.removeItem(1)
+    def matchSelectRight(self, text):
+        if text == "-":
+            self.matchRight = None
+        else:
+            self.matchRight = text
+        self.teamComboBoxRightfill()
+    def teamComboBoxRightfill(self):
+        self.comboEmpty(self.teamComboBoxRight)
+        if self.matchRight == None:
+            teamList = sorted(self.Directory.teamList, key=str.lower)
+            for team in teamList:
+                self.teamComboBoxRight.addItem(team)
+        else:
+            teamList = sorted(self.Directory.matchDir[int(self.matchRight)].teamList, key=str.lower)
+            for team in teamList:
+                self.teamComboBoxRight.addItem(team)
+        self.playerComboBoxRightFill()
+    def playerComboBoxRightFill(self):
+        self.comboEmpty(self.playerComboBoxRight)
+        if self.matchRight == None:
+            if self.teamRight == None:
+                playerList = sorted(self.Directory.playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxRight.addItem(player)        
+            else:
+                playerList = sorted(self.Directory.teamDir[self.teamRight].playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxRight.addItem(player)    
+        else:
+            if self.teamRight == None:
+                playerList = sorted(self.Directory.matchDir[int(self.matchRight)].playerList, key=str.lower)    
+                for player in playerList:
+                    self.playerComboBoxRight.addItem(player)       
+            else:
+                playerList = sorted(self.Directory.matchDir[int(self.matchRight)].teamDir[self.teamRight].playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxRight.addItem(player)
+    def halfSelectRight(self, text):
+        if text == "-":
+            self.halfRight = None
+        elif text == "Number One":
+            self.halfRight = 1
+        else:
+            self.halfRight = 2
+    def teamSelectRight(self, text):
+        if text == "-":
+            self.teamRight = None
+        else:
+            self.teamRight = text
+        self.playerComboBoxRightFill()
+    def playerSelectRight(self, text):
+        if text == "-":
+            self.playerRight = None
+        else:
+            self.playerRight = text
+    def matchSelectLeft(self, text):
+        if text == "-":
+            self.matchLeft = None
+        else:
+            self.matchLeft = text
+        self.teamComboBoxLeftfill()
+    def teamComboBoxLeftfill(self):
+        self.comboEmpty(self.teamComboBoxLeft)
+        if self.matchLeft == None:
+            teamList = sorted(self.Directory.teamList, key=str.lower)
+            for team in teamList:
+                self.teamComboBoxLeft.addItem(team)
+        else:
+            teamList = sorted(self.Directory.matchDir[int(self.matchLeft)].teamList, key=str.lower)
+            for team in teamList:
+                self.teamComboBoxLeft.addItem(team)
+        self.playerComboBoxLeftFill()
+    def playerComboBoxLeftFill(self):
+        self.comboEmpty(self.playerComboBoxLeft)
+        if self.matchLeft == None:
+            if self.teamLeft == None:
+                playerList = sorted(self.Directory.playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxLeft.addItem(player)        
+            else:
+                playerList = sorted(self.Directory.teamDir[self.teamLeft].playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxLeft.addItem(player)    
+        else:
+            if self.teamLeft == None:    
+                playerList = sorted(self.Directory.matchDir[int(self.matchLeft)].playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxLeft.addItem(player)       
+            else:
+                playerList = sorted(self.Directory.matchDir[int(self.matchLeft)].teamDir[self.teamLeft].playerList, key=str.lower)
+                for player in playerList:
+                    self.playerComboBoxLeft.addItem(player)
+    def halfSelectLeft(self, text):
+        if text == "-":
+            self.halfLeft = None
+        elif text == "Number One":
+            self.halfLeft = 1
+        else:
+            self.halfLeft = 2
+    def teamSelectLeft(self, text):
+        if text == "-":
+            self.teamLeft = None
+        else:
+            self.teamLeft = text
+        self.playerComboBoxLeftFill()
+    def playerSelectLeft(self, text):
+        if text == "-":
+            self.playerLeft = None
+        else:
+            self.playerLeft = text
+    def matchComboBoxFill(self, comboBox):
+        self.comboEmpty(comboBox)
+        for x in range (0, self.Directory.matchNumber):
+           comboBox.addItem(str(x + 1))
+
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)

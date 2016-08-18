@@ -36,22 +36,20 @@ class Directory():
         self.teamWrs.worksheetDirBuild(0)
         x = time.time() - start_time
         
+        self.loadSpreadSheet()
+        
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()
         self.loadSpreadSheet()
-        self.matchCreate(self.matchNumber)
     def matchCreate(self, matchNumber):
         '''
         Create match object and add to match directory
         '''
-        try:
-            self.setMatchNumber(matchNumber)
-            match = Match(self.matchNumber, self.matchWrs)
-            self.matchDir[self.matchNumber] = match
-            self.ValueUpdater(self.matchNumber)
-        except:
-            pass
+        self.setMatchNumber(matchNumber)
+        match = Match(self.matchNumber, self.matchWrs)
+        self.matchDir[self.matchNumber] = match
+        self.ValueUpdater(self.matchNumber)
         #Updates tournament wide values
     def playerCreate(self):
         '''

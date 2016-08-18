@@ -98,7 +98,5 @@ class Match(object):
                     pass
             self.playerDir[player].updateValues(kills, deaths, assists, None)
         #Updates team win/lose
-        for team in self.teamList:
-            self.teamDir[team].updateValues()
         self.teamDir[self.winner].Win()
         self.teamDir[self.loser].Loss()

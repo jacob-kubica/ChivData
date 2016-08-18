@@ -48,6 +48,16 @@ class Team(object):
         Returns Win loss ratio
         '''
         return self.teamWins/self.teamLoss
+    def teamKDRatio(self):
+        pass
+    def teamCDRatio(self):
+        pass
+    def teamKills(self):
+        pass
+    def teamDeaths(self):
+        pass
+    def updateValues(self):
+        pass
     def clearValues(self):
         self.teamWins = 0
         self.teamLoss = 0 
