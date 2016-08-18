@@ -172,7 +172,8 @@ class Ui_MainWindow(GuiMethods):
                     #Clear Button
                     self.clearBtnLeft = QtGui.QPushButton(self.DataSelectionGroupBoxLeft)
                     self.clearBtnLeft.setFont(self.font(10, False, 50))
-                    self.clearBtnLeft.setText("Clear")                    
+                    self.clearBtnLeft.setText("Clear")    
+                    self.clearBtnLeft.clicked.connect(self.clearValueLeft)                
                     #Layout
                     self.DataSelectionGroupBoxLeftGrid = QtGui.QGridLayout(self.DataSelectionGroupBoxLeft)
                     self.DataSelectionGroupBoxLeftGrid.addWidget(self.matchLabelLeft, 0, 0, 1, 1)
@@ -199,7 +200,7 @@ class Ui_MainWindow(GuiMethods):
                     #Team Label
                     self.teamNameLeft = QtGui.QLabel(self.teamGroupBoxLeft)
                     self.teamNameLeft.setFont(self.font(14, False, 50))
-                    self.teamNameLeft.setText("Accolade")
+                    self.teamNameLeft.setText("")
                     #Line
                     self.lineLeft = QtGui.QFrame(self.teamGroupBoxLeft)
                     self.lineLeft.setFrameShape(QtGui.QFrame.HLine)
@@ -262,7 +263,7 @@ class Ui_MainWindow(GuiMethods):
                     #Player Label
                     self.playerNameLabelLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
                     self.playerNameLabelLeft.setFont(self.font(14, False, 50))
-                    self.playerNameLabelLeft.setText("Crimson King")
+                    self.playerNameLabelLeft.setText("")
                     #Line
                     self.lineLeft_2 = QtGui.QFrame(self.PlayerGroupBoxLeft)
                     self.lineLeft_2.setFrameShape(QtGui.QFrame.HLine)
@@ -413,15 +414,16 @@ class Ui_MainWindow(GuiMethods):
                     self.playerComboBoxRight.setFont(self.font(10, False, 50))
                     self.playerComboBoxRight.addItem("-")
                     self.playerComboBoxRight.activated[str].connect(self.playerSelectRight)
-                    #Clear Button
-                    self.clearBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
-                    self.clearBtnRight.setFont(self.font(10, False, 50))
-                    self.clearBtnRight.setText("Clear")
                     #Find Button
                     self.findBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
                     self.findBtnRight.setFont(self.font(10, False, 50))
                     self.findBtnRight.setText("Find")
                     self.findBtnRight.clicked.connect(self.findRight)
+                    #Clear Button
+                    self.clearBtnRight = QtGui.QPushButton(self.DataSelectionGroupBoxRight)
+                    self.clearBtnRight.setFont(self.font(10, False, 50))
+                    self.clearBtnRight.setText("Clear")
+                    self.clearBtnRight.clicked.connect(self.clearValueRight)                    
                     #Layout
                     self.DataSelectionGroupBoxRightGrid = QtGui.QGridLayout(self.DataSelectionGroupBoxRight)
                     self.DataSelectionGroupBoxRightGrid.addWidget(self.matchLabelRight, 0, 0, 1, 1)
@@ -646,7 +648,7 @@ class Ui_MainWindow(GuiMethods):
     def matchComboBoxFill(self, comboBox):
         self.comboEmpty(comboBox)
         for x in range (0, self.Directory.matchNumber):
-           comboBox.addItem(str(x + 1))
+            comboBox.addItem(str(x + 1))
     def comboEmpty(self, comboBox):
         for x in range(1, comboBox.count()):
             comboBox.removeItem(1)
@@ -763,7 +765,7 @@ class Ui_MainWindow(GuiMethods):
     def matchComboBoxFill(self, comboBox):
         self.comboEmpty(comboBox)
         for x in range (0, self.Directory.matchNumber):
-           comboBox.addItem(str(x + 1))
+            comboBox.addItem(str(x + 1))
     def findRight(self):
         self.playerobjectRight = None
         self.teamObjectRight = None
@@ -789,7 +791,7 @@ class Ui_MainWindow(GuiMethods):
                         self.teamObjectRight = self.Directory.matchDir[int(self.matchRight)].teamDir[self.teamRight]
                 else:
                     if self.playerRight != None:
-                        self.playerobjectRight = self.Directory.playerDir[self.playerRight]
+                        self.playerobjectRight = self.Directory.matchDir[int(self.matchRight)].playerDir[self.playerRight]
                     else:
                         pass
         else:
@@ -797,7 +799,7 @@ class Ui_MainWindow(GuiMethods):
                 if self.teamRight != None:
                     if self.playerRight != None:
                         self.playerobjectRight = self.Directory.teamDir[self.teamRight].playerDir[self.playerRight]
-                        self.teamObjectRight = self.Directory.teamDir[self.teamRight].playerDir[self.playerRight]
+                        self.teamObjectRight = self.Directory.teamDir[self.teamRight]
                     else:
                         self.teamObjectRight = self.Directory.teamDir[self.teamRight]
                 else:
@@ -830,6 +832,10 @@ class Ui_MainWindow(GuiMethods):
             self.assistsRight.setText("Assists: {}".format(self.playerobjectRight.assists))
             self.kDRatioRight.setText("K/D Ratio: {}".format(self.playerobjectRight.kDRatio))
             self.isArcherRight.setText("Is Archer: {}".format(self.playerobjectRight.isArcher))
+        self.matchRight = None
+        self.halfRight = None
+        self.teamRight =  None
+        self.playerRight = None
     def findLeft(self):
         self.playerobjectLeft = None
         self.teamObjectLeft = None
@@ -855,7 +861,7 @@ class Ui_MainWindow(GuiMethods):
                         self.teamObjectLeft = self.Directory.matchDir[int(self.matchLeft)].teamDir[self.teamLeft]
                 else:
                     if self.playerLeft != None:
-                        self.playerobjectLeft = self.Directory.playerDir[self.playerLeft]
+                        self.playerobjectLeft = self.Directory.matchDir[int(self.matchLeft)].playerDir[self.playerLeft]
                     else:
                         pass
         else:
@@ -863,7 +869,7 @@ class Ui_MainWindow(GuiMethods):
                 if self.teamLeft != None:
                     if self.playerLeft != None:
                         self.playerobjectLeft = self.Directory.teamDir[self.teamLeft].playerDir[self.playerLeft]
-                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft].playerDir[self.playerLeft]
+                        self.teamObjectLeft = self.Directory.teamDir[self.teamLeft]
                     else:
                         self.teamObjectLeft = self.Directory.teamDir[self.teamLeft]
                 else:
@@ -896,6 +902,25 @@ class Ui_MainWindow(GuiMethods):
             self.assistsLeft.setText("Assists: {}".format(self.playerobjectLeft.assists))
             self.kDRatioLeft.setText("K/D Ratio: {}".format(self.playerobjectLeft.kDRatio))
             self.isArcherLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
+        self.matchLeft = None
+        self.halfLeft = None
+        self.teamLeft =  None
+        self.playerLeft = None
+    def clearValueLeft(self):
+        self.matchLeft = None
+        self.halfLeft = None
+        self.teamLeft =  None
+        self.playerLeft = None
+        self.teamObjectLeft = None
+        self.playerobjectLeft = None
+    def clearValueRight(self):
+        self.matchRight = None
+        self.halfRight = None
+        self.teamRight =  None
+        self.playerRight = None
+        self.teamObjectRight = None
+        self.playerobjectRight = None
+    
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)

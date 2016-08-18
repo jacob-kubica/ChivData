@@ -103,7 +103,7 @@ class Directory():
                 try:
                     self.teamDir[team].playerDir[player].updateValues(kills, deaths, assists, None)
                 except:
-                    pass
+                    print("fail")
         #Updates Team Values
         self.teamDir[self.matchDir[matchNumber].winner].Win()
         self.teamDir[self.matchDir[matchNumber].loser].Loss()
@@ -155,6 +155,7 @@ class Directory():
                 self.matchCreate(x + 1)
             except:
                 break
+        print(self.matchDir)
     def loadSpreadSheet(self):
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchWrs.worksheetDirBuild(1) 
