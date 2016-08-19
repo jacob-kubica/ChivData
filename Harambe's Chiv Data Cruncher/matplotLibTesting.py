@@ -43,22 +43,21 @@ class Graphs():
         y = (18,12,13,18.5,16,14)
         
         numPlayers = len(playerList)
-        fig, ax = plt.subplots()
+        fig,ax = plt.subplots()
         
         index = np.arange(numPlayers)
-        width = 0.5
         
         opacity = 0.4
         error_config = {'ecolor':'0.3'}
         
-        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         
-        plt.ylabel('Combat Score')
-        plt.title(teamName + " Player Level Combat Score")
+        plt.ylabel('Combat Score Ratio')
+        plt.title(teamName + " Player Level Combat Score Ratio")
         plt.xticks(index, playerList)
         plt.tight_layout()
         
-        ax.set_ylim([0,max(y)+5])
+        ax.set_ylim([0,max(y)+2.5])
         plt.subplots_adjust(wspace = 0.5)
         
         plt.show()
@@ -73,12 +72,11 @@ class Graphs():
         fig, ax = plt.subplots()
         
         index = np.arange(numPlayers)
-        width = 0.5
         
         opacity = 0.4
         error_config = {'ecolor':'0.3'}
         
-        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         
 
         plt.ylabel('Combat Score Relative')
@@ -86,7 +84,7 @@ class Graphs():
         plt.xticks(index, playerList)
         plt.tight_layout()
         
-        ax.set_ylim([-1*(max(y))-5,max(y)+5])
+        ax.set_ylim([-1*(max(y))-2.5,max(y)+2.5])
         plt.subplots_adjust(wspace = 0.5)
         plt.axhline(0, color = "black")
         
@@ -101,12 +99,11 @@ class Graphs():
         fig, ax = plt.subplots()
         
         index = np.arange(numTeams)
-        width = 0.5
         
         opacity = 0.4
         error_config = {'ecolor':'0.3'}
         
-        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         
 
         plt.ylabel('Kill/Death Ratio')
@@ -114,16 +111,69 @@ class Graphs():
         plt.xticks(index, teamList)
         plt.tight_layout()
         
-        ax.set_ylim([0,max(y)+1])
+        ax.set_ylim([0,max(y)+0.25])
         plt.subplots_adjust(wspace = 0.5)
         
         plt.show()
-            
-            
+        
+    def tournamentLevelTopArcherCombatRatio(self):
+        playerList = ("Russian Mafia", "Skillz", "Pnobio", "Digital", "Jared39", "Cervantes")
+        y = (24,12,13,18.5,16,14)
+        
+        numPlayers = len(playerList)
+        fig,ax = plt.subplots()
+        
+        index = np.arange(numPlayers)
+        
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        
+        plt.ylabel('Combat Score Ratio')
+        plt.title(" Archer  Combat Score Ratio")
+        plt.xticks(index, playerList)
+        plt.tight_layout()
+        
+        ax.set_ylim([0,max(y)+2.5])
+        plt.subplots_adjust(wspace = 0.5)
+        
+        plt.show()
+        
+    def tournamentLevelTopCombatRatio(self):
+        playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz", "Stinker", "Curly", "Wizardish", "Raw Boner")
+        y = (18,12,13,18.5,16,14,21,19.8,17.6,15.3)
+        
+        numPlayers = len(playerList)
+        fig,ax = plt.subplots()
+        
+        index = np.arange(numPlayers)
+        
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        
+        plt.ylabel('Combat Score Ratio')
+        plt.title(" Top 10 Players in Combat Score Ratio")
+        plt.xticks(index, playerList)
+        plt.tight_layout()
+        
+        for label in ax.xaxis.get_ticklabels():
+            label.set_rotation(45)
+        
+        ax.set_ylim([0,max(y)+2.5])
+        plt.subplots_adjust(wspace = 0.25, bottom = 0.15)
+        
+        plt.show()
+        
+        
 Graph = Graphs()
-Graph.teamLevelPlayerCombatScore()
-Graph.teamLevelPlayerCombatScoreRelative()
-                
+#Graph.teamLevelPlayerCombatScore()
+#Graph.teamLevelPlayerCombatScoreRelative()
+#Graph.tournamentLevelTopTeamKD()
+#Graph.tournamentLevelTopArcherCombatRatio()
+Graph.tournamentLevelTopCombatRatio()
                 
             
         
