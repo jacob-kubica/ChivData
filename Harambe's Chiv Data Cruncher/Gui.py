@@ -1048,8 +1048,8 @@ class Ui_MainWindow():
             plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
             plt.ylabel('Combat Score')
             plt.title(teamName + " Player Level Combat Score")
-            plt.xticks(index, playerList)
-            #plt.tight_layout()
+            plt.xticks(index, playerList, rotation=45)
+            plt.tight_layout()
             plt.subplots_adjust(wspace = 0.5)
             self.figureLeft = plt
             self.canvasRight.draw()
