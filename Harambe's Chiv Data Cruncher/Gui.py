@@ -10,6 +10,7 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import random
 import time
+import numpy as np
 
 class Ui_MainWindow():
     def __init__(self, Directory):
@@ -1028,18 +1029,25 @@ class Ui_MainWindow():
         self.halfComboBoxRight.setCurrentIndex(0)
         self.matchComboBoxRight.setCurrentIndex(0)
     def plotLeft(self):
-        x = [2,4,6]
-        y = [16.9, 12.8, 6.9]
-        labels = ["NathookGD","Kylerr","Sombo"]
-        plt.bar(x, y)
-        plt.xticks(x,labels)
-        plt.xlabel('Players')
+        teamName = "G.W.A"
+        playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz")
+        y = (18,12,13,18.5,16,14)
+        
+        numPlayers = len(playerList)
+        
+        index = np.arange(numPlayers)
+        width = 0.5
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        plt.cla()
+        plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         plt.ylabel('Combat Score')
-        plt.title('Player Combat Score')
+        plt.title(teamName + " Player Level Combat Score")
+        plt.xticks(index, playerList)
+        plt.tight_layout()
+        plt.subplots_adjust(wspace = 0.5)
         self.figureLeft = plt
         self.canvasRight.draw()
-        #self.canvasRight.hide()
-        #self.canvasRight.show()
 
 def run(Directory):
     import sys
