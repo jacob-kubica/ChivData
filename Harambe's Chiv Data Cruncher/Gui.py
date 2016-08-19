@@ -1035,11 +1035,13 @@ class Ui_MainWindow():
         if self.teamObjectLeft != None:
             teamName = self.teamObjectLeft.teamName
             playerList = self.teamObjectLeft.playerList
+            x = []
             y = []
             for player in playerList:
-                y.append(self.teamObjectLeft.playerDir[player].combatScoreRatio)
-            numPlayers = len(playerList)
-            
+                if self.teamObjectLeft.playerDir[player].combatScoreRatio != 0:
+                    x.append(player)
+                    y.append(self.teamObjectLeft.playerDir[player].combatScoreRatio)
+            numPlayers = len(x)
             index = np.arange(numPlayers)
             width = 0.5
             opacity = 0.4
@@ -1048,7 +1050,10 @@ class Ui_MainWindow():
             plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
             plt.ylabel('Combat Score')
             plt.title(teamName + " Player Level Combat Score")
-            plt.xticks(index, playerList, rotation=45)
+            if len(playerList) > 6:
+                plt.xticks(index, playerList, rotation=90)
+            else:
+                plt.xticks(index, playerList)
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.5)
             self.figureLeft = plt
