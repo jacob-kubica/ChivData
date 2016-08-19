@@ -25,6 +25,8 @@ class Ui_MainWindow():
         self.halfLeft = None
         self.teamLeft =  None
         self.playerLeft = None
+        self.playerobjectLeft = None
+        self.teamObjectLeft = None
     def setupUi(self, MainWindow):
         '''
         Set up gui window
@@ -240,6 +242,7 @@ class Ui_MainWindow():
                     self.dataVizTeamLeft_2 = QtGui.QPushButton(self.teamGroupBoxLeft)
                     self.dataVizTeamLeft_2.setFont(self.font(10, False, 50))
                     self.dataVizTeamLeft_2.setText("Player Combat Score Ratios")
+                    self.dataVizTeamLeft_2.clicked.connect(self.playerCombatScoreLeft)
                     #Data Visualization Button
                     '''
                     self.dataVizTeamLeft_3 = QtGui.QPushButton(self.teamGroupBoxLeft)
@@ -312,7 +315,7 @@ class Ui_MainWindow():
                     self.dataVizPlayerLeft_1 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_1.setFont(self.font(10, False, 50))
                     self.dataVizPlayerLeft_1.setText("Combat Score/Death Ratio Match by Match")
-                    self.dataVizPlayerLeft_1.clicked.connect(self.plotLeft)
+                    #self.dataVizPlayerLeft_1.clicked.connect(self.plotLeft)
                     #Data Visualization Button
                     self.dataVizPlayerLeft_2 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_2.setFont(self.font(10, False, 50))
@@ -1000,10 +1003,10 @@ class Ui_MainWindow():
         self.kDRatioLeft.setText("K/D Ratio:")
         self.cSDRatioLeft.setText("Combat Score/Death Ratio:")   
         self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")        
-        self.comboEmpty(self.playerComboBoxLeft)
-        self.comboEmpty(self.teamComboBoxLeft)
         self.halfComboBoxLeft.setCurrentIndex(0)
         self.matchComboBoxLeft.setCurrentIndex(0)
+        self.playerComboBoxLeft.setCurrentIndex(0)
+        self.teamComboBoxLeft.setCurrentIndex(0)
     def clearValueRight(self):
         self.matchRight = None
         self.halfRight = None
@@ -1024,31 +1027,34 @@ class Ui_MainWindow():
         self.kDRatioRight.setText("K/D Ratio:")
         self.cSDRatioRight.setText("Combat Score/Death Ratio:")   
         self.cSDRatioRelativeRight.setText("Combat Score/Death Ratio Relative:")      
-        self.comboEmpty(self.playerComboBoxRight)
-        self.comboEmpty(self.teamComboBoxRight)
         self.halfComboBoxRight.setCurrentIndex(0)
         self.matchComboBoxRight.setCurrentIndex(0)
-    def plotLeft(self):
-        teamName = "G.W.A"
-        playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz")
-        y = (18,12,13,18.5,16,14)
-        
-        numPlayers = len(playerList)
-        
-        index = np.arange(numPlayers)
-        width = 0.5
-        opacity = 0.4
-        error_config = {'ecolor':'0.3'}
-        plt.cla()
-        plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
-        plt.ylabel('Combat Score')
-        plt.title(teamName + " Player Level Combat Score")
-        plt.xticks(index, playerList)
-        plt.tight_layout()
-        plt.subplots_adjust(wspace = 0.5)
-        self.figureLeft = plt
-        self.canvasRight.draw()
-
+        self.teamComboBoxRight.setCurrentIndex(0)
+        self.playerComboBoxRight.setCurrentIndex(0)
+    def playerCombatScoreLeft(self):
+        if self.teamObjectLeft != None:
+            teamName = self.teamObjectLeft.teamName
+            playerList = self.teamObjectLeft.playerList
+            y = []
+            for player in playerList:
+                y.append(self.teamObjectLeft.playerDir[player].combatScoreRatio)
+            numPlayers = len(playerList)
+            
+            index = np.arange(numPlayers)
+            width = 0.5
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score')
+            plt.title(teamName + " Player Level Combat Score")
+            plt.xticks(index, playerList)
+            #plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.5)
+            self.figureLeft = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("Find a Team First")
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
