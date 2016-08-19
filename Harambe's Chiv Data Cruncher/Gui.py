@@ -219,6 +219,10 @@ class Ui_MainWindow():
                     self.tKDRatioLeft = QtGui.QLabel(self.teamGroupBoxLeft)
                     self.tKDRatioLeft.setFont(self.font(10, False, 50))
                     self.tKDRatioLeft.setText("Total Kill/Death Ratio:")
+                    #Other Label
+                    self.tCDRatioLeft = QtGui.QLabel(self.teamGroupBoxLeft)
+                    self.tCDRatioLeft.setFont(self.font(10, False, 50))
+                    self.tCDRatioLeft.setText("Combat Score/Death Ratio:")                    
                     #Data Visualization Button
                     self.dataVizTeamLeft_1 = QtGui.QPushButton(self.teamGroupBoxLeft)
                     self.dataVizTeamLeft_1.setFont(self.font(10, False, 50))
@@ -247,8 +251,9 @@ class Ui_MainWindow():
                     self.teamGroupBoxLeftGrid.addWidget(self.lossesLeft, 3, 0, 1, 1)
                     self.teamGroupBoxLeftGrid.addWidget(self.wLRatioLeft, 4, 0, 1, 1)
                     self.teamGroupBoxLeftGrid.addWidget(self.tKDRatioLeft, 5, 0, 1, 1)
-                    self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_1, 6, 0, 1, 1)
-                    self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_2, 7, 0, 1, 1)
+                    self.teamGroupBoxLeftGrid.addWidget(self.tCDRatioLeft, 6, 0, 1, 1)
+                    self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_1, 7, 0, 1, 1)
+                    self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_2, 8, 0, 1, 1)
                     #self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_3, 8, 0, 1, 1)
                     #self.teamGroupBoxLeftGrid.addWidget(self.dataVizTeamLeft_4, 9, 0, 1, 1)
                 self.teamTabLeft = QtGui.QWidget()
@@ -490,10 +495,14 @@ class Ui_MainWindow():
                     self.wLRatioRight = QtGui.QLabel(self.teamGroupBoxRight)
                     self.wLRatioRight.setFont(self.font(10, False, 50))
                     self.wLRatioRight.setText("Win/Loss Ratio:")
-                    #Other Label
+                    #Other Label 
                     self.tKDRatioRight = QtGui.QLabel(self.teamGroupBoxRight)
                     self.tKDRatioRight.setFont(self.font(10, False, 50))
                     self.tKDRatioRight.setText("Total Kill/Death Ratio:")
+                    #Combat Score/Death Ratio
+                    self.tCDRatioRight = QtGui.QLabel(self.teamGroupBoxRight)
+                    self.tCDRatioRight.setFont(self.font(10, False, 50))
+                    self.tCDRatioRight.setText("Combat Score/Death Ratio:")
                     #Data Visualization Button
                     self.dataVizTeamRight_1 = QtGui.QPushButton(self.teamGroupBoxRight)
                     self.dataVizTeamRight_1.setFont(self.font(10, False, 50))
@@ -522,8 +531,9 @@ class Ui_MainWindow():
                     self.gridLayout_10.addWidget(self.lossesRight, 3, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.wLRatioRight, 4, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.tKDRatioRight, 5, 0, 1, 1)
-                    self.gridLayout_10.addWidget(self.dataVizTeamRight_1, 6, 0, 1, 1)
-                    self.gridLayout_10.addWidget(self.dataVizTeamRight_2, 7, 0, 1, 1)
+                    self.gridLayout_10.addWidget(self.tCDRatioRight, 6, 0, 1, 1)
+                    self.gridLayout_10.addWidget(self.dataVizTeamRight_1, 7, 0, 1, 1)
+                    self.gridLayout_10.addWidget(self.dataVizTeamRight_2, 8, 0, 1, 1)
                     '''
                     self.gridLayout_10.addWidget(self.dataVizTeamRight_3, 8, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.dataVizTeamRight_4, 9, 0, 1, 1)
@@ -810,10 +820,6 @@ class Ui_MainWindow():
             self.playerLeft = None
         else:
             self.playerLeft = text
-    def matchComboBoxFill(self, comboBox):
-        self.comboEmpty(comboBox)
-        for x in range (0, self.Directory.matchNumber):
-            comboBox.addItem(str(x + 1))
     def findRight(self):
         self.playerobjectRight = None
         self.teamObjectRight = None
@@ -872,7 +878,8 @@ class Ui_MainWindow():
             self.winsRight.setText("Wins: {}".format(self.teamObjectRight.teamWins))
             self.lossesRight.setText("Losses: {}".format(self.teamObjectRight.teamLoss))
             self.wLRatioRight.setText("Win Loss Ratio: {0:.2f}".format(self.teamObjectRight.wLRatio))
-            self.tKDRatioRight.setText("Total Kill/Death Ratio: {0:.2f}".format(self.teamObjectRight.teamKDRatio))
+            self.tKDRatioRight.setText("Kill/Death Ratio: {0:.2f}".format(self.teamObjectRight.teamKDRatio))
+            self.tCDRatioRight.setText("Combat Score/Death Ratio: {0:.2f}".format(self.teamObjectRight.teamCDRatio))                      
         if self.playerobjectRight != None:
             self.playerNameLabelRight.setText("{}".format(self.playerobjectRight.playerName))
             self.killsRight.setText("Kills: {}".format(self.playerobjectRight.kills))
@@ -947,6 +954,7 @@ class Ui_MainWindow():
             self.lossesLeft.setText("Losses: {}".format(self.teamObjectLeft.teamLoss))
             self.wLRatioLeft.setText("Win Loss Ratio: {0:.2f}".format(self.teamObjectLeft.wLRatio))
             self.tKDRatioLeft.setText("Total Kill/Death Ratio: {0:.2f}".format(self.teamObjectLeft.teamKDRatio))
+            self.tCDRatioLeft.setText("Combat Score/Death Ratio: {0:.2f}".format(self.teamObjectLeft.teamCDRatio))    
         if self.playerobjectLeft != None:
             self.playerNameLabelLeft.setText("{}".format(self.playerobjectLeft.playerName))
             self.killsLeft.setText("Kills: {}".format(self.playerobjectLeft.kills))
@@ -958,6 +966,7 @@ class Ui_MainWindow():
             self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative: {0:.2f}".format(self.playerobjectLeft.combatScoreRatio - self.teamObjectLeft.teamCDRatio))
         else:
             self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")
+            
         self.matchLeft = None
         self.halfLeft = None
         self.teamLeft =  None
