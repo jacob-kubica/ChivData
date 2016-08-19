@@ -100,3 +100,5 @@ class Match(object):
         #Updates team win/lose
         self.teamDir[self.winner].Win()
         self.teamDir[self.loser].Loss()
+        self.teamDir[self.winner].updateValues()
+        self.teamDir[self.loser].updateValues()

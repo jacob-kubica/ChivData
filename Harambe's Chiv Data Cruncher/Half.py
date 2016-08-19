@@ -109,3 +109,5 @@ class Half(object):
                     self.teamDir[self.attacking].playerDir[player].updateValues(kills, deaths, assists, isArcher)
                 #Update player Values in player directory
                 self.playerDir[player].updateValues(kills, deaths, assists, isArcher)
+        for team in self.teamList:
+            self.teamDir[team].updateValues()

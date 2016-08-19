@@ -27,6 +27,10 @@ class Team(object):
         self.teamWins = 0
         self.teamLoss = 0
         self.wLRatio = 0
+        self.teamDeaths = 0
+        self.teamKills = 0
+        self.teamKDRatio = 0
+        self.teamCDRatio = 0 
     def ObjectCreator(self):
         '''
         Fills player directory with player objects
@@ -48,18 +52,43 @@ class Team(object):
         '''
         Returns Win loss ratio
         '''
-        return self.teamWins/self.teamLoss
-    def teamKDRatio(self):
-        pass
-    def teamCDRatio(self):
-        pass
-    def teamKills(self):
-        pass
-    def teamDeaths(self):
-        pass
+        if self.teamLoss != 0:
+            self.wLRatio = self.teamWins/self.teamLoss
+        else:
+            self.wLRatio = self.teamWins
+    def KDRatio(self):
+        if self.teamDeaths != 0:
+            self.teamKDRatio = self.teamKills/self.teamDeaths
+        else:
+            self.teamKDRatio = self.teamKills 
+    def Kills(self):
+        playerKills = []
+        for player in self.playerList:
+            playerKills.append(int(self.playerDir[player].kills))
+        self.teamKills = sum(playerKills)
+    def Deaths(self):
+        playerDeaths = []
+        for player in self.playerList:
+            playerDeaths.append(int(self.playerDir[player].deaths))
+        self.teamDeaths = sum(playerDeaths)
+    def cDRatio(self):
+        playerCDRatio = []
+        for player in self.playerList:
+            playerCDRatio.append(int(self.playerDir[player].combatScoreRatio))
+        playerCDRatio[:] = (value for value in playerCDRatio if value != 0)
+        self.teamCDRatio = sum(playerCDRatio)/len(playerCDRatio)
     def updateValues(self):
-        pass
+        self.WLRatio()
+        self.Kills()
+        self.Deaths()
+        self.KDRatio()
+        self.cDRatio()
     def clearValues(self):
         self.teamWins = 0
         self.teamLoss = 0 
+        self.wLRatio = 0
+        self.teamDeaths = 0
+        self.teamKills = 0
+        self.teamKDRatio = 0
+        self.teamCDRatio = 0 
         

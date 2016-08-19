@@ -35,10 +35,9 @@ class Player(object):
         if isArcher == "TRUE":
             self.isArcher = True
         self.kDRatio = self.kills/self.deaths
-    def cDratio(self):
-        pass
-    def combatScore(self):
-        pass
+        self.combatScore = 10*self.kills + 5*self.assists
+        if self.deaths != 0:
+            self.combatScoreRatio = self.combatScore/self.deaths
     def clearValues(self):
         self.kills = 0 
         self.deaths = 0

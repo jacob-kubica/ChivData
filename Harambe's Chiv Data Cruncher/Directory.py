@@ -107,6 +107,8 @@ class Directory():
         #Updates Team Values
         self.teamDir[self.matchDir[matchNumber].winner].Win()
         self.teamDir[self.matchDir[matchNumber].loser].Loss()
+        self.teamDir[self.matchDir[matchNumber].winner].updateValues()
+        self.teamDir[self.matchDir[matchNumber].loser].updateValues()
     def dirPull(self, *args):
         '''
         method to pull data from directory
