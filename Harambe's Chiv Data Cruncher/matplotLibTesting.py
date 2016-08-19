@@ -38,17 +38,31 @@ plt.show()
 
 class Graphs():    
     def teamLevelPlayerCombatScore(self):
-        width = 0.2
-        y = [16.9, 12.8, 6.9,15,20]
-        labels = ["NathookGD","Kylerr","Sombo"]
-        n = np.arange(len(labels))
-        fig = plt.subplots()
-        fig.set_xticks(n + width)
-        fig.set_xticklabels(labels)
+        playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz")
+        y = (18,12,-2,18.5,16,-15)
+        
+        numPlayers = len(playerList)
+        fig, ax = plt.subplots()
+        
+        index = np.arange(numPlayers)
+        width = 0.5
+        
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        
+        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        
         plt.xlabel('Players')
         plt.ylabel('Combat Score')
-        plt.title('Player Combat Score')
+        plt.title('Team Level Combat Score')
+        plt.xticks(index, playerList)
+        plt.tight_layout()
+        
+        ax.set_ylim([0,max(y)+5])
+        plt.subplots_adjust(wspace = 0.5)
+        
         plt.show()
+        
 
 Graph = Graphs()
 Graph.teamLevelPlayerCombatScore()
