@@ -16,7 +16,7 @@ Tournament level: Viz -> top teams in total kill/death ratio (bar graph), top ar
                          bottom 10 players in combatScore ratio (bar graph), bottom 10 players in combatScore relative (bar graph),
                          top teams in win/loss ratio (bar graph)
                 
-                 List -> none 
+                 List -> none 2
 '''
 import matplotlib.pyplot as plt
 
