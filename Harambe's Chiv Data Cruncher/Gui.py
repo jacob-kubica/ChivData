@@ -1031,13 +1031,15 @@ class Ui_MainWindow():
         x = [2,4,6]
         y = [16.9, 12.8, 6.9]
         labels = ["NathookGD","Kylerr","Sombo"]
-        plt.bar(x,y)
+        plt.bar(x, y)
         plt.xticks(x,labels)
         plt.xlabel('Players')
         plt.ylabel('Combat Score')
         plt.title('Player Combat Score')
         self.figureLeft = plt
         self.canvasLeft.draw()
+        self.canvasLeft.hide()
+        self.canvasLeft.show()
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
