@@ -4,7 +4,13 @@ Created on Aug 15, 2016
 @author: Jacob
 '''
 from PyQt4 import QtCore, QtGui
-from test.test_iterlen import NoneLengthHint
+import sys
+from PyQt4 import QtGui
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.pyplot as plt
+import random
+import time
+
 class Ui_MainWindow():
     def __init__(self, Directory):
         self.Directory = Directory
@@ -96,13 +102,15 @@ class Ui_MainWindow():
         self.DataVisualizationGroupBox.setFont(self.font(12, True, 75))
         self.DataVisualizationGroupBox.setTitle("Data Visualization")
         #Graphic View Left
-        self.graphicsViewLeft = QtGui.QGraphicsView(self.DataVisualizationGroupBox)
+        self.figureLeft = plt.figure()
+        self.canvasLeft = FigureCanvas(self.figureLeft)
         #Graphic View Right
-        self.graphicsViewRight = QtGui.QGraphicsView(self.DataVisualizationGroupBox)
+        self.figureRight = plt.figure()
+        self.canvasRight = FigureCanvas(self.figureRight)
         #Layout
         self.horizontalLayout = QtGui.QHBoxLayout(self.DataVisualizationGroupBox)
-        self.horizontalLayout.addWidget(self.graphicsViewLeft)
-        self.horizontalLayout.addWidget(self.graphicsViewRight)
+        self.horizontalLayout.addWidget(self.canvasRight)
+        self.horizontalLayout.addWidget(self.canvasLeft)
     def Tabs(self):
         '''
         Container for tab methods
@@ -303,6 +311,7 @@ class Ui_MainWindow():
                     self.dataVizPlayerLeft_1 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_1.setFont(self.font(10, False, 50))
                     self.dataVizPlayerLeft_1.setText("Combat Score/Death Ratio Match by Match")
+                    self.dataVizPlayerLeft_1.clicked.connect(self.plotLeft)
                     #Data Visualization Button
                     self.dataVizPlayerLeft_2 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_2.setFont(self.font(10, False, 50))
@@ -1017,7 +1026,18 @@ class Ui_MainWindow():
         self.comboEmpty(self.playerComboBoxRight)
         self.comboEmpty(self.teamComboBoxRight)
         self.halfComboBoxRight.setCurrentIndex(0)
-        self.matchComboBoxRight.setCurrentIndex(0)  
+        self.matchComboBoxRight.setCurrentIndex(0)
+    def plotLeft(self):
+        x = [2,4,6]
+        y = [16.9, 12.8, 6.9]
+        labels = ["NathookGD","Kylerr","Sombo"]
+        plt.bar(x,y)
+        plt.xticks(x,labels)
+        plt.xlabel('Players')
+        plt.ylabel('Combat Score')
+        plt.title('Player Combat Score')
+        self.figureLeft = plt
+        self.canvasLeft.draw()
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
