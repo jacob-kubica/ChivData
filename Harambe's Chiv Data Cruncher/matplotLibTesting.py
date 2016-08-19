@@ -167,13 +167,22 @@ class Graphs():
         
         plt.show()
         
+    def playerLevelCombatScore(self):
+        playerName = "NathookGD"
+        playerOpponentList = ("G.W.A", "Kila", "Legion")
+        playerKDmatchbymatch = (8.5,12.2,10.5)
+        matchCount = 3
+        n = np.arange(3)
+        plt.plot(n+1,playerKDmatchbymatch, marker = 'o', color = 'b')
+        plt.show()
         
 Graph = Graphs()
 #Graph.teamLevelPlayerCombatScore()
 #Graph.teamLevelPlayerCombatScoreRelative()
 #Graph.tournamentLevelTopTeamKD()
 #Graph.tournamentLevelTopArcherCombatRatio()
-Graph.tournamentLevelTopCombatRatio()
+#Graph.tournamentLevelTopCombatRatio()
+Graph.playerLevelCombatScore()
                 
             
         
