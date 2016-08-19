@@ -1050,7 +1050,7 @@ class Ui_MainWindow():
             plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
             plt.ylabel('Combat Score')
             plt.title(teamName + " Player Level Combat Score")
-            if len(playerList) > 6:
+            if len(x) > 6:
                 plt.xticks(index, playerList, rotation=90)
             else:
                 plt.xticks(index, playerList)
