@@ -183,6 +183,23 @@ class Graphs():
         plt.title(playerName + " Match by Match CS Ratio")
         plt.xticks(n + 1, playerOpponentList)
         plt.show()
+    
+    def teamLevelKD(self):
+        teamName = "Hyperion"
+        teamOpponentList = ("G.W.A", "Kila", "Legion","Serenity","Fight Club")
+        teamKdMatchByMatch = (0.6,1.2,0.82,1.05,0.9)
+        matchCount = 5
+        totalTeamKd = 0.98
+        n = np.arange(matchCount)
+        plt.plot(n+1,teamKdMatchByMatch, marker = 'o', color = 'b')
+        plt.subplot().set_ylim(0,max(teamKdMatchByMatch)+0.25)
+        plt.subplot().set_xlim(0,matchCount+1)
+        plt.axhline((totalTeamKd), color = "black")
+        plt.ylabel('Total team KD')
+        plt.xlabel('Opponent')
+        plt.title(teamName + " Match by Match KD ratio")
+        plt.xticks(n + 1, teamOpponentList)
+        plt.show()
         
 Graph = Graphs()
 #Graph.teamLevelPlayerCombatScore()
@@ -191,6 +208,7 @@ Graph = Graphs()
 #Graph.tournamentLevelTopArcherCombatRatio()
 #Graph.tournamentLevelTopCombatRatio()
 Graph.playerLevelCombatScore()
+Graph.teamLevelKD()
                 
             
         
