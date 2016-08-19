@@ -10,9 +10,8 @@ from Team import Team
 from Player import Player
 
 import time #for use in program timing
-from collections import OrderedDict
 start_time = time.time()
-
+import operator
 class Directory():
     '''
     Directory object which handles creation of
@@ -158,6 +157,12 @@ class Directory():
                 self.matchCreate(x + 1)
             except:
                 break
+        self.bottomTenPlayerCombatScoreRelative = None
+        self.bottomTenPlayersCombatScore = None
+        self.topTenPlayerCombatScore = None
+        self.topTenPlayerCombatScoreRelative = None
+        self.sortedCombatScore()
+        self.sortedCombatScoreRelative()
     def loadSpreadSheet(self):
         self.matchWrs = SpreadSheet("https://docs.google.com/spreadsheets/d/1ia8PwjHRf4newhe7Gl5DEvMCjVFs0VswXSkH57lYT78/edit#gid=0")
         self.matchWrs.worksheetDirBuild(1) 
@@ -174,3 +179,41 @@ class Directory():
                 self.teamDir[team].playerDir[player]
         for player in self.playerList:
             self.playerDir[player].clearValues()
+    def sortedCombatScore(self):
+        """
+        # regular unsorted dictionary
+            d = {'banana': 3, 'apple':4, 'pear': 1, 'orange': 2}
+            
+            # dictionary sorted by value
+            OrderedDict(sorted(d.items(), key=lambda t: t[1]))
+            # OrderedDict([('pear', 1), ('orange', 2), ('banana', 3), ('apple', 4)])
+        """
+        d = {}
+        for player in self.playerList:
+            d[player] = self.playerDir[player].combatScoreRatio
+        sorted_d = sorted(d.items(), key=operator.itemgetter(1))
+        self.topTenPlayerCombatScore = []
+        self.bottomTenPlayersCombatScore = []
+        for x in range(0, len(sorted_d)):
+            c = sorted_d[x]
+            if c[1] > 0:
+                if len(self.bottomTenPlayersCombatScore) <10:
+                    self.bottomTenPlayersCombatScore.append(c[0])
+            if x >= (len(sorted_d) - 10):
+                self.topTenPlayerCombatScore.append(c[0])
+    def sortedCombatScoreRelative(self):
+        d = {}
+        for team in self.teamList:
+            for player in self.teamDir[team].playerList:
+                d[player] = self.playerDir[player].combatScoreRatio - self.teamDir[team].teamCDRatio
+        sorted_d = sorted(d.items(), key=operator.itemgetter(1))
+        self.topTenPlayerCombatScoreRelative = []
+        self.bottomTenPlayerCombatScoreRelative = []
+        for x in range(0, len(sorted_d)):
+            c = sorted_d[x]
+            if c[1] != 0:
+                if len(self.bottomTenPlayerCombatScoreRelative) <10:
+                    self.bottomTenPlayerCombatScoreRelative.append(c)
+            if x >= (len(sorted_d) - 10):
+                self.topTenPlayerCombatScoreRelative.append(c)
+    

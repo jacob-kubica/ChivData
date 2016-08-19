@@ -700,6 +700,10 @@ class Ui_MainWindow():
         font.setWeight(Weight)
         return font
     def matchCreate(self):
+        self.Directory.bottomTenPlayerCombatScoreRelative = None
+        self.Directory.bottomTenPlayersCombatScore = None
+        self.Directory.topTenPlayerCombatScore = None
+        self.Directory.topTenPlayerCombatScoreRelative = None
         matchCount = self.matchNumberSpinBox.value()
         if int(matchCount) not in self.Directory.matchDir:
             if int(matchCount) - 1 in self.Directory.matchDir or int(matchCount) == 1:
@@ -711,6 +715,8 @@ class Ui_MainWindow():
             self.ErrorTextLine.setText("This match already exists use reload data to change it")
         self.matchComboBoxFill(self.matchComboBoxLeft)
         self.matchComboBoxFill(self.matchComboBoxRight)
+        self.Directory.self.sortedCombatScore()
+        self.Directory.self.sortedCombatScoreRelative()       
     def matchReload(self):
         self.Directory.matchNumber = self.matchNumberSpinBox.value()
         self.Directory.loadSpreadSheet()
@@ -1072,6 +1078,7 @@ class Ui_MainWindow():
         index = np.arange(numTeams)
         opacity = 0.4
         error_config = {'ecolor':'0.3'}
+        plt.cla()
         rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         plt.ylabel('Kill/Death Ratio')
         plt.title('Total Team K/D Ratios')
