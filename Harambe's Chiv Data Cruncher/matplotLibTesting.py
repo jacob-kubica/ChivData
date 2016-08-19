@@ -19,6 +19,7 @@ Tournament level: Viz -> top teams in total kill/death ratio (bar graph), top ar
                  List -> none 2
 '''
 import matplotlib.pyplot as plt
+import numpy as np
 
 '''
 x = [2,4,6,8,10]
@@ -37,11 +38,13 @@ plt.show()
 
 class Graphs():    
     def teamLevelPlayerCombatScore(self):
-        x = [2,4,6]
-        y = [16.9, 12.8, 6.9]
+        width = 0.2
+        y = [16.9, 12.8, 6.9,15,20]
         labels = ["NathookGD","Kylerr","Sombo"]
-        plt.bar(x,y)
-        plt.xticks(x,labels)
+        n = np.arange(len(labels))
+        fig = plt.subplots()
+        fig.set_xticks(n + width)
+        fig.set_xticklabels(labels)
         plt.xlabel('Players')
         plt.ylabel('Combat Score')
         plt.title('Player Combat Score')
