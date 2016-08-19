@@ -1037,9 +1037,10 @@ class Ui_MainWindow():
         plt.ylabel('Combat Score')
         plt.title('Player Combat Score')
         self.figureLeft = plt
-        self.canvasLeft.draw()
-        self.canvasLeft.hide()
-        self.canvasLeft.show()
+        self.canvasRight.draw()
+        #self.canvasRight.hide()
+        #self.canvasRight.show()
+
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
