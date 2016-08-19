@@ -363,7 +363,8 @@ class Ui_MainWindow():
                     #Tournament Button
                     self.tournamentBtnLeft_1 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_1.setFont(self.font(10, False, 50)) 
-                    self.tournamentBtnLeft_1.setText("Top Teams Kills/Death Ratio")      
+                    self.tournamentBtnLeft_1.setText("Teams Kills/Death Ratio")  
+                    self.tournamentBtnLeft_1.clicked.connect(self.tournamentTeamKDRatioLeft)    
                     #Tournament Button 
                     self.tournamentBtnLeft_2 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_2.setFont(self.font(10, False, 50)) 
@@ -1060,6 +1061,28 @@ class Ui_MainWindow():
             self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("Find a Team First")
+    def tournamentTeamKDRatioLeft(self):
+        y = []
+        x = []
+        for team in self.Directory.teamList:
+            if self.Directory.teamDir[team].teamKDRatio != 0:
+                x.append(team)
+                y.append(self.Directory.teamDir[team].teamKDRatio)
+        numTeams = len(x)
+        index = np.arange(numTeams)
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        plt.ylabel('Kill/Death Ratio')
+        plt.title('Total Team K/D Ratios')
+        if len(x) > 6:
+            plt.xticks(index, x, rotation=90)
+        else:
+            plt.xticks(index, x)
+        plt.tight_layout()
+        plt.subplots_adjust(wspace = 0.5)
+        self.figureLeft = plt
+        self.canvasRight.draw()
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
