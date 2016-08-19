@@ -8,8 +8,8 @@ Created on Aug 18, 2016
 Player level: Viz -> combatScore ratio (line graph, match by match), combatScore ratio relative (line graph, match by match) <- if this can be done easily, 
               List -> total kills, total assists, total deaths, combatScore ratio, combatScore relative
 
-Team level: Viz -> team kill/death ratio (line graph, match by match), players combatScore ratio (bar graph)
-            List -> wins, losses, winloss ratio, total kill/death ratio, player combatScore relative 
+Team level: Viz -> team kill/death ratio (line graph, match by match), players combatScore ratio (bar graph) player combatScore relative 
+            List -> wins, losses, winloss ratio, total kill/death ratio, 
 
 Tournament level: Viz -> top teams in total kill/death ratio (bar graph), top archers in combatScore ratio (bar graph, all archers included), 
                          top 10 players in combatScore ratio (bar graph), top players 10 in combatScore relative (bar graph),
@@ -38,8 +38,9 @@ plt.show()
 
 class Graphs():    
     def teamLevelPlayerCombatScore(self):
+        teamName = "G.W.A"
         playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz")
-        y = (18,12,-2,18.5,16,-15)
+        y = (18,12,13,18.5,16,14)
         
         numPlayers = len(playerList)
         fig, ax = plt.subplots()
@@ -52,9 +53,8 @@ class Graphs():
         
         rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
         
-        plt.xlabel('Players')
         plt.ylabel('Combat Score')
-        plt.title('Team Level Combat Score')
+        plt.title(teamName + " Player Level Combat Score")
         plt.xticks(index, playerList)
         plt.tight_layout()
         
@@ -63,9 +63,66 @@ class Graphs():
         
         plt.show()
         
+    def teamLevelPlayerCombatScoreRelative(self):
+        
+        teamName = "G.W.A"
+        playerList = ("Nathook", "Kylerr", "Sombo", "Waterboy", "Jared39", "Valkryaz")
+        y = (18,12,-2,18.5,16,-5)
+        
+        numPlayers = len(playerList)
+        fig, ax = plt.subplots()
+        
+        index = np.arange(numPlayers)
+        width = 0.5
+        
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        
+        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        
 
+        plt.ylabel('Combat Score Relative')
+        plt.title(teamName + ' Player Level Combat Score Relative')
+        plt.xticks(index, playerList)
+        plt.tight_layout()
+        
+        ax.set_ylim([-1*(max(y))-5,max(y)+5])
+        plt.subplots_adjust(wspace = 0.5)
+        plt.axhline(0, color = "black")
+        
+        plt.show()
+    
+    def tournamentLevelTopTeamKD(self):
+        
+        teamList = ("G.W.A", "Kila", "Fight Club", "Legion", "Serenity")
+        y = (1.36, 0.82, 1.12, 1.26, 0.76)
+        
+        numTeams = len(teamList)
+        fig, ax = plt.subplots()
+        
+        index = np.arange(numTeams)
+        width = 0.5
+        
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        
+        rects1 = plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+        
+
+        plt.ylabel('Kill/Death Ratio')
+        plt.title('Total Team K/D Ratios')
+        plt.xticks(index, teamList)
+        plt.tight_layout()
+        
+        ax.set_ylim([0,max(y)+1])
+        plt.subplots_adjust(wspace = 0.5)
+        
+        plt.show()
+            
+            
 Graph = Graphs()
 Graph.teamLevelPlayerCombatScore()
+Graph.teamLevelPlayerCombatScoreRelative()
                 
                 
             
