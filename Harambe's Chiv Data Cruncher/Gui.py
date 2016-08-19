@@ -289,13 +289,13 @@ class Ui_MainWindow(GuiMethods):
                     self.kDRatioLeft.setFont(self.font(10, False, 50))
                     self.kDRatioLeft.setText("Kill/Death Ratio:")
                     #Combat Score/Death ratio
-                    self.cSDRatio = QtGui.QLabel(self.PlayerGroupBoxLeft)
-                    self.cSDRatio.setFont(self.font(10, False, 50))
-                    self.cSDRatio.setText("Combat Score/Death Ratio:")
+                    self.cSDRatioLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
+                    self.cSDRatioLeft.setFont(self.font(10, False, 50))
+                    self.cSDRatioLeft.setText("Combat Score/Death Ratio:")
                     #Combat Score/Death ratio relative
-                    self.cSDRatioRealtive = QtGui.QLabel(self.PlayerGroupBoxLeft)
-                    self.cSDRatioRealtive.setFont(self.font(10, False, 50))
-                    self.cSDRatioRealtive.setText("Combat Score/Death Ratio Relative:")
+                    self.cSDRatioRealtiveLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
+                    self.cSDRatioRealtiveLeft.setFont(self.font(10, False, 50))
+                    self.cSDRatioRealtiveLeft.setText("Combat Score/Death Ratio Relative:")
                     #Data Visualization Button
                     self.dataVizPlayerLeft_1 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_1.setFont(self.font(10, False, 50))
@@ -324,8 +324,8 @@ class Ui_MainWindow(GuiMethods):
                     self.PlayerGroupBoxLeftGrid.addWidget(self.deathsLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.assistsLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.kDRatioLeft)
-                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatio)
-                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioRealtive)
+                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioLeft)
+                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioRealtiveLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.dataVizPlayerLeft_1)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.dataVizPlayerLeft_2)
                     '''
@@ -493,9 +493,9 @@ class Ui_MainWindow(GuiMethods):
                     self.wLRatioRight.setFont(self.font(10, False, 50))
                     self.wLRatioRight.setText("Win/Loss Ratio:")
                     #Other Label
-                    self.tKDRatio = QtGui.QLabel(self.teamGroupBoxRight)
-                    self.tKDRatio.setFont(self.font(10, False, 50))
-                    self.tKDRatio.setText("Total Kill/Death Ratio:")
+                    self.tKDRatioRight = QtGui.QLabel(self.teamGroupBoxRight)
+                    self.tKDRatioRight.setFont(self.font(10, False, 50))
+                    self.tKDRatioRight.setText("Total Kill/Death Ratio:")
                     #Data Visualization Button
                     self.dataVizTeamRight_1 = QtGui.QPushButton(self.teamGroupBoxRight)
                     self.dataVizTeamRight_1.setFont(self.font(10, False, 50))
@@ -523,7 +523,7 @@ class Ui_MainWindow(GuiMethods):
                     self.gridLayout_10.addWidget(self.winsRight, 2, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.lossesRight, 3, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.wLRatioRight, 4, 0, 1, 1)
-                    self.gridLayout_10.addWidget(self.tKDRatio, 5, 0, 1, 1)
+                    self.gridLayout_10.addWidget(self.tKDRatioRight, 5, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.dataVizTeamRight_1, 6, 0, 1, 1)
                     self.gridLayout_10.addWidget(self.dataVizTeamRight_2, 7, 0, 1, 1)
                     '''
@@ -567,13 +567,13 @@ class Ui_MainWindow(GuiMethods):
                     self.kDRatioRight.setFont(self.font(10, False, 50))
                     self.kDRatioRight.setText("Kill/Death Ratio:")
                     #Combat Score/Death Ratio
-                    self.cSDRatio = QtGui.QLabel(self.PlayerGroupBoxRight)
-                    self.cSDRatio.setFont(self.font(10, False, 50))
-                    self.cSDRatio.setText("Combat Score/Death Ratio:")
+                    self.cSDRatioRight = QtGui.QLabel(self.PlayerGroupBoxRight)
+                    self.cSDRatioRight.setFont(self.font(10, False, 50))
+                    self.cSDRatioRight.setText("Combat Score/Death Ratio:")
                     #Combat Score/Death Ratio
-                    self.cSDRatioRelative = QtGui.QLabel(self.PlayerGroupBoxRight)
-                    self.cSDRatioRelative.setFont(self.font(10, False, 50))
-                    self.cSDRatioRelative.setText("Combat Score/Death Ratio Relative:")
+                    self.cSDRatioRelativeRatioRight = QtGui.QLabel(self.PlayerGroupBoxRight)
+                    self.cSDRatioRelativeRatioRight.setFont(self.font(10, False, 50))
+                    self.cSDRatioRelativeRatioRight.setText("Combat Score/Death Ratio Relative:")
                     #Data Visualization Button
                     self.dataVizPlayerRight_1 = QtGui.QPushButton(self.PlayerGroupBoxRight)
                     self.dataVizPlayerRight_1.setFont(self.font(10, False, 50))
@@ -600,8 +600,8 @@ class Ui_MainWindow(GuiMethods):
                     self.PlayerGroupBoxRightGrid.addWidget(self.deathsRight)
                     self.PlayerGroupBoxRightGrid.addWidget(self.assistsRight)
                     self.PlayerGroupBoxRightGrid.addWidget(self.kDRatioRight)
-                    self.PlayerGroupBoxRightGrid.addWidget(self.cSDRatio)
-                    self.PlayerGroupBoxRightGrid.addWidget(self.cSDRatioRelative)
+                    self.PlayerGroupBoxRightGrid.addWidget(self.cSDRatioRight)
+                    self.PlayerGroupBoxRightGrid.addWidget(self.cSDRatioRelativeRatioRight)
                     self.PlayerGroupBoxRightGrid.addWidget(self.dataVizPlayerRight_1)
                     self.PlayerGroupBoxRightGrid.addWidget(self.dataVizPlayerRight_2)
                     '''
@@ -874,14 +874,15 @@ class Ui_MainWindow(GuiMethods):
             self.winsRight.setText("Wins: {}".format(self.teamObjectRight.teamWins))
             self.lossesRight.setText("Losses: {}".format(self.teamObjectRight.teamLoss))
             self.wLRatioRight.setText("Win Loss Ratio: {}".format(self.teamObjectRight.wLRatio))
-            self.otherRight.setText("Other:")
+            #self.tKDRatioRight.setText("Total Kill/Death Ratio: {}".format())
         if self.playerobjectRight != None:
             self.playerNameLabelRight.setText("{}".format(self.playerobjectRight.playerName))
             self.killsRight.setText("Kills: {}".format(self.playerobjectRight.kills))
             self.deathsRight.setText("Deaths: {}".format(self.playerobjectRight.deaths))
             self.assistsRight.setText("Assists: {}".format(self.playerobjectRight.assists))
-            self.kDRatioRight.setText("K/D Ratio: {}".format(self.playerobjectRight.kDRatio))
-            self.isArcherRight.setText("Is Archer: {}".format(self.playerobjectRight.isArcher))
+            self.kDRatioRight.setText("Kill/Death Ratio: {}".format(self.playerobjectRight.kDRatio))
+            #self.cSDRatioRight.setText("Combat Score/Death Ratio: {}".format())
+            #self.cSDRatioRelativeRight.setText("Combat Score/Death Ratio Relative: {}".format())
         self.matchRight = None
         self.halfRight = None
         self.teamRight =  None
@@ -944,14 +945,15 @@ class Ui_MainWindow(GuiMethods):
             self.winsLeft.setText("Wins: {}".format(self.teamObjectLeft.teamWins))
             self.lossesLeft.setText("Losses: {}".format(self.teamObjectLeft.teamLoss))
             self.wLRatioLeft.setText("Win Loss Ratio: {}".format(self.teamObjectLeft.wLRatio))
-            self.otherLeft.setText("Other:")
+            #self.tKDRatioLeft.setText("Total Kill/Death Ratio: {}".format())
         if self.playerobjectLeft != None:
             self.playerNameLabelLeft.setText("{}".format(self.playerobjectLeft.playerName))
             self.killsLeft.setText("Kills: {}".format(self.playerobjectLeft.kills))
             self.deathsLeft.setText("Deaths: {}".format(self.playerobjectLeft.deaths))
             self.assistsLeft.setText("Assists: {}".format(self.playerobjectLeft.assists))
             self.kDRatioLeft.setText("K/D Ratio: {}".format(self.playerobjectLeft.kDRatio))
-            self.isArcherLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
+            #self.cSDRatioLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
+            #self.cSDRatioRelativeLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
         self.matchLeft = None
         self.halfLeft = None
         self.teamLeft =  None
