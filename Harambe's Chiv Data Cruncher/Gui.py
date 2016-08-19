@@ -966,7 +966,6 @@ class Ui_MainWindow():
             self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative: {0:.2f}".format(self.playerobjectLeft.combatScoreRatio - self.teamObjectLeft.teamCDRatio))
         else:
             self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")
-            
         self.matchLeft = None
         self.halfLeft = None
         self.teamLeft =  None
@@ -978,6 +977,19 @@ class Ui_MainWindow():
         self.playerLeft = None
         self.teamObjectLeft = None
         self.playerobjectLeft = None
+        self.teamNameLeft.setText("")
+        self.winsLeft.setText("Wins:")
+        self.lossesLeft.setText("Losses:")
+        self.wLRatioLeft.setText("Win Loss Ratio:")
+        self.tKDRatioLeft.setText("Total Kill/Death Ratio:")
+        self.tCDRatioLeft.setText("Combat Score/Death Ratio:")
+        self.playerNameLabelLeft.setText("")
+        self.killsLeft.setText("Kills:")
+        self.deathsLeft.setText("Deaths:")
+        self.assistsLeft.setText("Assists:")
+        self.kDRatioLeft.setText("K/D Ratio:")
+        self.cSDRatioLeft.setText("Combat Score/Death Ratio:")   
+        self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")        
         self.comboEmpty(self.playerComboBoxLeft)
         self.comboEmpty(self.teamComboBoxLeft)
         self.halfComboBoxLeft.setCurrentIndex(0)
@@ -989,6 +1001,19 @@ class Ui_MainWindow():
         self.playerRight = None
         self.teamObjectRight = None
         self.playerobjectRight = None
+        self.teamNameRight.setText("")
+        self.winsRight.setText("Wins:")
+        self.lossesRight.setText("Losses:")
+        self.wLRatioRight.setText("Win Loss Ratio:")
+        self.tKDRatioRight.setText("Total Kill/Death Ratio:")
+        self.tCDRatioRight.setText("Combat Score/Death Ratio:")
+        self.playerNameLabelRight.setText("")
+        self.killsRight.setText("Kills:")
+        self.deathsRight.setText("Deaths:")
+        self.assistsRight.setText("Assists:")
+        self.kDRatioRight.setText("K/D Ratio:")
+        self.cSDRatioRight.setText("Combat Score/Death Ratio:")   
+        self.cSDRatioRelativeRight.setText("Combat Score/Death Ratio Relative:")      
         self.comboEmpty(self.playerComboBoxRight)
         self.comboEmpty(self.teamComboBoxRight)
         self.halfComboBoxRight.setCurrentIndex(0)
