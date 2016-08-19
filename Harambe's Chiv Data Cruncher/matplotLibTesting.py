@@ -170,10 +170,12 @@ class Graphs():
     def playerLevelCombatScore(self):
         playerName = "NathookGD"
         playerOpponentList = ("G.W.A", "Kila", "Legion")
-        playerKDmatchbymatch = (8.5,12.2,10.5)
+        playerCSmatchbymatch = (8.5,12.2,10.5)
         matchCount = 3
         n = np.arange(3)
-        plt.plot(n+1,playerKDmatchbymatch, marker = 'o', color = 'b')
+        plt.plot(n+1,playerCSmatchbymatch, marker = 'o', color = 'b')
+        plt.subplot().set_ylim(0,max(playerCSmatchbymatch)+2.5)
+        plt.subplot().set_xlim(0,matchCount+1)
         plt.show()
         
 Graph = Graphs()
