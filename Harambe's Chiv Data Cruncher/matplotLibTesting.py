@@ -19,5 +19,12 @@ Tournament level: Viz -> top teams in total kill/death ratio (bar graph), top ar
                  List -> none 
 '''
 import matplotlib.pyplot as plt
-plt.plot([1,2,3],[5,7,4])
-plt.show()
+
+x = [2,4,6,8,10]
+y = [6,7,8,2,5]
+plt.bar(x,y, label = 'Bars1')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Interesting Graph\nCheck it out')
+plt.legend()
+plt.show() 
