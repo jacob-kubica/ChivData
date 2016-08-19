@@ -291,9 +291,9 @@ class Ui_MainWindow():
                     self.cSDRatioLeft.setFont(self.font(10, False, 50))
                     self.cSDRatioLeft.setText("Combat Score/Death Ratio:")
                     #Combat Score/Death ratio relative
-                    self.cSDRatioRealtiveLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
-                    self.cSDRatioRealtiveLeft.setFont(self.font(10, False, 50))
-                    self.cSDRatioRealtiveLeft.setText("Combat Score/Death Ratio Relative:")
+                    self.cSDRatioRelativeLeft = QtGui.QLabel(self.PlayerGroupBoxLeft)
+                    self.cSDRatioRelativeLeft.setFont(self.font(10, False, 50))
+                    self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")
                     #Data Visualization Button
                     self.dataVizPlayerLeft_1 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_1.setFont(self.font(10, False, 50))
@@ -323,7 +323,7 @@ class Ui_MainWindow():
                     self.PlayerGroupBoxLeftGrid.addWidget(self.assistsLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.kDRatioLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioLeft)
-                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioRealtiveLeft)
+                    self.PlayerGroupBoxLeftGrid.addWidget(self.cSDRatioRelativeLeft)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.dataVizPlayerLeft_1)
                     self.PlayerGroupBoxLeftGrid.addWidget(self.dataVizPlayerLeft_2)
                     '''
@@ -871,16 +871,19 @@ class Ui_MainWindow():
             self.teamNameRight.setText("{}".format(self.teamObjectRight.teamName))
             self.winsRight.setText("Wins: {}".format(self.teamObjectRight.teamWins))
             self.lossesRight.setText("Losses: {}".format(self.teamObjectRight.teamLoss))
-            self.wLRatioRight.setText("Win Loss Ratio: {}".format(self.teamObjectRight.wLRatio))
-            #self.tKDRatioRight.setText("Total Kill/Death Ratio: {}".format())
+            self.wLRatioRight.setText("Win Loss Ratio: {0:.2f}".format(self.teamObjectRight.wLRatio))
+            self.tKDRatioRight.setText("Total Kill/Death Ratio: {0:.2f}".format(self.teamObjectRight.teamKDRatio))
         if self.playerobjectRight != None:
             self.playerNameLabelRight.setText("{}".format(self.playerobjectRight.playerName))
             self.killsRight.setText("Kills: {}".format(self.playerobjectRight.kills))
             self.deathsRight.setText("Deaths: {}".format(self.playerobjectRight.deaths))
             self.assistsRight.setText("Assists: {}".format(self.playerobjectRight.assists))
-            self.kDRatioRight.setText("Kill/Death Ratio: {}".format(self.playerobjectRight.kDRatio))
-            #self.cSDRatioRight.setText("Combat Score/Death Ratio: {}".format())
-            #self.cSDRatioRelativeRight.setText("Combat Score/Death Ratio Relative: {}".format())
+            self.kDRatioRight.setText("Kill/Death Ratio: {0:.2f}".format(self.playerobjectRight.kDRatio))
+            self.cSDRatioRight.setText("Combat Score/Death Ratio: {0:.2f}".format(self.playerobjectRight.combatScoreRatio))
+        if self.teamObjectRight and self.playerobjectRight != None:
+            self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative: {0:.2f}".format(self.playerobjectRight.combatScoreRatio - self.teamObjectRight.teamCDRatio))
+        else:
+            self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")
         self.matchRight = None
         self.halfRight = None
         self.teamRight =  None
@@ -942,16 +945,19 @@ class Ui_MainWindow():
             self.teamNameLeft.setText("{}".format(self.teamObjectLeft.teamName))
             self.winsLeft.setText("Wins: {}".format(self.teamObjectLeft.teamWins))
             self.lossesLeft.setText("Losses: {}".format(self.teamObjectLeft.teamLoss))
-            self.wLRatioLeft.setText("Win Loss Ratio: {}".format(self.teamObjectLeft.wLRatio))
-            #self.tKDRatioLeft.setText("Total Kill/Death Ratio: {}".format())
+            self.wLRatioLeft.setText("Win Loss Ratio: {0:.2f}".format(self.teamObjectLeft.wLRatio))
+            self.tKDRatioLeft.setText("Total Kill/Death Ratio: {0:.2f}".format(self.teamObjectLeft.teamKDRatio))
         if self.playerobjectLeft != None:
             self.playerNameLabelLeft.setText("{}".format(self.playerobjectLeft.playerName))
             self.killsLeft.setText("Kills: {}".format(self.playerobjectLeft.kills))
             self.deathsLeft.setText("Deaths: {}".format(self.playerobjectLeft.deaths))
             self.assistsLeft.setText("Assists: {}".format(self.playerobjectLeft.assists))
-            self.kDRatioLeft.setText("K/D Ratio: {}".format(self.playerobjectLeft.kDRatio))
-            #self.cSDRatioLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
-            #self.cSDRatioRelativeLeft.setText("Is Archer: {}".format(self.playerobjectLeft.isArcher))
+            self.kDRatioLeft.setText("K/D Ratio: {0:.2f}".format(self.playerobjectLeft.kDRatio))
+            self.cSDRatioLeft.setText("Combat Score/Death Ratio: {0:.2f}".format(self.playerobjectLeft.combatScoreRatio))
+        if self.teamObjectLeft and self.playerobjectLeft != None:
+            self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative: {0:.2f}".format(self.playerobjectLeft.combatScoreRatio - self.teamObjectLeft.teamCDRatio))
+        else:
+            self.cSDRatioRelativeLeft.setText("Combat Score/Death Ratio Relative:")
         self.matchLeft = None
         self.halfLeft = None
         self.teamLeft =  None
