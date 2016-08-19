@@ -4,12 +4,10 @@ Created on Aug 15, 2016
 @author: Jacob
 '''
 from PyQt4 import QtCore, QtGui
-from GuiMethods import GuiMethods
 from test.test_iterlen import NoneLengthHint
-class Ui_MainWindow(GuiMethods):
+class Ui_MainWindow():
     def __init__(self, Directory):
         self.Directory = Directory
-        self.methods = GuiMethods(Directory)
         #self.methods.printShit()
         self.matchRight = None
         self.halfRight = None
