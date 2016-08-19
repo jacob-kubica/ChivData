@@ -20,7 +20,7 @@ Tournament level: Viz -> top teams in total kill/death ratio (bar graph), top ar
 '''
 import matplotlib.pyplot as plt
 
-
+'''
 x = [2,4,6,8,10]
 y = [6,7,8,2,5]
 
@@ -33,28 +33,22 @@ plt.ylabel('y')
 plt.title('Interesting Graph\nCheck it out')
 plt.legend()
 plt.show()
+'''
 
-
-class Graphs():
-    
-    def __init__(self):
-    
-        def teamLevelPlayerCombatScore(self, teamname):
-            Team = Team(teamname)
-            fig = plt.figure()
-            x = [Team.playerlist]
-            y = []
-            for player in Team.playerlist:
-                playerObj = Player(player)
-                y.append(playerObj.KDratio)
-            plt.bar(x,y)
-            plt.xlabel('Players')
-            plt.ylabel('Combat Score')
-            plt.title('Player Combat Score')
-            plt.show()
+class Graphs():    
+    def teamLevelPlayerCombatScore(self):
+        x = [2,4,6]
+        y = [16.9, 12.8, 6.9]
+        labels = ["NathookGD","Kylerr","Sombo"]
+        plt.bar(x,y)
+        plt.xticks(x,labels)
+        plt.xlabel('Players')
+        plt.ylabel('Combat Score')
+        plt.title('Player Combat Score')
+        plt.show()
 
 Graph = Graphs()
-Graph.teamLevelPlayerCombatScore("Aegis")
+Graph.teamLevelPlayerCombatScore()
                 
                 
             
