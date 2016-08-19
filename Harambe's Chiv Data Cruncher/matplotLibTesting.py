@@ -169,13 +169,19 @@ class Graphs():
         
     def playerLevelCombatScore(self):
         playerName = "NathookGD"
-        playerOpponentList = ("G.W.A", "Kila", "Legion")
-        playerCSmatchbymatch = (8.5,12.2,10.5)
-        matchCount = 3
-        n = np.arange(3)
+        playerOpponentList = ("G.W.A", "Kila", "Legion","Serenity","Fight Club")
+        playerCSmatchbymatch = (8.5,12.2,10.5,14,6)
+        matchCount = 5
+        playerCombatScoreRatio = 9.5
+        n = np.arange(matchCount)
         plt.plot(n+1,playerCSmatchbymatch, marker = 'o', color = 'b')
         plt.subplot().set_ylim(0,max(playerCSmatchbymatch)+2.5)
         plt.subplot().set_xlim(0,matchCount+1)
+        plt.axhline((playerCombatScoreRatio), color = "black")
+        plt.ylabel('Combat Score Ratio')
+        plt.xlabel('Opponent')
+        plt.title(playerName + " Match by Match CS Ratio")
+        plt.xticks(n + 1, playerOpponentList)
         plt.show()
         
 Graph = Graphs()
