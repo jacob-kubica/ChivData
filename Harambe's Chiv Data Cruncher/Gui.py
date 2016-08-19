@@ -913,6 +913,10 @@ class Ui_MainWindow(GuiMethods):
         self.playerLeft = None
         self.teamObjectLeft = None
         self.playerobjectLeft = None
+        self.comboEmpty(self.playerComboBoxLeft)
+        self.comboEmpty(self.teamComboBoxLeft)
+        self.halfComboBoxLeft.setCurrentIndex(0)
+        self.matchComboBoxLeft.setCurrentIndex(0)
     def clearValueRight(self):
         self.matchRight = None
         self.halfRight = None
@@ -920,7 +924,10 @@ class Ui_MainWindow(GuiMethods):
         self.playerRight = None
         self.teamObjectRight = None
         self.playerobjectRight = None
-    
+        self.comboEmpty(self.playerComboBoxRight)
+        self.comboEmpty(self.teamComboBoxRight)
+        self.halfComboBoxRight.setCurrentIndex(0)
+        self.matchComboBoxRight.setCurrentIndex(0)  
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
