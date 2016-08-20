@@ -37,7 +37,10 @@ class Directory():
         x = time.time() - start_time
         
         self.loadSpreadSheet()
-        
+        self.bottomTenPlayerCombatScoreRelative = None
+        self.bottomTenPlayersCombatScore = None
+        self.topTenPlayerCombatScore = None
+        self.topTenPlayerCombatScoreRelative = None        
         #Main Sequence of program
         self.inputTeamWrs()
         self.playerCreate()

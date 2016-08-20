@@ -364,7 +364,7 @@ class Ui_MainWindow():
                     self.tournamentBtnLeft_1 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_1.setFont(self.font(10, False, 50)) 
                     self.tournamentBtnLeft_1.setText("Teams Kills/Death Ratio")  
-                    self.tournamentBtnLeft_1.clicked.connect(self.tournamentTeamKDRatioLeft)    
+                    self.tournamentBtnLeft_1.clicked.connect(self.tournamentTeamKDRatio)    
                     #Tournament Button 
                     self.tournamentBtnLeft_2 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_2.setFont(self.font(10, False, 50)) 
@@ -373,18 +373,22 @@ class Ui_MainWindow():
                     self.tournamentBtnLeft_3 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_3.setFont(self.font(10, False, 50))   
                     self.tournamentBtnLeft_3.setText("Top Players Combat Score/Death Ratio") 
+                    self.tournamentBtnLeft_3.clicked.connect(self.tournamentTopCombatRatio)
                     #Tournament Button
                     self.tournamentBtnLeft_4 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_4.setFont(self.font(10, False, 50)) 
-                    self.tournamentBtnLeft_4.setText("Top Players Combat Score/Death Ratio Relative")   
+                    self.tournamentBtnLeft_4.setText("Top Players Combat Score/Death Ratio Relative")
+                    self.tournamentBtnLeft_4.clicked.connect(self.tournamentTopCombatRatioRelative)
                     #Tournament Button   
                     self.tournamentBtnLeft_5 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_5.setFont(self.font(10, False, 50))
-                    self.tournamentBtnLeft_5.setText("Bottom Players Combat Score/Death Ratio")  
+                    self.tournamentBtnLeft_5.setText("Bottom Players Combat Score/Death Ratio") 
+                    self.tournamentBtnLeft_5.clicked.connect(self.tournamentBottomCombatRatio)
                     #Tournament Button 
                     self.tournamentBtnLeft_6 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_6.setFont(self.font(10, False, 50))
                     self.tournamentBtnLeft_6.setText("Bottom Players Combat Score/Death Ratio Relative")  
+                    self.tournamentBtnLeft_6.clicked.connect(self.tournamentBottomCombatRatioRelative)
                     #Tournament Button
                     self.tournamentBtnLeft_7 = QtGui.QPushButton(self.TournamentGroupBoxLeft)
                     self.tournamentBtnLeft_7.setFont(self.font(10, False, 50))
@@ -1067,7 +1071,7 @@ class Ui_MainWindow():
             self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("Find a Team First")
-    def tournamentTeamKDRatioLeft(self):
+    def tournamentTeamKDRatio(self):
         y = []
         x = []
         for team in self.Directory.teamList:
@@ -1090,6 +1094,100 @@ class Ui_MainWindow():
         plt.subplots_adjust(wspace = 0.5)
         self.figureLeft = plt
         self.canvasRight.draw()
+    def tournamentTopCombatRatio(self):
+        if self.Directory.topTenPlayerCombatScore != None:
+            y = []
+            x = self.Directory.topTenPlayerCombatScore
+            for z in x:
+                y.append(self.Directory.playerDir[z].combatScoreRatio)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureLeft = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentTopCombatRatioRelative(self):
+        if self.Directory.topTenPlayerCombatScoreRelative != None:
+            x = []
+            y = []
+            list = self.Directory.topTenPlayerCombatScoreRelative
+            for z in range(0, len(list) - 1):
+                c = list[z]
+                d = c[0]
+                e = c[1]
+                x.append(d)
+                y.append(e)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureLeft = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentBottomCombatRatio(self):
+        if self.Directory.bottomTenPlayersCombatScore != None:
+            y = []
+            x = self.Directory.bottomTenPlayersCombatScore
+            for z in x:
+                y.append(self.Directory.playerDir[z].combatScoreRatio)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureLeft = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentBottomCombatRatioRelative(self):
+        if self.Directory.bottomTenPlayerCombatScoreRelative != None:
+            x = []
+            y = []
+            list = self.Directory.bottomTenPlayerCombatScoreRelative
+            for z in range(0, len(list) - 1):
+                c = list[z]
+                d = c[0]
+                e = c[1]
+                x.append(d)
+                y.append(e)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureLeft = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
 def run(Directory):
     import sys
     app = QtGui.QApplication(sys.argv)
@@ -1098,5 +1196,6 @@ def run(Directory):
     ui.setupUi(MainWindow)
     MainWindow.show()
     app.exec_()
+
 
     
