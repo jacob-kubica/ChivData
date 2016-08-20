@@ -741,7 +741,7 @@ class Ui_MainWindow():
         self.Directory.loadSpreadSheet()
         self.Directory.reloadMatches(self.Directory.matchNumber)
         self.matchComboBoxFill(self.matchComboBoxLeft)
-        self.matchComboBoxFill(self.matchComboBoxRight)
+        #self.matchComboBoxFill(self.matchComboBoxRight)
     def matchComboBoxFill(self, comboBox):
         self.comboEmpty(comboBox)
         for x in range (0, self.Directory.matchNumber):
@@ -1495,7 +1495,7 @@ class Ui_MainWindow():
                         playerCSmatchbymatch.append(match.playerDir[playerName].combatScoreRatio - match.teamDir[x].teamCDRatio)
             matchCount = len(matchList)
             if matchCount != 0:
-                playerCombatScoreRatio = sum(playerCSmatchbymatch)/matchCount
+                playerCombatScoreRatio = 0
                 n = np.arange(matchCount)
                 plt.cla()
                 plt.plot(n+1,playerCSmatchbymatch, marker = 'o', color = 'b')
