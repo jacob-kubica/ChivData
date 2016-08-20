@@ -49,7 +49,7 @@ class Ui_MainWindow():
         self.MatchInputs()
         self.DataVisualization()
         self.Tabs()
-        #self.teamComboBoxRightfill()
+        self.teamComboBoxRightfill()
         self.teamComboBoxLeftfill()
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)        
         self.gridLayout.addWidget(self.DataVisualizationGroupBox, 1, 0, 1, 1)        
@@ -109,11 +109,11 @@ class Ui_MainWindow():
         self.figureLeft = plt.figure()
         self.canvasLeft = FigureCanvas(self.figureLeft)
         #Graphic View Right
-        #self.figureRight = plt.figure()
-        #self.canvasRight = FigureCanvas(self.figureRight)
+        self.figureRight = plt.figure()
+        self.canvasRight = FigureCanvas(self.figureRight)
         #Layout
         self.horizontalLayout = QtGui.QHBoxLayout(self.DataVisualizationGroupBox)
-        #self.horizontalLayout.addWidget(self.canvasRight)
+        self.horizontalLayout.addWidget(self.canvasRight)
         self.horizontalLayout.addWidget(self.canvasLeft)
     def Tabs(self):
         '''
@@ -708,10 +708,10 @@ class Ui_MainWindow():
             tournamentRight()
             self.tabsRight.setCurrentIndex(0)
         TabsLeft()
-        #TabsRight()
+        TabsRight()
         self.ContainerBottomGrid = QtGui.QHBoxLayout(self.ContainerBottom)
         self.ContainerBottomGrid.addWidget(self.tabsLeft)
-        #self.ContainerBottomGrid.addWidget(self.tabsRight)
+        self.ContainerBottomGrid.addWidget(self.tabsRight)
     def font(self, fontSize, Bold, Weight):
         font = QtGui.QFont()
         font.setPointSize(fontSize)
@@ -741,7 +741,7 @@ class Ui_MainWindow():
         self.Directory.loadSpreadSheet()
         self.Directory.reloadMatches(self.Directory.matchNumber)
         self.matchComboBoxFill(self.matchComboBoxLeft)
-        #self.matchComboBoxFill(self.matchComboBoxRight)
+        self.matchComboBoxFill(self.matchComboBoxRight)
     def matchComboBoxFill(self, comboBox):
         self.comboEmpty(comboBox)
         for x in range (0, self.Directory.matchNumber):
@@ -749,7 +749,6 @@ class Ui_MainWindow():
     def comboEmpty(self, comboBox):
         for x in range(1, comboBox.count()):
             comboBox.removeItem(1)
-    '''
     def matchSelectRight(self, text):
         if text == "-":
             self.matchRight = None
@@ -805,7 +804,6 @@ class Ui_MainWindow():
             self.playerRight = None
         else:
             self.playerRight = text
-    '''
     def matchSelectLeft(self, text):
         if text == "-":
             self.matchLeft = None
@@ -1035,7 +1033,6 @@ class Ui_MainWindow():
         self.matchComboBoxLeft.setCurrentIndex(0)
         self.playerComboBoxLeft.setCurrentIndex(0)
         self.teamComboBoxLeft.setCurrentIndex(0)
-    '''
     def clearValueRight(self):
         self.matchRight = None
         self.halfRight = None
@@ -1060,7 +1057,6 @@ class Ui_MainWindow():
         self.matchComboBoxRight.setCurrentIndex(0)
         self.teamComboBoxRight.setCurrentIndex(0)
         self.playerComboBoxRight.setCurrentIndex(0)
-    '''
     def playerCombatScoreLeft(self):
         if self.teamObjectLeft != None:
             teamName = self.teamObjectLeft.teamName
@@ -1087,10 +1083,9 @@ class Ui_MainWindow():
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.5)
             self.figureLeft = plt
-            self.canvasLeft.draw()
+            self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("Find a Team First")
-    '''
     def playerCombatScoreRight(self):
         if self.teamObjectRight != None:
             teamName = self.teamObjectRight.teamName
@@ -1120,7 +1115,6 @@ class Ui_MainWindow():
             self.canvasLeft.draw()
         else:
             self.ErrorTextLine.setText("Find a Team First")
-    '''
     def tournamentTeamKDRatio(self):
         y = []
         x = []
@@ -1143,7 +1137,7 @@ class Ui_MainWindow():
         plt.tight_layout()
         plt.subplots_adjust(wspace = 0.5)
         self.figureLeft = plt
-        self.canvasLeft.draw()
+        self.canvasRight.draw()
     def tournamentTopCombatRatio(self):
         if self.Directory.topTenPlayerCombatScore != None:
             y = []
@@ -1162,7 +1156,7 @@ class Ui_MainWindow():
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.25)
             self.figureLeft = plt
-            self.canvasLeft.draw()
+            self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("No Matches Inputed")
     def tournamentTopCombatRatioRelative(self):
@@ -1188,7 +1182,7 @@ class Ui_MainWindow():
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.25)
             self.figureLeft = plt
-            self.canvasLeft.draw()
+            self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("No Matches Inputed")
     def tournamentBottomCombatRatio(self):
@@ -1209,7 +1203,7 @@ class Ui_MainWindow():
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.25)
             self.figureLeft = plt
-            self.canvasLeft.draw()
+            self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("No Matches Inputed")
     def tournamentBottomCombatRatioRelative(self):
@@ -1235,7 +1229,7 @@ class Ui_MainWindow():
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.25)
             self.figureLeft = plt
-            self.canvasLeft.draw()
+            self.canvasRight.draw()
         else:
             self.ErrorTextLine.setText("No Matches Inputed")
     def tournamentTeamWLRatio(self):
@@ -1260,11 +1254,150 @@ class Ui_MainWindow():
         plt.tight_layout()
         plt.subplots_adjust(wspace = 0.5)
         self.figureLeft = plt
-        self.canvasLeft.draw()
+        self.canvasRight.draw()
         #=======================================================================
         # 
         #=======================================================================
-        
+    def tournamentTeamKDRatioRight(self):
+        y = []
+        x = []
+        for team in self.Directory.teamList:
+            if self.Directory.teamDir[team].teamKDRatio != 0:
+                x.append(team)
+                y.append(self.Directory.teamDir[team].teamKDRatio)
+        numTeams = len(x)
+        index = np.arange(numTeams)
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        plt.cla()
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Team", align = 'center')
+        plt.ylabel('Kill/Death Ratio')
+        plt.title('Total Team K/D Ratios')
+        if len(x) > 6:
+            plt.xticks(index, x, rotation=90)
+        else:
+            plt.xticks(index, x)
+        plt.tight_layout()
+        plt.subplots_adjust(wspace = 0.5)
+        self.figureRight = plt
+        self.canvasRight.draw()
+    def tournamentTopCombatRatioRight(self):
+        if self.Directory.topTenPlayerCombatScore != None:
+            y = []
+            x = self.Directory.topTenPlayerCombatScore
+            for z in x:
+                y.append(self.Directory.playerDir[z].combatScoreRatio)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureRight = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentTopCombatRatioRelativeRight(self):
+        if self.Directory.topTenPlayerCombatScoreRelative != None:
+            x = []
+            y = []
+            list = self.Directory.topTenPlayerCombatScoreRelative
+            for z in range(0, len(list) - 1):
+                c = list[z]
+                d = c[0]
+                e = c[1]
+                x.append(d)
+                y.append(e)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Top 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureRight = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentBottomCombatRatioRight(self):
+        if self.Directory.bottomTenPlayersCombatScore != None:
+            y = []
+            x = self.Directory.bottomTenPlayersCombatScore
+            for z in x:
+                y.append(self.Directory.playerDir[z].combatScoreRatio)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio')
+            plt.title(" Bottom 10 Players in Combat Score Ratio")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureRight = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentBottomCombatRatioRelativeRight(self):
+        if self.Directory.bottomTenPlayerCombatScoreRelative != None:
+            x = []
+            y = []
+            list = self.Directory.bottomTenPlayerCombatScoreRelative
+            for z in range(0, len(list) - 1):
+                c = list[z]
+                d = c[0]
+                e = c[1]
+                x.append(d)
+                y.append(e)
+            numPlayers = len(x)
+            index = np.arange(numPlayers)
+            opacity = 0.4
+            error_config = {'ecolor':'0.3'}
+            plt.cla()
+            plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
+            plt.ylabel('Combat Score Ratio Relative')
+            plt.title(" Bottom 10 Players in Combat Score Ratio Relative")
+            plt.xticks(index, x, rotation=90)
+            plt.tight_layout()
+            plt.subplots_adjust(wspace = 0.25)
+            self.figureRight = plt
+            self.canvasRight.draw()
+        else:
+            self.ErrorTextLine.setText("No Matches Inputed")
+    def tournamentTeamWLRatioRight(self):
+        y = []
+        x = []
+        for team in self.Directory.teamList:
+            if self.Directory.teamDir[team].wLRatio != 0:
+                x.append(team)
+                y.append(self.Directory.teamDir[team].wLRatio)
+        numTeams = len(x)
+        index = np.arange(numTeams)
+        opacity = 0.4
+        error_config = {'ecolor':'0.3'}
+        plt.cla()
+        rects1 = plt.bar(index, y, alpha = opacity, color = 'b', error_kw = error_config, label = "Team", align = 'center')
+        plt.ylabel('Win/Loss Ratio')
+        plt.title('Total Team W/L Ratios')
+        if len(x) > 6:
+            plt.xticks(index, x, rotation=90)
+        else:
+            plt.xticks(index, x)
+        plt.tight_layout()
+        plt.subplots_adjust(wspace = 0.5)
+        self.figureRight = plt
+        self.canvasRight.draw()
     def teamKDMatch2Match(self):
         if self.teamObjectLeft != None:
             teamName = self.teamObjectLeft.teamName
@@ -1296,7 +1429,7 @@ class Ui_MainWindow():
                 plt.title(teamName + " Match by Match KD ratio")
                 plt.xticks(n + 1, teamOpponentList)
                 self.figureLeft = plt
-                self.canvasLeft.draw()
+                self.canvasRight.draw()
             else:
                 self.ErrorTextLine.setText("Error")
         else:
@@ -1330,7 +1463,7 @@ class Ui_MainWindow():
                 plt.title(playerName + " Match by Match CS Ratio")
                 plt.xticks(n + 1, playerOpponentList)
                 self.figureLeft = plt
-                self.canvasLeft.draw()
+                self.canvasRight.draw()
             else:
                 self.ErrorTextLine.setText("Error")
         else:
@@ -1363,7 +1496,7 @@ class Ui_MainWindow():
                 plt.title(playerName + " Match by Match CS Ratio Relative")
                 plt.xticks(n + 1, playerOpponentList)
                 self.figureLeft = plt
-                self.canvasLeft.draw()
+                self.canvasRight.draw()
             else:
                 self.ErrorTextLine.setText("Error")
         else:
