@@ -317,7 +317,7 @@ class Ui_MainWindow():
                     self.dataVizPlayerLeft_1 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_1.setFont(self.font(10, False, 50))
                     self.dataVizPlayerLeft_1.setText("Combat Score/Death Ratio Match by Match")
-                    #self.dataVizPlayerLeft_1.clicked.connect(self.plotLeft)
+                    self.dataVizPlayerLeft_1.clicked.connect(self.playerLevelCombatScore)
                     #Data Visualization Button
                     self.dataVizPlayerLeft_2 = QtGui.QPushButton(self.PlayerGroupBoxLeft)
                     self.dataVizPlayerLeft_2.setFont(self.font(10, False, 50))
@@ -609,7 +609,7 @@ class Ui_MainWindow():
                     #Data Visualization Button
                     self.dataVizPlayerRight_1 = QtGui.QPushButton(self.PlayerGroupBoxRight)
                     self.dataVizPlayerRight_1.setFont(self.font(10, False, 50))
-                    self.dataVizPlayerRight_1.setText("Combat Score/Death Ratio Match by Match")
+                    self.dataVizPlayerRight_1.setText("Combat Score/Death Ratio Match by Match") 
                     #Data Visualization Button
                     self.dataVizPlayerRight_2 = QtGui.QPushButton(self.PlayerGroupBoxRight)
                     self.dataVizPlayerRight_2.setFont(self.font(10, False, 50))
@@ -1427,51 +1427,15 @@ class Ui_MainWindow():
                 plt.xlabel('Opponent')
                 plt.title(teamName + " Match by Match KD ratio")
                 plt.xticks(n + 1, teamOpponentList)
-                self.figureRight = plt
-                self.canvasRight.draw()
-            else:
-                self.ErrorTextLine.setText("Error")
-        else:
-            self.ErrorTextLine.setText("Find a team first")
-    def teamKDMatch2Match(self):
-        if self.teamObjectLeft != None:
-            teamName = self.teamObjectLeft.teamName
-            matchList = []
-            teamOpponentList = []
-            teamKdMatchByMatch = []
-            TeamKD = 0
-            for x in range(0,self.matchNumberSpinBox.value()):
-                if teamName in self.Directory.matchDir[x+1].teamList:
-                    matchList.append(self.Directory.matchDir[x+1])
-            for match in matchList:
-                for x in match.teamList:
-                    if x != teamName:
-                        teamOpponentList.append(x)
-                    else:
-                        TeamKD += match.teamDir[x].teamKDRatio
-                teamKdMatchByMatch.append(match.teamDir[teamName].teamKDRatio)
-            matchCount = len(matchList)
-            if matchCount != 0:
-                totalTeamKd = sum(teamKdMatchByMatch)/matchCount
-                n = np.arange(matchCount)
-                plt.cla()
-                plt.plot(n+1,teamKdMatchByMatch, marker = 'o', color = 'b')
-                plt.subplot().set_ylim(0,max(teamKdMatchByMatch)+0.25)
-                plt.subplot().set_xlim(0,matchCount+1)
-                plt.axhline((totalTeamKd), color = "black")
-                plt.ylabel('Total team KD')
-                plt.xlabel('Opponent')
-                plt.title(teamName + " Match by Match KD ratio")
-                plt.xticks(n + 1, teamOpponentList)
-                self.figureRight = plt
+                self.figureLeft = plt
                 self.canvasRight.draw()
             else:
                 self.ErrorTextLine.setText("Error")
         else:
             self.ErrorTextLine.setText("Find a team first")
     def playerLevelCombatScore(self):
-        if self.playerLeft != None:
-            playerName = self.playerObjectLeft.playerName
+        if self.playerobjectLeft != None:
+            playerName = self.playerobjectLeft.playerName
             matchList = []
             playerOpponentList = []
             playerCSmatchbymatch = []
@@ -1486,8 +1450,9 @@ class Ui_MainWindow():
                         playerCSmatchbymatch.append(match.playerDir[playerName].combatScoreRatio)
             matchCount = len(matchList)
             if matchCount != 0:
-                playerCombatScoreRatio = 9.5
+                playerCombatScoreRatio = sum(playerCSmatchbymatch)/matchCount
                 n = np.arange(matchCount)
+                plt.cla()
                 plt.plot(n+1,playerCSmatchbymatch, marker = 'o', color = 'b')
                 plt.subplot().set_ylim(0,max(playerCSmatchbymatch)+2.5)
                 plt.subplot().set_xlim(0,matchCount+1)
@@ -1496,7 +1461,12 @@ class Ui_MainWindow():
                 plt.xlabel('Opponent')
                 plt.title(playerName + " Match by Match CS Ratio")
                 plt.xticks(n + 1, playerOpponentList)
-                plt.show()
+                self.figureLeft = plt
+                self.canvasRight.draw()
+            else:
+                self.ErrorTextLine.setText("Error")
+        else:
+            self.ErrorTextLine.setText("Find a player first")
     def playerLevelCombatScoreRelative(self):
         playerName = "NathookGD"
         playerOpponentList = ("G.W.A", "Kila", "Legion","Serenity","Fight Club")
