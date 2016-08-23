@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import random
 import time
 import numpy as np
-from cryptography.hazmat.primitives.serialization import NoEncryption
 
 class Ui_MainWindow():
     def __init__(self, Directory):
@@ -1082,10 +1081,10 @@ class Ui_MainWindow():
             plt.bar(index, y, width, alpha = opacity, color = 'b', error_kw = error_config, label = "Players", align = 'center')
             plt.ylabel('Combat Score')
             plt.title(teamName + " Player Level Combat Score")
-            if len(x) > 6:
-                plt.xticks(index, playerList, rotation=90)
+            if numPlayers > 6:
+                plt.xticks(index, x, rotation=90)
             else:
-                plt.xticks(index, playerList)
+                plt.xticks(index, x)
             plt.tight_layout()
             plt.subplots_adjust(wspace = 0.5)
             self.figureLeft = plt

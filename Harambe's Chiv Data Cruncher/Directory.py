@@ -156,10 +156,7 @@ class Directory():
         self.setMatchNumber(matchNumber)
         numMatches = self.matchNumber
         for x in range (0, numMatches):
-            try:
-                self.matchCreate(x + 1)
-            except:
-                break
+            self.matchCreate(x + 1)
         self.bottomTenPlayerCombatScoreRelative = None
         self.bottomTenPlayersCombatScore = None
         self.topTenPlayerCombatScore = None
@@ -184,12 +181,7 @@ class Directory():
             self.playerDir[player].clearValues()
     def sortedCombatScore(self):
         """
-        # regular unsorted dictionary
-            d = {'banana': 3, 'apple':4, 'pear': 1, 'orange': 2}
-            
-            # dictionary sorted by value
-            OrderedDict(sorted(d.items(), key=lambda t: t[1]))
-            # OrderedDict([('pear', 1), ('orange', 2), ('banana', 3), ('apple', 4)])
+
         """
         d = {}
         for player in self.playerList:
