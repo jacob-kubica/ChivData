@@ -1,1 +1,1 @@
-Harambe’s Chivalry Data Cruncher (HCDC)
+Chivalry Data Cruncher 
